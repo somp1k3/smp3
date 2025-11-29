@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой стеклянный сайт</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .widgets-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .widget {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            flex: 1;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+        }
+
+        .widget i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .widget h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .widget p {
+            font-size: 1.1rem;
+        }
+
+        .activities {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .activity {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .activity:hover {
+            transform: scale(1.05);
+        }
+
+        .activity i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .activity h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .activity p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        #time, #date {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #weather {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .widgets-container, .activities {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .widget, .activity {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Александр Иванов</h1>
+            <p class="tagline">Веб-разработчик и дизайнер</p>
+        </header>
+        
+        <div class="widgets-container">
+            <div class="widget">
+                <i class="fas fa-cloud-sun"></i>
+                <h3>Погода</h3>
+                <div id="weather">Загрузка...</div>
+            </div>
+            
+            <div class="widget">
+                <i class="fas fa-clock"></i>
+                <h3>Время</h3>
+                <div id="time">Загрузка...</div>
+            </div>
+            
+            <div class="widget">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Дата</h3>
+                <div id="date">Загрузка...</div>
+            </div>
+        </div>
+        
+        <div class="activities">
+            <div class="activity">
+                <i class="fas fa-code"></i>
+                <h3>Веб-разработка</h3>
+                <p>Создание современных веб-приложений</p>
+            </div>
+            
+            <div class="activity">
+                <i class="fas fa-paint-brush"></i>
+                <h3>UI/UX Дизайн</h3>
+                <p>Проектирование интерфейсов</p>
+            </div>
+            
+            <div class="activity">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Мобильные приложения</h3>
+                <p>Разработка под iOS и Android</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Обновление времени и даты
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Форматирование времени
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleTimeString('ru-RU', timeOptions);
+            document.getElementById('time').textContent = timeString;
+            
+            // Форматирование даты
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('ru-RU', dateOptions);
+            document.getElementById('date').textContent = dateString;
+        }
+        
+        // Имитация данных о погоде (в реальном проекте здесь был бы API запрос)
+        function updateWeather() {
+            const weatherConditions = [
+                "☀️ Солнечно, +22°C",
+                "⛅ Облачно, +18°C",
+                "🌧️ Дождь, +15°C",
+                "❄️ Снег, -5°C"
+            ];
+            
+            const randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+            document.getElementById('weather').textContent = randomWeather;
+        }
+        
+        // Инициализация
+        updateDateTime();
+        updateWeather();
+        
+        // Обновление времени каждую секунду
+        setInterval(updateDateTime, 1000);
+        
+        // Обновление погоды каждые 30 секунд (для демонстрации)
+        setInterval(updateWeather, 30000);
+    </script>
+</body>
+</html>
