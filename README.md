@@ -3,19 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт Somp3 - Привет</title>
-    <meta name="description" content="Вся информация тут.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <title>GitHub Projects</title>
     <style>
-        :root {
-            --primary-color: rgba(102, 126, 234, 0.8);
-            --secondary-color: rgba(118, 75, 162, 0.8);
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.18);
-            --text-color: #ffffff;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,27 +13,29 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--text-color);
             min-height: 100vh;
-            padding: 20px;
-            background-attachment: fixed;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            transition: background 0.5s ease;
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
+            margin-bottom: 50px;
+            color: white;
         }
 
         h1 {
             font-size: 2.8rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -55,264 +46,177 @@
             margin: 0 auto;
         }
 
-        .tiles-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+        .gradient-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
         }
 
-        .tile {
-            background: var(--glass-bg);
+        .gradient-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .gradient-option:hover {
+            transform: scale(1.1);
+        }
+
+        .gradient-option.active {
+            transform: scale(1.15);
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: white;
+            display: flex;
+            flex-direction: column;
         }
 
-        .tile:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
-        .tile-icon {
+        .card-icon {
             font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            text-align: center;
         }
 
-        .tile h3 {
+        .card-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
-        }
-
-        .tile p {
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .large-tile {
-            grid-column: span 2;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .large-tile .tile-icon {
-            font-size: 3.5rem;
-            flex-shrink: 0;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .stat-item {
             text-align: center;
-            padding: 20px;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
+        .card-description {
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 1;
         }
 
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.8;
+        .card-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .security-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            opacity: 0.8;
+        .card-link:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         footer {
-            text-align: center;
             margin-top: 50px;
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow);
-            z-index: 100;
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
-            .large-tile {
-                grid-column: span 1;
+            .cards-container {
                 flex-direction: column;
-                text-align: center;
+                align-items: center;
             }
             
-            .tiles-container {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .theme-switcher {
-                top: 10px;
-                right: 10px;
-                width: 40px;
-                height: 40px;
+            .card {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="theme-switcher" id="themeSwitcher">
-        <i class="fas fa-palette"></i>
-    </div>
-
     <div class="container">
         <header>
-            <h1>CrystalDesign</h1>
-            <p class="subtitle">Современный стеклянный дизайн с защищенным HTTPS-соединением для вашей безопасности в интернете</p>
-            <div class="security-badge">
-                <i class="fas fa-lock"></i>
-                <span>Безопасное HTTPS-соединение</span>
-            </div>
+            <h1>GitHub Projects</h1>
+            <p class="subtitle">Откройте для себя интересные проекты с открытым исходным кодом и внесите свой вклад в развитие сообщества</p>
         </header>
 
-        <div class="tiles-container">
-            <div class="tile">
-                <div class="tile-icon">
-                    <i class="fas fa-palette"></i>
-                </div>
-                <h3>Креативный дизайн</h3>
-                <p>Современный подход к визуальному оформлению с использованием трендовых техник и стилей glassmorphism.</p>
-            </div>
-
-            <div class="tile">
-                <div class="tile-icon">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h3>Адаптивность</h3>
-                <p>Идеальное отображение на всех устройствах - от смартфонов до настольных компьютеров.</p>
-            </div>
-
-            <div class="tile">
-                <div class="tile-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3>Высокая скорость</h3>
-                <p>Оптимизированная производительность для быстрой загрузки и плавной работы.</p>
-            </div>
-
-            <div class="tile large-tile">
-                <div class="tile-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <div>
-                    <h3>Безопасность HTTPS</h3>
-                    <p>Мы используем современные технологии для обеспечения максимальной защиты данных и стабильной работы вашего сайта. Все соединения защищены протоколом HTTPS, что гарантирует шифрование передаваемой информации и безопасность пользователей.</p>
-                </div>
-            </div>
-
-            <div class="tile">
-                <div class="tile-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>Чистый код</h3>
-                <p>Структурированный и семантически правильный код для лучшей SEO-оптимизации.</p>
-            </div>
-
-            <div class="tile">
-                <div class="tile-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>Пользовательский опыт</h3>
-                <p>Интуитивно понятный интерфейс, ориентированный на удобство пользователя.</p>
-            </div>
+        <div class="gradient-selector">
+            <div class="gradient-option active" style="background: linear-gradient(135deg, #6e8efb, #a777e3);" data-gradient="gradient1"></div>
+            <div class="gradient-option" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);" data-gradient="gradient2"></div>
+            <div class="gradient-option" style="background: linear-gradient(135deg, #43cea2, #185a9d);" data-gradient="gradient3"></div>
+            <div class="gradient-option" style="background: linear-gradient(135deg, #654ea3, #eaafc8);" data-gradient="gradient4"></div>
+            <div class="gradient-option" style="background: linear-gradient(135deg, #ff5e62, #ff9966);" data-gradient="gradient5"></div>
         </div>
 
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number">99.9%</div>
-                <div class="stat-label">Доступность</div>
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h2 class="card-title">Популярные проекты</h2>
+                <p class="card-description">Исследуйте самые популярные репозитории GitHub, которые активно развиваются и имеют большое сообщество контрибьюторов.</p>
+                <a href="#" class="card-link">Перейти к проектам</a>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">2.5x</div>
-                <div class="stat-label">Быстрее загрузка</div>
+
+            <div class="card">
+                <div class="card-icon">💡</div>
+                <h2 class="card-title">Новые идеи</h2>
+                <p class="card-description">Откройте для себя инновационные проекты, которые меняют подход к разработке программного обеспечения.</p>
+                <a href="#" class="card-link">Исследовать идеи</a>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Довольных клиентов</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Поддержка</div>
+
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h2 class="card-title">Сообщество</h2>
+                <p class="card-description">Присоединяйтесь к активным сообществам разработчиков, делитесь знаниями и находите единомышленников.</p>
+                <a href="#" class="card-link">Присоединиться</a>
             </div>
         </div>
 
         <footer>
-            <p>© 2023 CrystalDesign. Все права защищены. | Безопасное HTTPS-соединение</p>
+            <p>© 2023 GitHub Projects. Все права защищены.</p>
         </footer>
     </div>
 
     <script>
-        // Простой переключатель тем
-        document.getElementById('themeSwitcher').addEventListener('click', function() {
-            const root = document.documentElement;
-            const currentPrimary = getComputedStyle(root).getPropertyValue('--primary-color').trim();
-            
-            if (currentPrimary === 'rgba(102, 126, 234, 0.8)') {
-                // Переключение на зеленую тему
-                root.style.setProperty('--primary-color', 'rgba(72, 187, 120, 0.8)');
-                root.style.setProperty('--secondary-color', 'rgba(66, 153, 225, 0.8)');
-            } else if (currentPrimary === 'rgba(72, 187, 120, 0.8)') {
-                // Переключение на оранжевую тему
-                root.style.setProperty('--primary-color', 'rgba(237, 137, 54, 0.8)');
-                root.style.setProperty('--secondary-color', 'rgba(229, 62, 62, 0.8)');
-            } else {
-                // Возврат к исходной теме
-                root.style.setProperty('--primary-color', 'rgba(102, 126, 234, 0.8)');
-                root.style.setProperty('--secondary-color', 'rgba(118, 75, 162, 0.8)');
-            }
-        });
-
-        // Анимация появления элементов при загрузке
         document.addEventListener('DOMContentLoaded', function() {
-            const tiles = document.querySelectorAll('.tile');
-            tiles.forEach((tile, index) => {
-                tile.style.opacity = '0';
-                tile.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    tile.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    tile.style.opacity = '1';
-                    tile.style.transform = 'translateY(0)';
-                }, 100 * index);
+            const gradientOptions = document.querySelectorAll('.gradient-option');
+            
+            gradientOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Удаляем активный класс у всех опций
+                    gradientOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Добавляем активный класс к выбранной опции
+                    this.classList.add('active');
+                    
+                    // Применяем выбранный градиент к body
+                    const gradientStyle = this.getAttribute('style');
+                    document.body.style.background = gradientStyle;
+                });
             });
         });
     </script>
