@@ -68,6 +68,8 @@
             color: white;
             animation: slideInLeft 0.5s ease;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         .notification.warning {
@@ -80,6 +82,40 @@
             border-color: rgba(23, 162, 184, 0.5);
         }
 
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-timer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.7);
+            width: 100%;
+            transform-origin: left;
+            animation: timerShrink 10s linear forwards;
+        }
+
+        .notification.warning .notification-timer {
+            background: rgba(255, 193, 7, 0.8);
+        }
+
+        .notification.info .notification-timer {
+            background: rgba(23, 162, 184, 0.8);
+        }
+
+        @keyframes timerShrink {
+            from {
+                transform: scaleX(1);
+            }
+            to {
+                transform: scaleX(0);
+            }
+        }
+
         @keyframes slideInLeft {
             from {
                 transform: translateX(-100%);
@@ -89,6 +125,21 @@
                 transform: translateX(0);
                 opacity: 1;
             }
+        }
+
+        @keyframes slideOutLeft {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .notification.hiding {
+            animation: slideOutLeft 0.5s ease forwards;
         }
 
         /* Language Selector */
@@ -161,6 +212,71 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .help-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .help-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .help-btn:hover .help-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-10px);
+        }
+
+        .help-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: white;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed) ease;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .help-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.8);
         }
 
         /* Compact Widgets Row */
@@ -529,6 +645,11 @@
                 max-width: none;
                 margin-bottom: 20px;
             }
+
+            .help-button {
+                position: static;
+                margin-top: 20px;
+            }
         }
     </style>
 </head>
@@ -536,10 +657,18 @@
     <!-- Notifications - moved to bottom left -->
     <div class="notifications" id="notifications">
         <div class="notification warning">
-            <i class="fas fa-tools"></i> <span id="dev-notification">Сайт находится в разработке</span>
+            <div class="notification-content">
+                <i class="fas fa-tools"></i>
+                <span id="dev-notification">Сайт находится в разработке</span>
+            </div>
+            <div class="notification-timer"></div>
         </div>
         <div class="notification info">
-            <i class="fab fa-telegram"></i> <span id="tg-notification">Я в Telegram: @testuhipis</span>
+            <div class="notification-content">
+                <i class="fab fa-telegram"></i>
+                <span id="tg-notification">Я в Telegram: @testuhipis</span>
+            </div>
+            <div class="notification-timer"></div>
         </div>
     </div>
 
@@ -565,6 +694,17 @@
             </div>
             <div class="language-option" data-lang="orv">
                 <span>🏛️ Древне-Русский</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <div class="help-button">
+        <div class="help-btn">
+            <i class="fas fa-question-circle"></i>
+            <span id="help-text">Помощь</span>
+            <div class="help-tooltip">
+                <span id="help-email">makarevichkv@bk.ru</span>
             </div>
         </div>
     </div>
@@ -747,7 +887,11 @@
                 docsDesc: "Техническая документация и руководства. Полезные материалы для разработчиков.",
                 resourcesTitle: "Ресурсы",
                 resourcesDesc: "Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.",
-                footer: "&copy; 2024 Somp3. Все права защищены."
+                footer: "&copy; 2024 Somp3. Все права защищены.",
+                
+                // Help button
+                helpText: "Помощь",
+                helpEmail: "makarevichkv@bk.ru"
             },
             en: {
                 devNotification: "Website is under development",
@@ -776,7 +920,9 @@
                 docsDesc: "Technical documentation and guides. Useful materials for developers.",
                 resourcesTitle: "Resources",
                 resourcesDesc: "Collection of useful resources, tools and libraries for web development.",
-                footer: "&copy; 2024 Somp3. All rights reserved."
+                footer: "&copy; 2024 Somp3. All rights reserved.",
+                helpText: "Help",
+                helpEmail: "makarevichkv@bk.ru"
             },
             be: {
                 devNotification: "Сайт знаходзіцца ў распрацоўцы",
@@ -805,7 +951,9 @@
                 docsDesc: "Тэхнічная дакументацыя і кіраўніцтвы. Карысныя матэрыялы для распрацоўшчыкаў.",
                 resourcesTitle: "Рэсурсы",
                 resourcesDesc: "Калекцыя карысных рэсурсаў, інструментаў і бібліятэк для вэб-распрацоўкі.",
-                footer: "&copy; 2024 Somp3. Усе правы абаронены."
+                footer: "&copy; 2024 Somp3. Усе правы абаронены.",
+                helpText: "Дапамога",
+                helpEmail: "makarevichkv@bk.ru"
             },
             ja: {
                 devNotification: "ウェブサイトは開発中です",
@@ -834,7 +982,9 @@
                 docsDesc: "技術文書とガイド。開発者向けの便利な資料。",
                 resourcesTitle: "リソース",
                 resourcesDesc: "Web開発のための便利なリソース、ツール、ライブラリのコレクション。",
-                footer: "&copy; 2024 Somp3. 全著作権所有."
+                footer: "&copy; 2024 Somp3. 全著作権所有.",
+                helpText: "ヘルプ",
+                helpEmail: "makarevichkv@bk.ru"
             },
             orv: {
                 // Древнерусский язык
@@ -864,7 +1014,9 @@
                 docsDesc: "Оустроишьнꙑѩ грамотꙑ и наказаниꙗ. Потрѣбьнꙑѩ вѣщи съꙁидателемъ.",
                 resourcesTitle: "Съкровища",
                 resourcesDesc: "Събиръниѥ потрѣбьныхъ съкровищь, оужищь и книгъницъ въ вѣтьхънѧѥмъ съꙁидании.",
-                footer: "&copy; 2024 Somp3. Вьсѧ права съхранѥна."
+                footer: "&copy; 2024 Somp3. Вьсѧ права съхранѥна.",
+                helpText: "Помощь",
+                helpEmail: "makarevichkv@bk.ru"
             }
         };
 
@@ -924,6 +1076,10 @@
             document.getElementById('resources-title').textContent = t.resourcesTitle;
             document.getElementById('resources-desc').textContent = t.resourcesDesc;
             document.getElementById('footer-text').innerHTML = t.footer;
+            
+            // Help button
+            document.getElementById('help-text').textContent = t.helpText;
+            document.getElementById('help-email').textContent = t.helpEmail;
         }
 
         // DOM Elements
@@ -933,6 +1089,26 @@
         const languageDropdown = document.getElementById('language-dropdown');
         const settingsPanel = document.querySelector('.settings-panel');
         const languageSelector = document.querySelector('.language-selector');
+
+        // Функция для управления таймерами уведомлений
+        function setupNotificationTimers() {
+            const notifications = document.querySelectorAll('.notification');
+            
+            notifications.forEach(notification => {
+                // Запускаем таймер на 10 секунд
+                setTimeout(() => {
+                    // Добавляем класс для анимации исчезновения
+                    notification.classList.add('hiding');
+                    
+                    // Удаляем уведомление после завершения анимации
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 500);
+                }, 10000); // 10 секунд
+            });
+        }
 
         // Применить настройки при загрузке
         function applyStoredSettings() {
@@ -964,6 +1140,9 @@
             
             // Применить тему
             applyTheme(settings.theme);
+            
+            // Запустить таймеры для уведомлений
+            setupNotificationTimers();
         }
 
         // Обновить эффект размытия
