@@ -269,11 +269,10 @@
         
         <div class="categories">
             <button class="category-btn active" data-category="all">Все</button>
-            <button class="category-btn" data-category="programming">Программирование</button>
-            <button class="category-btn" data-category="design">Дизайн</button>
-            <button class="category-btn" data-category="tools">Инструменты</button>
-            <button class="category-btn" data-category="learning">Обучение</button>
-            <button class="category-btn" data-category="news">Новости</button>
+            <button class="category-btn" data-category="work">Работа</button>
+            <button class="category-btn" data-category="study">Учеба</button>
+            <button class="category-btn" data-category="entertainment">Развлечения</button>
+            <button class="category-btn" data-category="other">Другое</button>
         </div>
         
         <div class="links-grid" id="links-container">
@@ -303,11 +302,10 @@
                 <div class="form-group">
                     <label for="linkCategory">Категория</label>
                     <select id="linkCategory">
-                        <option value="programming">Программирование</option>
-                        <option value="design">Дизайн</option>
-                        <option value="tools">Инструменты</option>
-                        <option value="learning">Обучение</option>
-                        <option value="news">Новости</option>
+                        <option value="work">Работа</option>
+                        <option value="study">Учеба</option>
+                        <option value="entertainment">Развлечения</option>
+                        <option value="other">Другое</option>
                     </select>
                 </div>
                 <div class="form-actions">
@@ -323,59 +321,59 @@
         const linksData = [
             {
                 id: 1,
-                title: "MDN Web Docs",
-                url: "https://developer.mozilla.org",
-                description: "Ресурс с документацией по веб-технологиям",
-                category: "programming"
+                title: "Google Документы",
+                url: "https://docs.google.com",
+                description: "Онлайн-редактор документов для совместной работы",
+                category: "work"
             },
             {
                 id: 2,
-                title: "Figma",
-                url: "https://figma.com",
-                description: "Инструмент для дизайна интерфейсов",
-                category: "design"
+                title: "YouTube",
+                url: "https://youtube.com",
+                description: "Платформа для просмотра и загрузки видео",
+                category: "entertainment"
             },
             {
                 id: 3,
-                title: "Stack Overflow",
-                url: "https://stackoverflow.com",
-                description: "Сообщество программистов с ответами на вопросы",
-                category: "programming"
+                title: "Википедия",
+                url: "https://wikipedia.org",
+                description: "Свободная энциклопедия с миллионами статей",
+                category: "study"
             },
             {
                 id: 4,
-                title: "Habr",
-                url: "https://habr.com",
-                description: "Популярный IT-ресурс с новостями и статьями",
-                category: "news"
+                title: "Trello",
+                url: "https://trello.com",
+                description: "Инструмент для управления проектами и задачами",
+                category: "work"
             },
             {
                 id: 5,
                 title: "Coursera",
                 url: "https://coursera.org",
                 description: "Платформа с онлайн-курсами от ведущих университетов",
-                category: "learning"
+                category: "study"
             },
             {
                 id: 6,
-                title: "GitHub",
-                url: "https://github.com",
-                description: "Платформа для хостинга и совместной работы над кодом",
-                category: "tools"
+                title: "Spotify",
+                url: "https://spotify.com",
+                description: "Стриминговый сервис для прослушивания музыки",
+                category: "entertainment"
             },
             {
                 id: 7,
-                title: "CSS-Tricks",
-                url: "https://css-tricks.com",
-                description: "Блог и руководства по CSS и веб-разработке",
-                category: "programming"
+                title: "Google Переводчик",
+                url: "https://translate.google.com",
+                description: "Бесплатный сервис для перевода текстов",
+                category: "other"
             },
             {
                 id: 8,
-                title: "Dribbble",
-                url: "https://dribbble.com",
-                description: "Сообщество дизайнеров с примерами работ",
-                category: "design"
+                title: "Notion",
+                url: "https://notion.so",
+                description: "Многофункциональное рабочее пространство",
+                category: "work"
             }
         ];
 
@@ -424,11 +422,10 @@
         // Функция для получения читаемого названия категории
         function getCategoryName(category) {
             const categoryNames = {
-                'programming': 'Программирование',
-                'design': 'Дизайн',
-                'tools': 'Инструменты',
-                'learning': 'Обучение',
-                'news': 'Новости'
+                'work': 'Работа',
+                'study': 'Учеба',
+                'entertainment': 'Развлечения',
+                'other': 'Другое'
             };
             return categoryNames[category] || category;
         }
