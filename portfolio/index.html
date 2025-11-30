@@ -18,11 +18,20 @@
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
+            transition: background-color 0.3s ease;
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
+        }
+        
+        .main-title {
+            text-align: center;
+            font-size: 3rem;
+            margin: 30px 0;
+            color: #bb86fc;
+            font-weight: 700;
         }
         
         header {
@@ -38,6 +47,21 @@
             font-size: 2rem;
             font-weight: 700;
             color: #bb86fc;
+        }
+        
+        .settings-btn {
+            background: #333;
+            color: #e0e0e0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .settings-btn:hover {
+            background: #444;
         }
         
         .datetime {
@@ -102,45 +126,43 @@
             color: #aaa;
         }
         
-        .portfolio-section {
-            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        .settings-panel {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
             margin-top: 30px;
             border: 1px solid #333;
+            display: none;
         }
         
-        .portfolio-title {
-            font-size: 2rem;
+        .settings-title {
+            font-size: 1.5rem;
             margin-bottom: 20px;
             color: #bb86fc;
-            text-align: center;
         }
         
-        .portfolio-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        .portfolio-text {
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-        
-        .portfolio-text p {
-            margin-bottom: 15px;
-        }
-        
-        .portfolio-image {
-            background-color: #333;
-            border-radius: 10px;
+        .color-options {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #888;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: white;
         }
         
         footer {
@@ -152,10 +174,6 @@
         }
         
         @media (max-width: 768px) {
-            .portfolio-content {
-                grid-template-columns: 1fr;
-            }
-            
             .widgets-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
@@ -168,13 +186,20 @@
             .datetime {
                 margin-top: 15px;
             }
+            
+            .main-title {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <h1 class="main-title">Портфолио somp3</h1>
+        
         <header>
             <div class="logo">somp3</div>
+            <button class="settings-btn" id="settingsBtn">Настройки</button>
             <div class="datetime">
                 <div class="date" id="currentDate">Понедельник, 1 января 2024</div>
                 <div class="time" id="currentTime">00:00:00</div>
@@ -219,17 +244,18 @@
             </div>
         </div>
         
-        <div class="portfolio-section">
-            <h2 class="portfolio-title">Портфолио somp3</h2>
-            <div class="portfolio-content">
-                <div class="portfolio-text">
-                    <p>Добро пожаловать в мое портфолио! Я занимаюсь созданием современных и функциональных веб-сайтов с акцентом на пользовательский опыт.</p>
-                    <p>Мои работы сочетают в себе эстетику и функциональность, создавая цифровые продукты, которые не только красивы, но и эффективно решают поставленные задачи.</p>
-                    <p>Использую современные технологии и подходы для реализации проектов любой сложности - от лендингов до сложных веб-приложений.</p>
-                </div>
-                <div class="portfolio-image">
-                    [Изображение портфолио]
-                </div>
+        <div class="settings-panel" id="settingsPanel">
+            <h3 class="settings-title">Настройки сайта</h3>
+            <p>Выберите цветовую схему:</p>
+            <div class="color-options">
+                <div class="color-option active" style="background-color: #121212;" data-color="#121212"></div>
+                <div class="color-option" style="background-color: #1a1a2e;" data-color="#1a1a2e"></div>
+                <div class="color-option" style="background-color: #16213e;" data-color="#16213e"></div>
+                <div class="color-option" style="background-color: #0f3460;" data-color="#0f3460"></div>
+                <div class="color-option" style="background-color: #1b262c;" data-color="#1b262c"></div>
+                <div class="color-option" style="background-color: #222831;" data-color="#222831"></div>
+                <div class="color-option" style="background-color: #393e46;" data-color="#393e46"></div>
+                <div class="color-option" style="background-color: #2d2424;" data-color="#2d2424"></div>
             </div>
         </div>
         
@@ -281,6 +307,30 @@
         
         document.getElementById('widget6').addEventListener('click', function() {
             window.open('https://example.com/blog', '_blank');
+        });
+        
+        // Настройки цвета
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const colorOptions = document.querySelectorAll('.color-option');
+        
+        settingsBtn.addEventListener('click', function() {
+            if (settingsPanel.style.display === 'block') {
+                settingsPanel.style.display = 'none';
+            } else {
+                settingsPanel.style.display = 'block';
+            }
+        });
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Убираем активный класс у всех опций
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                // Добавляем активный класс к выбранной опции
+                this.classList.add('active');
+                // Меняем цвет фона
+                document.body.style.backgroundColor = this.getAttribute('data-color');
+            });
         });
     </script>
 </body>
