@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт somp3</title>
+    <title>Somp3 - Файловый хостинг</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -19,6 +19,7 @@
             --text-color: white;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             --border: 1px solid rgba(255, 255, 255, 0.18);
+            --accent-color: #4a6fa5;
         }
 
         body.light-mode {
@@ -27,6 +28,7 @@
             --text-color: #333333;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             --border: 1px solid rgba(0, 0, 0, 0.1);
+            --accent-color: #3a5a8a;
         }
 
         body {
@@ -34,9 +36,6 @@
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: var(--text-color);
             overflow-x: hidden;
             padding: 20px 0;
@@ -45,7 +44,7 @@
 
         body.solid-color {
             animation: none;
-            background: #4a6fa5;
+            background: var(--accent-color);
         }
 
         body.light-mode {
@@ -61,25 +60,21 @@
         }
 
         @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
 
+        /* Header Styles */
         header {
             text-align: center;
             padding: 20px;
@@ -92,7 +87,6 @@
             top: 0;
             background: var(--secondary-color);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -109,36 +103,227 @@
             transform: rotate(30deg);
         }
 
-        .settings-panel {
-            position: absolute;
-            left: 0;
-            top: 60px;
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Widgets Styles */
+        .widgets-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .widget {
             background: var(--secondary-color);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 20px;
             box-shadow: var(--shadow);
             border: var(--border);
-            width: 250px;
-            z-index: 100;
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-width: 180px;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+        }
+
+        .widget i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .widget h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .widget p {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .file-upload, .file-list {
+            background: var(--secondary-color);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+        }
+
+        .file-upload h2, .file-list h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .upload-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .upload-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .file-action {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .file-action:hover {
+            opacity: 1;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
             display: none;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: center;
+            align-items: center;
         }
 
         .settings-panel.active {
             display: flex;
         }
 
+        .settings-content {
+            background: var(--secondary-color);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .close-settings {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .close-settings:hover {
+            opacity: 1;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-group h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
         .setting-option {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .setting-option label {
-            font-size: 0.9rem;
+            margin-bottom: 15px;
         }
 
         .toggle-switch {
@@ -169,4 +354,393 @@
         .slider:before {
             position: absolute;
             content: "";
-            height
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        select option {
+            background: #333;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .widgets-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .widget {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+            </div>
+            
+            <h1>Somp3</h1>
+            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Здесь вы можете найти мои файлы, команды и другие материалы для разработки.</p>
+        </header>
+        
+        <div class="widgets-container">
+            <div class="widget">
+                <i class="fas fa-cloud-sun"></i>
+                <h3>Погода</h3>
+                <p id="weather-temp">--°C</p>
+            </div>
+            
+            <div class="widget">
+                <i class="fas fa-clock"></i>
+                <h3>Время</h3>
+                <p id="time">--:--</p>
+            </div>
+            
+            <div class="widget">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Дата</h3>
+                <p id="date">--.--.--</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="file-upload">
+                <h2>Загрузить файл</h2>
+                <div class="upload-area" id="upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Перетащите файлы сюда или нажмите для выбора</p>
+                    <input type="file" id="file-input" style="display: none;">
+                    <button class="upload-btn" id="upload-btn">Выбрать файл</button>
+                </div>
+                <div class="upload-info">
+                    <p>Максимальный размер: 50MB</p>
+                    <p>Поддерживаемые форматы: все</p>
+                </div>
+            </div>
+            
+            <div class="file-list">
+                <h2>Мои файлы</h2>
+                <div class="files-container" id="files-container">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <i class="fas fa-file-code file-icon"></i>
+                            <div>
+                                <div class="file-name">example.js</div>
+                                <div class="file-size">2.1 KB</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="file-action" title="Скачать"><i class="fas fa-download"></i></button>
+                            <button class="file-action" title="Удалить"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-item">
+                        <div class="file-info">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <div>
+                                <div class="file-name">commands.txt</div>
+                                <div class="file-size">1.5 KB</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="file-action" title="Скачать"><i class="fas fa-download"></i></button>
+                            <button class="file-action" title="Удалить"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Все права защищены &copy; Кирилл Макаревич 2011</p>
+        </footer>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Настройки сайта</h2>
+                <button class="close-settings" id="close-settings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Внешний вид</h3>
+                
+                <div class="setting-option">
+                    <label for="dark-mode">Тёмный режим</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dark-mode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-option">
+                    <label for="solid-color">Сплошной фон</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="solid-color">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-option">
+                    <label>Цветовая схема</label>
+                </div>
+                <div class="color-options">
+                    <div class="color-option active" style="background: #4a6fa5;" data-color="#4a6fa5"></div>
+                    <div class="color-option" style="background: #6a4a9c;" data-color="#6a4a9c"></div>
+                    <div class="color-option" style="background: #4a9c6a;" data-color="#4a9c6a"></div>
+                    <div class="color-option" style="background: #9c6a4a;" data-color="#9c6a4a"></div>
+                    <div class="color-option" style="background: #9c4a6a;" data-color="#9c4a6a"></div>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Погода</h3>
+                <div class="setting-option">
+                    <label for="weather-city">Город</label>
+                    <input type="text" id="weather-city" placeholder="Москва" value="Москва">
+                </div>
+                <div class="setting-option">
+                    <label for="weather-unit">Единицы измерения</label>
+                    <select id="weather-unit">
+                        <option value="metric">Цельсий</option>
+                        <option value="imperial">Фаренгейт</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Язык</h3>
+                <div class="setting-option">
+                    <label for="language">Язык интерфейса</label>
+                    <select id="language">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Уведомления</h3>
+                <div class="setting-option">
+                    <label for="notifications">Показывать уведомления</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="upload-btn" style="width: 100%; margin-top: 20px;">Сохранить настройки</button>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация API
+        const API_KEY = 'YOUR_API_KEY_HERE';
+        const DEFAULT_CITY = 'Moscow';
+
+        // Элементы DOM
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsPanel = document.getElementById('settings-panel');
+        const closeSettings = document.getElementById('close-settings');
+        const darkModeToggle = document.getElementById('dark-mode');
+        const solidColorToggle = document.getElementById('solid-color');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const weatherCity = document.getElementById('weather-city');
+        const weatherUnit = document.getElementById('weather-unit');
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const uploadBtn = document.getElementById('upload-btn');
+
+        // Функция для получения погоды
+        async function getWeather() {
+            try {
+                const city = weatherCity.value || DEFAULT_CITY;
+                const unit = weatherUnit.value;
+                
+                if (API_KEY === 'YOUR_API_KEY_HERE') {
+                    // Демо-данные
+                    document.getElementById('weather-temp').textContent = '22°C';
+                    return;
+                }
+                
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=${unit}&lang=ru`
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Город не найден');
+                }
+                
+                const data = await response.json();
+                const temp = Math.round(data.main.temp);
+                document.getElementById('weather-temp').textContent = `${temp}°${unit === 'metric' ? 'C' : 'F'}`;
+                
+            } catch (error) {
+                console.error('Ошибка получения погоды:', error);
+                document.getElementById('weather-temp').textContent = '--°C';
+            }
+        }
+
+        // Обновление времени и даты
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Время
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            const timeString = now.toLocaleTimeString('ru-RU', timeOptions);
+            document.getElementById('time').textContent = timeString;
+            
+            // Дата
+            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const dateString = now.toLocaleDateString('ru-RU', dateOptions);
+            document.getElementById('date').textContent = dateString;
+        }
+
+        // Настройки
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.classList.add('active');
+        });
+
+        closeSettings.addEventListener('click', () => {
+            settingsPanel.classList.remove('active');
+        });
+
+        // Закрытие панели настроек при клике вне её
+        settingsPanel.addEventListener('click', (e) => {
+            if (e.target === settingsPanel) {
+                settingsPanel.classList.remove('active');
+            }
+        });
+
+        // Переключение темного/светлого режима
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('light-mode', darkModeToggle.checked);
+        });
+
+        // Переключение между градиентом и сплошным цветом
+        solidColorToggle.addEventListener('change', () => {
+            document.body.classList.toggle('solid-color', solidColorToggle.checked);
+        });
+
+        // Выбор цвета фона
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                document.documentElement.style.setProperty('--accent-color', option.dataset.color);
+                
+                if (document.body.classList.contains('solid-color')) {
+                    document.body.style.background = option.dataset.color;
+                }
+            });
+        });
+
+        // Загрузка файлов
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                alert(`Файл "${e.target.files[0].name}" выбран для загрузки`);
+                // Здесь будет логика загрузки на сервер
+            }
+        });
+
+        // Обновление погоды при изменении настроек
+        weatherCity.addEventListener('change', getWeather);
+        weatherUnit.addEventListener('change', getWeather);
+
+        // Инициализация
+        updateDateTime();
+        getWeather();
+        
+        // Обновление времени каждую секунду
+        setInterval(updateDateTime, 1000);
+        
+        // Обновление погоды каждые 10 минут
+        setInterval(getWeather, 600000);
+    </script>
+</body>
+</html>
