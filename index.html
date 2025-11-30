@@ -47,6 +47,120 @@
             margin: 0 auto;
         }
 
+        /* Help Menu */
+        .help-menu {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .help-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .help-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
+        }
+
+        .help-content {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 300px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        .help-content.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .email-link {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .email-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #5a5fcf;
+            transform: translateY(-1px);
+        }
+
         /* Notifications */
         .notifications {
             position: fixed;
@@ -68,6 +182,12 @@
             color: white;
             animation: slideInRight 0.5s ease;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .notification.hiding {
+            opacity: 0;
+            transform: translateX(100%);
         }
 
         .notification.warning {
@@ -132,7 +252,7 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            min-width: 150px;
+            min-width: 170px;
         }
 
         .language-dropdown.active {
@@ -529,17 +649,27 @@
                 max-width: none;
                 margin-bottom: 20px;
             }
+
+            .help-menu {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .help-content {
+                position: static;
+                margin-bottom: 0;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Notifications -->
     <div class="notifications" id="notifications">
-        <div class="notification warning">
-            <i class="fas fa-tools"></i> <span id="dev-notification">Сайт находится в разработке</span>
+        <div class="notification warning" id="dev-notification">
+            <i class="fas fa-tools"></i> <span id="dev-notification-text">Сайт находится в разработке</span>
         </div>
-        <div class="notification info">
-            <i class="fab fa-telegram"></i> <span id="tg-notification">Я в Telegram: @testuhipis</span>
+        <div class="notification info" id="tg-notification">
+            <i class="fab fa-telegram"></i> <span id="tg-notification-text">Я в Telegram: @testuhipis</span>
         </div>
     </div>
 
@@ -563,6 +693,31 @@
             <div class="language-option" data-lang="ja">
                 <span>🇯🇵 日本語</span>
             </div>
+            <div class="language-option" data-lang="orv">
+                <span>🏛️ Древнеруский</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Menu -->
+    <div class="help-menu">
+        <div class="help-btn" id="help-btn">
+            <i class="fas fa-question-circle"></i>
+            <span id="help-btn-text">Помощь</span>
+        </div>
+        <div class="help-content" id="help-content">
+            <div>
+                <div class="help-title" id="help-title">Нужна помощь?</div>
+                <div class="help-text" id="help-text">Если вы нашли ошибку или хотите помочь в развитии проекта, напишите нам:</div>
+            </div>
+            <a href="mailto:makarevichkv@bk.ru" class="email-link">
+                <i class="fas fa-envelope"></i>
+                makarevichkv@bk.ru
+            </a>
+            <button class="copy-btn" id="copy-email-btn">
+                <i class="fas fa-copy"></i>
+                <span id="copy-btn-text">Скопировать email</span>
+            </button>
         </div>
     </div>
 
@@ -716,6 +871,12 @@
                 // Language selector
                 currentLanguage: "Русский",
                 
+                // Help menu
+                helpBtn: "Помощь",
+                helpTitle: "Нужна помощь?",
+                helpText: "Если вы нашли ошибку или хотите помочь в развитии проекта, напишите нам:",
+                copyBtn: "Скопировать email",
+                
                 // Settings
                 themeTitle: "Цветовая тема",
                 effectsTitle: "Эффекты",
@@ -750,6 +911,10 @@
                 devNotification: "Website is under development",
                 tgNotification: "Find me on Telegram: @testuhipis",
                 currentLanguage: "English",
+                helpBtn: "Help",
+                helpTitle: "Need help?",
+                helpText: "If you found a bug or want to help with project development, contact us:",
+                copyBtn: "Copy email",
                 themeTitle: "Color Theme",
                 effectsTitle: "Effects",
                 glassEffectLabel: "Glass blur effect",
@@ -779,6 +944,10 @@
                 devNotification: "Сайт знаходзіцца ў распрацоўцы",
                 tgNotification: "Я ў Telegram: @testuhipis",
                 currentLanguage: "Беларуская",
+                helpBtn: "Дапамога",
+                helpTitle: "Патрэбна дапамога?",
+                helpText: "Калі вы знайшлі памылку ці хочаце дапамагчы ў развіцці праекта, напішыце нам:",
+                copyBtn: "Скапіяваць email",
                 themeTitle: "Каляровая тэма",
                 effectsTitle: "Эфекты",
                 glassEffectLabel: "Размыццё шкла",
@@ -808,6 +977,10 @@
                 devNotification: "ウェブサイトは開発中です",
                 tgNotification: "Telegramで私を見つけて: @testuhipis",
                 currentLanguage: "日本語",
+                helpBtn: "ヘルプ",
+                helpTitle: "助けが必要ですか？",
+                helpText: "バグを見つけた場合やプロジェクトの開発を手伝いたい場合は、ご連絡ください：",
+                copyBtn: "メールをコピー",
                 themeTitle: "カラーテーマ",
                 effectsTitle: "エフェクト",
                 glassEffectLabel: "ガラスぼかし効果",
@@ -832,328 +1005,33 @@
                 resourcesTitle: "リソース",
                 resourcesDesc: "Web開発のための便利なリソース、ツール、ライブラリのコレクション。",
                 footer: "&copy; 2024 Somp3. 全著作権所有."
-            }
-        };
-
-        // Current language
-        let currentLanguage = localStorage.getItem('somp3-language') || 'ru';
-
-        // Настройки по умолчанию
-        const defaultSettings = {
-            glassEffect: true,
-            showWeather: true,
-            showTime: true,
-            showDate: true,
-            weatherCity: 'Москва',
-            theme: 'purple'
-        };
-
-        // Загрузка настроек из localStorage
-        let settings = JSON.parse(localStorage.getItem('somp3-settings')) || {...defaultSettings};
-
-        // Apply translation
-        function applyTranslation(lang) {
-            const t = translations[lang];
-            
-            // Notifications
-            document.getElementById('dev-notification').textContent = t.devNotification;
-            document.getElementById('tg-notification').textContent = t.tgNotification;
-            
-            // Language selector
-            document.getElementById('current-language').textContent = t.currentLanguage;
-            
-            // Settings
-            document.getElementById('theme-title').textContent = t.themeTitle;
-            document.getElementById('effects-title').textContent = t.effectsTitle;
-            document.getElementById('glass-effect-label').textContent = t.glassEffectLabel;
-            document.getElementById('widgets-title').textContent = t.widgetsTitle;
-            document.getElementById('show-weather-label').textContent = t.showWeatherLabel;
-            document.getElementById('show-time-label').textContent = t.showTimeLabel;
-            document.getElementById('show-date-label').textContent = t.showDateLabel;
-            document.getElementById('weather-title').textContent = t.weatherTitle;
-            document.getElementById('weather-city-label').textContent = t.weatherCityLabel;
-            
-            // Widgets
-            document.getElementById('weather-widget-title').textContent = t.weatherWidgetTitle;
-            document.getElementById('time-widget-title').textContent = t.timeWidgetTitle;
-            document.getElementById('date-widget-title').textContent = t.dateWidgetTitle;
-            
-            // Content
-            document.getElementById('tagline-text').textContent = t.tagline;
-            document.getElementById('telegram-text').textContent = t.telegram;
-            document.getElementById('github-text').textContent = t.github;
-            document.getElementById('steam-text').textContent = t.steam;
-            document.getElementById('links-title').textContent = t.linksTitle;
-            document.getElementById('portfolio-title').textContent = t.portfolioTitle;
-            document.getElementById('portfolio-desc').textContent = t.portfolioDesc;
-            document.getElementById('docs-title').textContent = t.docsTitle;
-            document.getElementById('docs-desc').textContent = t.docsDesc;
-            document.getElementById('resources-title').textContent = t.resourcesTitle;
-            document.getElementById('resources-desc').textContent = t.resourcesDesc;
-            document.getElementById('footer-text').innerHTML = t.footer;
-        }
-
-        // DOM Elements
-        const settingsToggle = document.getElementById('settings-toggle');
-        const settingsContent = document.getElementById('settings-content');
-        const languageBtn = document.getElementById('language-btn');
-        const languageDropdown = document.getElementById('language-dropdown');
-
-        // Применить настройки при загрузке
-        function applyStoredSettings() {
-            // Применить язык
-            applyTranslation(currentLanguage);
-            
-            // Обновить активный язык в выпадающем списке
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-lang') === currentLanguage) {
-                    option.classList.add('active');
-                }
-            });
-
-            // Применить все настройки из localStorage
-            document.getElementById('glass-effect').checked = settings.glassEffect;
-            document.getElementById('show-weather').checked = settings.showWeather;
-            document.getElementById('show-time').checked = settings.showTime;
-            document.getElementById('show-date').checked = settings.showDate;
-            document.getElementById('weather-city').value = settings.weatherCity;
-
-            // Применить видимость виджетов
-            document.getElementById('weather-widget').style.display = settings.showWeather ? 'block' : 'none';
-            document.getElementById('time-widget').style.display = settings.showTime ? 'block' : 'none';
-            document.getElementById('date-widget').style.display = settings.showDate ? 'block' : 'none';
-
-            // Применить эффект размытия
-            updateBlurEffect();
-            
-            // Применить тему
-            applyTheme(settings.theme);
-        }
-
-        // Обновить эффект размытия
-        function updateBlurEffect() {
-            document.documentElement.style.setProperty('--blur-amount', settings.glassEffect ? 'blur(20px)' : 'blur(0px)');
-        }
-
-        // Применить тему
-        function applyTheme(theme) {
-            const gradients = {
-                default: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-                vibrant: 'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)',
-                purple: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
-                blue: 'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)'
-            };
-            
-            document.body.style.background = gradients[theme];
-            
-            // Обновить активную кнопку темы
-            document.querySelectorAll('.color-option').forEach(opt => {
-                opt.classList.remove('active');
-                if (opt.getAttribute('data-gradient') === theme) {
-                    opt.classList.add('active');
-                }
-            });
-        }
-
-        // Сохранить настройки
-        function saveSettings() {
-            localStorage.setItem('somp3-settings', JSON.stringify(settings));
-        }
-
-        // Toggle Settings Panel
-        settingsToggle.addEventListener('click', () => {
-            settingsContent.classList.toggle('active');
-        });
-
-        // Language selector
-        languageBtn.addEventListener('click', () => {
-            languageDropdown.classList.toggle('active');
-        });
-
-        // Language selection
-        document.querySelectorAll('.language-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const lang = this.getAttribute('data-lang');
-                currentLanguage = lang;
-                localStorage.setItem('somp3-language', lang);
-                applyTranslation(lang);
-                languageDropdown.classList.remove('active');
-                
-                // Обновить активный язык в выпадающем списке
-                document.querySelectorAll('.language-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!settingsPanel.contains(event.target) && !settingsToggle.contains(event.target)) {
-                settingsContent.classList.remove('active');
-            }
-            if (!languageSelector.contains(event.target)) {
-                languageDropdown.classList.remove('active');
-            }
-        });
-
-        // Update time and date in real-time
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Time
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            const timeString = now.toLocaleTimeString(currentLanguage, timeOptions);
-            document.getElementById('current-time').textContent = timeString;
-            
-            // Date
-            const dateOptions = { day: '2-digit', month: '2-digit' };
-            const dateString = now.toLocaleDateString(currentLanguage, dateOptions);
-            document.getElementById('current-date').textContent = dateString;
-            
-            // Day of week
-            const dayOptions = { weekday: 'long' };
-            const dayString = now.toLocaleDateString(currentLanguage, dayOptions);
-            document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
-        }
-
-        // Real weather function using OpenWeatherMap API
-        async function updateRealWeather() {
-            if (!settings.showWeather) return;
-
-            try {
-                const city = settings.weatherCity || 'Москва';
-                
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&lang=${currentLanguage}`
-                );
-
-                if (!response.ok) {
-                    throw new Error('Город не найден');
-                }
-
-                const data = await response.json();
-                
-                const temp = Math.round(data.main.temp);
-                const description = data.weather[0].description;
-                const weatherMain = data.weather[0].main;
-                
-                // Get weather icon
-                const weatherIcons = {
-                    'Clear': '☀️',
-                    'Clouds': '⛅',
-                    'Rain': '🌧️',
-                    'Drizzle': '🌦️',
-                    'Thunderstorm': '⛈️',
-                    'Snow': '❄️',
-                    'Mist': '🌫️',
-                    'Smoke': '🌫️',
-                    'Haze': '🌫️',
-                    'Dust': '🌫️',
-                    'Fog': '🌫️'
-                };
-
-                const icon = weatherIcons[weatherMain] || '🌤️';
-                
-                document.getElementById('weather-temp').textContent = `${temp}°C`;
-                document.getElementById('weather-desc').textContent = description;
-                document.querySelector('#weather-widget .widget-icon').textContent = icon;
-                
-            } catch (error) {
-                console.error('Ошибка получения погоды:', error);
-                // Fallback to mock data
-                updateMockWeather();
-            }
-        }
-
-        // Mock weather as fallback
-        function updateMockWeather() {
-            const weatherData = {
-                temp: Math.round(15 + Math.random() * 15),
-                descriptions: {
-                    ru: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
-                    en: ['Sunny', 'Cloudy', 'Light rain', 'Overcast', 'Clear'],
-                    be: ['Сонечна', 'Воблачна', 'Невялікі дождж', 'Пахмурна', 'Ясна'],
-                    ja: ['晴れ', '曇り', '小雨', 'くもり', '快晴']
-                },
-                icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
-            };
-            
-            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.ru.length);
-            
-            document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
-            document.getElementById('weather-desc').textContent = weatherData.descriptions[currentLanguage][randomIndex];
-            document.querySelector('#weather-widget .widget-icon').textContent = weatherData.icons[randomIndex];
-        }
-
-        // Setup event listeners for settings
-        function setupSettingsListeners() {
-            // Color themes
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const gradient = this.getAttribute('data-gradient');
-                    settings.theme = gradient;
-                    applyTheme(gradient);
-                    saveSettings();
-                });
-            });
-
-            // Toggle switches
-            document.getElementById('glass-effect').addEventListener('change', function() {
-                settings.glassEffect = this.checked;
-                updateBlurEffect();
-                saveSettings();
-            });
-
-            document.getElementById('show-weather').addEventListener('change', function() {
-                settings.showWeather = this.checked;
-                document.getElementById('weather-widget').style.display = this.checked ? 'block' : 'none';
-                if (this.checked) {
-                    updateRealWeather();
-                }
-                saveSettings();
-            });
-
-            document.getElementById('show-time').addEventListener('change', function() {
-                settings.showTime = this.checked;
-                document.getElementById('time-widget').style.display = this.checked ? 'block' : 'none';
-                saveSettings();
-            });
-
-            document.getElementById('show-date').addEventListener('change', function() {
-                settings.showDate = this.checked;
-                document.getElementById('date-widget').style.display = this.checked ? 'block' : 'none';
-                saveSettings();
-            });
-
-            // Weather city input
-            document.getElementById('weather-city').addEventListener('change', function() {
-                settings.weatherCity = this.value;
-                updateRealWeather();
-                saveSettings();
-            });
-        }
-
-        // Initialize everything
-        function init() {
-            applyStoredSettings();
-            updateDateTime();
-            updateRealWeather();
-            setupSettingsListeners();
-            
-            // Update time every minute
-            setInterval(updateDateTime, 60000);
-            
-            // Update weather every 10 minutes
-            setInterval(updateRealWeather, 600000);
-        }
-
-        // Start the application
-        init();
-    </script>
-</body>
-</html>
+            },
+            orv: {
+                devNotification: "Сайтъ въ разработцѣ",
+                tgNotification: "Азъ въ Telegram: @testuhipis",
+                currentLanguage: "Древнеруский(Системный код 1)",
+                helpBtn: "Помощь",
+                helpTitle: "Потребна ли помощь?",
+                helpText: "Аще обрѣтосте погрѣшениѥ или хощете помочи въ развитии проекта, напишите намъ:",
+                copyBtn: "Списати email",
+                themeTitle: "Цвѣтовая тема",
+                effectsTitle: "Дѣйства",
+                glassEffectLabel: "Размытиѥ стекла",
+                widgetsTitle: "Виджеты",
+                showWeatherLabel: "Показовати погоду",
+                showTimeLabel: "Показовати время",
+                showDateLabel: "Показовати дату",
+                weatherTitle: "Погода",
+                weatherCityLabel: "Градъ",
+                weatherWidgetTitle: "Погода",
+                timeWidgetTitle: "Время",
+                dateWidgetTitle: "Дата",
+                tagline: "Здравствуйте! Азъ есмь начинающи разработчикъ и сътворитель различныхъ проектовъ. Увлекаюсѧ вѣб-разработкою, сътворениѥмъ игръ и программнаго обезпечениѧ.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Полезныѧ ссылки",
+                portfolioTitle: "Портфолио",
+                portfolioDesc: "Мои работы и проекты. Посмотрите мои послѣдниѧ разработки и достижениѧ въ вѣб-разработкѣ.",
+                docsTitle: "Документы",
+                docsDesc: "Техническаѧ документациѧ и руково
