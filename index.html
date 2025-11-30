@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somp3 - Разработчик</title>
+    <title>Somp3 - Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -45,6 +45,122 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Notifications */
+        .notifications {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+        }
+
+        .notification {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            animation: slideInRight 0.5s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.warning {
+            background: rgba(255, 193, 7, 0.2);
+            border-color: rgba(255, 193, 7, 0.5);
+        }
+
+        .notification.info {
+            background: rgba(23, 162, 184, 0.2);
+            border-color: rgba(23, 162, 184, 0.5);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .language-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur-amount);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 150px;
+        }
+
+        .language-dropdown.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-option.active {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Compact Widgets Row */
@@ -402,10 +518,54 @@
                 max-width: none;
                 margin-bottom: 20px;
             }
+
+            .language-selector {
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .notifications {
+                position: static;
+                max-width: none;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Notifications -->
+    <div class="notifications" id="notifications">
+        <div class="notification warning">
+            <i class="fas fa-tools"></i> <span id="dev-notification">Сайт находится в разработке</span>
+        </div>
+        <div class="notification info">
+            <i class="fab fa-telegram"></i> <span id="tg-notification">Я в Telegram: @testuhipis</span>
+        </div>
+    </div>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <div class="language-btn" id="language-btn">
+            <i class="fas fa-globe"></i>
+            <span id="current-language">Русский</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="language-dropdown" id="language-dropdown">
+            <div class="language-option active" data-lang="ru">
+                <span>🇷🇺 Русский</span>
+            </div>
+            <div class="language-option" data-lang="en">
+                <span>🇺🇸 English</span>
+            </div>
+            <div class="language-option" data-lang="be">
+                <span>🇧🇾 Беларуская</span>
+            </div>
+            <div class="language-option" data-lang="ja">
+                <span>🇯🇵 日本語</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Settings Panel -->
     <div class="settings-panel">
         <button class="settings-toggle" id="settings-toggle">
@@ -415,7 +575,7 @@
         <div class="settings-content" id="settings-content">
             <!-- Theme Settings -->
             <div class="setting-group">
-                <h4>🎨 Цветовая тема</h4>
+                <h4>🎨 <span id="theme-title">Цветовая тема</span></h4>
                 <div class="color-options">
                     <div class="color-option active" style="background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);" data-gradient="purple"></div>
                     <div class="color-option" style="background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);" data-gradient="blue"></div>
@@ -426,9 +586,9 @@
 
             <!-- Effects Settings -->
             <div class="setting-group">
-                <h4>✨ Эффекты</h4>
+                <h4>✨ <span id="effects-title">Эффекты</span></h4>
                 <div class="setting-option">
-                    <span>Размытие стекла</span>
+                    <span id="glass-effect-label">Размытие стекла</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="glass-effect" checked>
                         <span class="slider"></span>
@@ -438,23 +598,23 @@
 
             <!-- Widget Settings -->
             <div class="setting-group">
-                <h4>🕹️ Виджеты</h4>
+                <h4>🕹️ <span id="widgets-title">Виджеты</span></h4>
                 <div class="setting-option">
-                    <span>Показывать погоду</span>
+                    <span id="show-weather-label">Показывать погоду</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="show-weather" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="setting-option">
-                    <span>Показывать время</span>
+                    <span id="show-time-label">Показывать время</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="show-time" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="setting-option">
-                    <span>Показывать дату</span>
+                    <span id="show-date-label">Показывать дату</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="show-date" checked>
                         <span class="slider"></span>
@@ -464,9 +624,9 @@
 
             <!-- Weather Settings -->
             <div class="setting-group">
-                <h4>🌤️ Погода</h4>
+                <h4>🌤️ <span id="weather-title">Погода</span></h4>
                 <div class="setting-option">
-                    <span>Город</span>
+                    <span id="weather-city-label">Город</span>
                     <input type="text" id="weather-city" placeholder="Москва" value="Москва">
                 </div>
             </div>
@@ -478,21 +638,21 @@
         <div class="compact-widgets">
             <div class="compact-widget" id="weather-widget">
                 <div class="widget-icon">🌤️</div>
-                <div class="widget-title">Погода</div>
+                <div class="widget-title" id="weather-widget-title">Погода</div>
                 <div class="widget-value" id="weather-temp">22°C</div>
                 <div class="widget-desc" id="weather-desc">Солнечно</div>
             </div>
 
             <div class="compact-widget" id="time-widget">
                 <div class="widget-icon">🕐</div>
-                <div class="widget-title">Время</div>
+                <div class="widget-title" id="time-widget-title">Время</div>
                 <div class="widget-value" id="current-time">13:57</div>
                 <div class="widget-desc" id="timezone">МСК</div>
             </div>
 
             <div class="compact-widget" id="date-widget">
                 <div class="widget-icon">📅</div>
-                <div class="widget-title">Дата</div>
+                <div class="widget-title" id="date-widget-title">Дата</div>
                 <div class="widget-value" id="current-date">30.11</div>
                 <div class="widget-desc" id="day-of-week">Четверг</div>
             </div>
@@ -501,51 +661,183 @@
         <!-- Header Section -->
         <div class="header">
             <h1 class="name">Somp3</h1>
-            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
+            <p class="tagline" id="tagline-text">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
 
             <!-- Social Links -->
             <div class="social-links">
                 <a href="https://t.me/testuhipis" target="_blank" class="social-link">
                     <i class="fab fa-telegram"></i>
-                    <span>Telegram</span>
+                    <span id="telegram-text">Telegram</span>
                 </a>
                 <a href="https://github.com/somp1k3" target="_blank" class="social-link">
                     <i class="fab fa-github"></i>
-                    <span>GitHub</span>
+                    <span id="github-text">GitHub</span>
                 </a>
                 <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-link">
                     <i class="fab fa-steam"></i>
-                    <span>Steam</span>
+                    <span id="steam-text">Steam</span>
                 </a>
             </div>
         </div>
 
         <!-- Links Section -->
         <div class="links-section">
-            <h2 class="section-title">Полезные ссылки</h2>
+            <h2 class="section-title" id="links-title">Полезные ссылки</h2>
             <div class="links-grid">
                 <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
-                    <h4>Портфолио</h4>
-                    <p>Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.</p>
+                    <h4 id="portfolio-title">Портфолио</h4>
+                    <p id="portfolio-desc">Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.</p>
                 </a>
                 <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
-                    <h4>Документы</h4>
-                    <p>Техническая документация и руководства. Полезные материалы для разработчиков.</p>
+                    <h4 id="docs-title">Документы</h4>
+                    <p id="docs-desc">Техническая документация и руководства. Полезные материалы для разработчиков.</p>
                 </a>
                 <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
-                    <h4>Ресурсы</h4>
-                    <p>Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.</p>
+                    <h4 id="resources-title">Ресурсы</h4>
+                    <p id="resources-desc">Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.</p>
                 </a>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>&copy; 2024 Somp3. Все права защищены.</p>
+            <p id="footer-text">&copy; 2024 Somp3. Все права защищены.</p>
         </div>
     </div>
 
     <script>
+        // Translation dictionary
+        const translations = {
+            ru: {
+                // Notifications
+                devNotification: "Сайт находится в разработке",
+                tgNotification: "Я в Telegram: @testuhipis",
+                
+                // Language selector
+                currentLanguage: "Русский",
+                
+                // Settings
+                themeTitle: "Цветовая тема",
+                effectsTitle: "Эффекты",
+                glassEffectLabel: "Размытие стекла",
+                widgetsTitle: "Виджеты",
+                showWeatherLabel: "Показывать погоду",
+                showTimeLabel: "Показывать время",
+                showDateLabel: "Показывать дату",
+                weatherTitle: "Погода",
+                weatherCityLabel: "Город",
+                
+                // Widgets
+                weatherWidgetTitle: "Погода",
+                timeWidgetTitle: "Время",
+                dateWidgetTitle: "Дата",
+                
+                // Content
+                tagline: "Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Полезные ссылки",
+                portfolioTitle: "Портфолио",
+                portfolioDesc: "Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.",
+                docsTitle: "Документы",
+                docsDesc: "Техническая документация и руководства. Полезные материалы для разработчиков.",
+                resourcesTitle: "Ресурсы",
+                resourcesDesc: "Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.",
+                footer: "&copy; 2024 Somp3. Все права защищены."
+            },
+            en: {
+                devNotification: "Website is under development",
+                tgNotification: "Find me on Telegram: @testuhipis",
+                currentLanguage: "English",
+                themeTitle: "Color Theme",
+                effectsTitle: "Effects",
+                glassEffectLabel: "Glass blur effect",
+                widgetsTitle: "Widgets",
+                showWeatherLabel: "Show weather",
+                showTimeLabel: "Show time",
+                showDateLabel: "Show date",
+                weatherTitle: "Weather",
+                weatherCityLabel: "City",
+                weatherWidgetTitle: "Weather",
+                timeWidgetTitle: "Time",
+                dateWidgetTitle: "Date",
+                tagline: "Hello! I'm a beginner developer and creator of various projects. I'm passionate about web development, game creation and software development.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Useful Links",
+                portfolioTitle: "Portfolio",
+                portfolioDesc: "My works and projects. Check out my latest developments and achievements in web development.",
+                docsTitle: "Documents",
+                docsDesc: "Technical documentation and guides. Useful materials for developers.",
+                resourcesTitle: "Resources",
+                resourcesDesc: "Collection of useful resources, tools and libraries for web development.",
+                footer: "&copy; 2024 Somp3. All rights reserved."
+            },
+            be: {
+                devNotification: "Сайт знаходзіцца ў распрацоўцы",
+                tgNotification: "Я ў Telegram: @testuhipis",
+                currentLanguage: "Беларуская",
+                themeTitle: "Каляровая тэма",
+                effectsTitle: "Эфекты",
+                glassEffectLabel: "Размыццё шкла",
+                widgetsTitle: "Віджэты",
+                showWeatherLabel: "Паказваць надвор'е",
+                showTimeLabel: "Паказваць час",
+                showDateLabel: "Паказваць дату",
+                weatherTitle: "Надвор'е",
+                weatherCityLabel: "Горад",
+                weatherWidgetTitle: "Надвор'е",
+                timeWidgetTitle: "Час",
+                dateWidgetTitle: "Дата",
+                tagline: "Прывітанне! Я пачынаючы распрацоўшчык і стваральнік розных праектаў. Захапляюся вэб-распрацоўкай, стварэннем гульняў і праграмным забеспячэннем.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Карысныя спасылкі",
+                portfolioTitle: "Партфоліа",
+                portfolioDesc: "Мае работы і праекты. Паглядзіце мае апошнія распрацоўкі і дасягненні ў вэб-распрацоўцы.",
+                docsTitle: "Дакументы",
+                docsDesc: "Тэхнічная дакументацыя і кіраўніцтвы. Карысныя матэрыялы для распрацоўшчыкаў.",
+                resourcesTitle: "Рэсурсы",
+                resourcesDesc: "Калекцыя карысных рэсурсаў, інструментаў і бібліятэк для вэб-распрацоўкі.",
+                footer: "&copy; 2024 Somp3. Усе правы абаронены."
+            },
+            ja: {
+                devNotification: "ウェブサイトは開発中です",
+                tgNotification: "Telegramで私を見つけて: @testuhipis",
+                currentLanguage: "日本語",
+                themeTitle: "カラーテーマ",
+                effectsTitle: "エフェクト",
+                glassEffectLabel: "ガラスぼかし効果",
+                widgetsTitle: "ウィジェット",
+                showWeatherLabel: "天気を表示",
+                showTimeLabel: "時間を表示",
+                showDateLabel: "日付を表示",
+                weatherTitle: "天気",
+                weatherCityLabel: "都市",
+                weatherWidgetTitle: "天気",
+                timeWidgetTitle: "時間",
+                dateWidgetTitle: "日付",
+                tagline: "こんにちは！私は初心者開発者であり、様々なプロジェクトのクリエイターです。Web開発、ゲーム制作、ソフトウェア開発に情熱を持っています。",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "便利なリンク",
+                portfolioTitle: "ポートフォリオ",
+                portfolioDesc: "私の作品とプロジェクト。Web開発における最新の開発と成果をご覧ください。",
+                docsTitle: "ドキュメント",
+                docsDesc: "技術文書とガイド。開発者向けの便利な資料。",
+                resourcesTitle: "リソース",
+                resourcesDesc: "Web開発のための便利なリソース、ツール、ライブラリのコレクション。",
+                footer: "&copy; 2024 Somp3. 全著作権所有."
+            }
+        };
+
+        // Current language
+        let currentLanguage = localStorage.getItem('somp3-language') || 'ru';
+
         // Настройки по умолчанию
         const defaultSettings = {
             glassEffect: true,
@@ -559,12 +851,67 @@
         // Загрузка настроек из localStorage
         let settings = JSON.parse(localStorage.getItem('somp3-settings')) || {...defaultSettings};
 
+        // Apply translation
+        function applyTranslation(lang) {
+            const t = translations[lang];
+            
+            // Notifications
+            document.getElementById('dev-notification').textContent = t.devNotification;
+            document.getElementById('tg-notification').textContent = t.tgNotification;
+            
+            // Language selector
+            document.getElementById('current-language').textContent = t.currentLanguage;
+            
+            // Settings
+            document.getElementById('theme-title').textContent = t.themeTitle;
+            document.getElementById('effects-title').textContent = t.effectsTitle;
+            document.getElementById('glass-effect-label').textContent = t.glassEffectLabel;
+            document.getElementById('widgets-title').textContent = t.widgetsTitle;
+            document.getElementById('show-weather-label').textContent = t.showWeatherLabel;
+            document.getElementById('show-time-label').textContent = t.showTimeLabel;
+            document.getElementById('show-date-label').textContent = t.showDateLabel;
+            document.getElementById('weather-title').textContent = t.weatherTitle;
+            document.getElementById('weather-city-label').textContent = t.weatherCityLabel;
+            
+            // Widgets
+            document.getElementById('weather-widget-title').textContent = t.weatherWidgetTitle;
+            document.getElementById('time-widget-title').textContent = t.timeWidgetTitle;
+            document.getElementById('date-widget-title').textContent = t.dateWidgetTitle;
+            
+            // Content
+            document.getElementById('tagline-text').textContent = t.tagline;
+            document.getElementById('telegram-text').textContent = t.telegram;
+            document.getElementById('github-text').textContent = t.github;
+            document.getElementById('steam-text').textContent = t.steam;
+            document.getElementById('links-title').textContent = t.linksTitle;
+            document.getElementById('portfolio-title').textContent = t.portfolioTitle;
+            document.getElementById('portfolio-desc').textContent = t.portfolioDesc;
+            document.getElementById('docs-title').textContent = t.docsTitle;
+            document.getElementById('docs-desc').textContent = t.docsDesc;
+            document.getElementById('resources-title').textContent = t.resourcesTitle;
+            document.getElementById('resources-desc').textContent = t.resourcesDesc;
+            document.getElementById('footer-text').innerHTML = t.footer;
+        }
+
         // DOM Elements
         const settingsToggle = document.getElementById('settings-toggle');
         const settingsContent = document.getElementById('settings-content');
+        const languageBtn = document.getElementById('language-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
 
         // Применить настройки при загрузке
         function applyStoredSettings() {
+            // Применить язык
+            applyTranslation(currentLanguage);
+            
+            // Обновить активный язык в выпадающем списке
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === currentLanguage) {
+                    option.classList.add('active');
+                }
+            });
+
             // Применить все настройки из localStorage
             document.getElementById('glass-effect').checked = settings.glassEffect;
             document.getElementById('show-weather').checked = settings.showWeather;
@@ -619,36 +966,67 @@
             settingsContent.classList.toggle('active');
         });
 
+        // Language selector
+        languageBtn.addEventListener('click', () => {
+            languageDropdown.classList.toggle('active');
+        });
+
+        // Language selection
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                currentLanguage = lang;
+                localStorage.setItem('somp3-language', lang);
+                applyTranslation(lang);
+                languageDropdown.classList.remove('active');
+                
+                // Обновить активный язык в выпадающем списке
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!settingsPanel.contains(event.target) && !settingsToggle.contains(event.target)) {
+                settingsContent.classList.remove('active');
+            }
+            if (!languageSelector.contains(event.target)) {
+                languageDropdown.classList.remove('active');
+            }
+        });
+
         // Update time and date in real-time
         function updateDateTime() {
             const now = new Date();
             
             // Time
             const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            const timeString = now.toLocaleTimeString('ru-RU', timeOptions);
+            const timeString = now.toLocaleTimeString(currentLanguage, timeOptions);
             document.getElementById('current-time').textContent = timeString;
             
             // Date
             const dateOptions = { day: '2-digit', month: '2-digit' };
-            const dateString = now.toLocaleDateString('ru-RU', dateOptions);
+            const dateString = now.toLocaleDateString(currentLanguage, dateOptions);
             document.getElementById('current-date').textContent = dateString;
             
             // Day of week
             const dayOptions = { weekday: 'long' };
-            const dayString = now.toLocaleDateString('ru-RU', dayOptions);
+            const dayString = now.toLocaleDateString(currentLanguage, dayOptions);
             document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
         }
 
-        // Real weather function using Yandex Weather API
+        // Real weather function using OpenWeatherMap API
         async function updateRealWeather() {
             if (!settings.showWeather) return;
 
             try {
                 const city = settings.weatherCity || 'Москва';
                 
-                // Используем OpenWeatherMap как fallback, так как Yandex требует API ключ
                 const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&lang=ru`
+                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&lang=${currentLanguage}`
                 );
 
                 if (!response.ok) {
@@ -693,14 +1071,19 @@
         function updateMockWeather() {
             const weatherData = {
                 temp: Math.round(15 + Math.random() * 15),
-                descriptions: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
+                descriptions: {
+                    ru: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
+                    en: ['Sunny', 'Cloudy', 'Light rain', 'Overcast', 'Clear'],
+                    be: ['Сонечна', 'Воблачна', 'Невялікі дождж', 'Пахмурна', 'Ясна'],
+                    ja: ['晴れ', '曇り', '小雨', 'くもり', '快晴']
+                },
                 icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
             };
             
-            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.length);
+            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.ru.length);
             
             document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
-            document.getElementById('weather-desc').textContent = weatherData.descriptions[randomIndex];
+            document.getElementById('weather-desc').textContent = weatherData.descriptions[currentLanguage][randomIndex];
             document.querySelector('#weather-widget .widget-icon').textContent = weatherData.icons[randomIndex];
         }
 
@@ -771,13 +1154,6 @@
 
         // Start the application
         init();
-
-        // Close settings when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!settingsPanel.contains(event.target) && !settingsToggle.contains(event.target)) {
-                settingsContent.classList.remove('active');
-            }
-        });
     </script>
 </body>
 </html>
