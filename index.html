@@ -878,4 +878,318 @@
             showTime: true,
             showDate: true,
             weatherCity: 'Москва',
-           
+            theme: 'purple'
+        };
+
+        // Загрузка настроек из localStorage
+        let settings = JSON.parse(localStorage.getItem('somp3-settings')) || {...defaultSettings};
+
+        // Apply translation
+        function applyTranslation(lang) {
+            const t = translations[lang];
+            
+            // Notifications
+            document.getElementById('dev-notification').textContent = t.devNotification;
+            document.getElementById('tg-notification').textContent = t.tgNotification;
+            
+            // Language selector
+            document.getElementById('current-language').textContent = t.currentLanguage;
+            
+            // Settings
+            document.getElementById('theme-title').textContent = t.themeTitle;
+            document.getElementById('effects-title').textContent = t.effectsTitle;
+            document.getElementById('glass-effect-label').textContent = t.glassEffectLabel;
+            document.getElementById('widgets-title').textContent = t.widgetsTitle;
+            document.getElementById('show-weather-label').textContent = t.showWeatherLabel;
+            document.getElementById('show-time-label').textContent = t.showTimeLabel;
+            document.getElementById('show-date-label').textContent = t.showDateLabel;
+            document.getElementById('weather-title').textContent = t.weatherTitle;
+            document.getElementById('weather-city-label').textContent = t.weatherCityLabel;
+            
+            // Widgets
+            document.getElementById('weather-widget-title').textContent = t.weatherWidgetTitle;
+            document.getElementById('time-widget-title').textContent = t.timeWidgetTitle;
+            document.getElementById('date-widget-title').textContent = t.dateWidgetTitle;
+            
+            // Content
+            document.getElementById('tagline-text').textContent = t.tagline;
+            document.getElementById('telegram-text').textContent = t.telegram;
+            document.getElementById('github-text').textContent = t.github;
+            document.getElementById('steam-text').textContent = t.steam;
+            document.getElementById('links-title').textContent = t.linksTitle;
+            document.getElementById('portfolio-title').textContent = t.portfolioTitle;
+            document.getElementById('portfolio-desc').textContent = t.portfolioDesc;
+            document.getElementById('docs-title').textContent = t.docsTitle;
+            document.getElementById('docs-desc').textContent = t.docsDesc;
+            document.getElementById('resources-title').textContent = t.resourcesTitle;
+            document.getElementById('resources-desc').textContent = t.resourcesDesc;
+            document.getElementById('footer-text').innerHTML = t.footer;
+        }
+
+        // DOM Elements
+        const settingsToggle = document.getElementById('settings-toggle');
+        const settingsContent = document.getElementById('settings-content');
+        const languageBtn = document.getElementById('language-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const settingsPanel = document.querySelector('.settings-panel');
+        const languageSelector = document.querySelector('.language-selector');
+
+        // Применить настройки при загрузке
+        function applyStoredSettings() {
+            // Применить язык
+            applyTranslation(currentLanguage);
+            
+            // Обновить активный язык в выпадающем списке
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === currentLanguage) {
+                    option.classList.add('active');
+                }
+            });
+
+            // Применить все настройки из localStorage
+            document.getElementById('glass-effect').checked = settings.glassEffect;
+            document.getElementById('show-weather').checked = settings.showWeather;
+            document.getElementById('show-time').checked = settings.showTime;
+            document.getElementById('show-date').checked = settings.showDate;
+            document.getElementById('weather-city').value = settings.weatherCity;
+
+            // Применить видимость виджетов
+            document.getElementById('weather-widget').style.display = settings.showWeather ? 'block' : 'none';
+            document.getElementById('time-widget').style.display = settings.showTime ? 'block' : 'none';
+            document.getElementById('date-widget').style.display = settings.showDate ? 'block' : 'none';
+
+            // Применить эффект размытия
+            updateBlurEffect();
+            
+            // Применить тему
+            applyTheme(settings.theme);
+        }
+
+        // Обновить эффект размытия
+        function updateBlurEffect() {
+            document.documentElement.style.setProperty('--blur-amount', settings.glassEffect ? 'blur(20px)' : 'blur(0px)');
+        }
+
+        // Применить тему
+        function applyTheme(theme) {
+            const gradients = {
+                default: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+                vibrant: 'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)',
+                purple: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
+                blue: 'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)'
+            };
+            
+            document.body.style.background = gradients[theme];
+            
+            // Обновить активную кнопку темы
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-gradient') === theme) {
+                    opt.classList.add('active');
+                }
+            });
+        }
+
+        // Сохранить настройки
+        function saveSettings() {
+            localStorage.setItem('somp3-settings', JSON.stringify(settings));
+        }
+
+        // Toggle Settings Panel
+        settingsToggle.addEventListener('click', () => {
+            settingsContent.classList.toggle('active');
+        });
+
+        // Language selector
+        languageBtn.addEventListener('click', () => {
+            languageDropdown.classList.toggle('active');
+        });
+
+        // Language selection
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                currentLanguage = lang;
+                localStorage.setItem('somp3-language', lang);
+                applyTranslation(lang);
+                languageDropdown.classList.remove('active');
+                
+                // Обновить активный язык в выпадающем списке
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!settingsPanel.contains(event.target) && !settingsToggle.contains(event.target)) {
+                settingsContent.classList.remove('active');
+            }
+            if (!languageSelector.contains(event.target)) {
+                languageDropdown.classList.remove('active');
+            }
+        });
+
+        // Update time and date in real-time
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Time
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            const timeString = now.toLocaleTimeString(currentLanguage, timeOptions);
+            document.getElementById('current-time').textContent = timeString;
+            
+            // Date
+            const dateOptions = { day: '2-digit', month: '2-digit' };
+            const dateString = now.toLocaleDateString(currentLanguage, dateOptions);
+            document.getElementById('current-date').textContent = dateString;
+            
+            // Day of week
+            const dayOptions = { weekday: 'long' };
+            const dayString = now.toLocaleDateString(currentLanguage, dayOptions);
+            document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
+        }
+
+        // Real weather function using OpenWeatherMap API
+        async function updateRealWeather() {
+            if (!settings.showWeather) return;
+
+            try {
+                const city = settings.weatherCity || 'Москва';
+                
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&lang=${currentLanguage}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Город не найден');
+                }
+
+                const data = await response.json();
+                
+                const temp = Math.round(data.main.temp);
+                const description = data.weather[0].description;
+                const weatherMain = data.weather[0].main;
+                
+                // Get weather icon
+                const weatherIcons = {
+                    'Clear': '☀️',
+                    'Clouds': '⛅',
+                    'Rain': '🌧️',
+                    'Drizzle': '🌦️',
+                    'Thunderstorm': '⛈️',
+                    'Snow': '❄️',
+                    'Mist': '🌫️',
+                    'Smoke': '🌫️',
+                    'Haze': '🌫️',
+                    'Dust': '🌫️',
+                    'Fog': '🌫️'
+                };
+
+                const icon = weatherIcons[weatherMain] || '🌤️';
+                
+                document.getElementById('weather-temp').textContent = `${temp}°C`;
+                document.getElementById('weather-desc').textContent = description;
+                document.querySelector('#weather-widget .widget-icon').textContent = icon;
+                
+            } catch (error) {
+                console.error('Ошибка получения погоды:', error);
+                // Fallback to mock data
+                updateMockWeather();
+            }
+        }
+
+        // Mock weather as fallback
+        function updateMockWeather() {
+            const weatherData = {
+                temp: Math.round(15 + Math.random() * 15),
+                descriptions: {
+                    ru: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
+                    en: ['Sunny', 'Cloudy', 'Light rain', 'Overcast', 'Clear'],
+                    be: ['Сонечна', 'Воблачна', 'Невялікі дождж', 'Пахмурна', 'Ясна'],
+                    ja: ['晴れ', '曇り', '小雨', 'くもり', '快晴'],
+                    orv: ['Солньчьно', 'Облачно', 'Малъ дъждь', 'Пасмѫрно', 'Ꙗсно']
+                },
+                icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
+            };
+            
+            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.ru.length);
+            
+            document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
+            document.getElementById('weather-desc').textContent = weatherData.descriptions[currentLanguage]?.[randomIndex] || weatherData.descriptions.ru[randomIndex];
+            document.querySelector('#weather-widget .widget-icon').textContent = weatherData.icons[randomIndex];
+        }
+
+        // Setup event listeners for settings
+        function setupSettingsListeners() {
+            // Color themes
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const gradient = this.getAttribute('data-gradient');
+                    settings.theme = gradient;
+                    applyTheme(gradient);
+                    saveSettings();
+                });
+            });
+
+            // Toggle switches
+            document.getElementById('glass-effect').addEventListener('change', function() {
+                settings.glassEffect = this.checked;
+                updateBlurEffect();
+                saveSettings();
+            });
+
+            document.getElementById('show-weather').addEventListener('change', function() {
+                settings.showWeather = this.checked;
+                document.getElementById('weather-widget').style.display = this.checked ? 'block' : 'none';
+                if (this.checked) {
+                    updateRealWeather();
+                }
+                saveSettings();
+            });
+
+            document.getElementById('show-time').addEventListener('change', function() {
+                settings.showTime = this.checked;
+                document.getElementById('time-widget').style.display = this.checked ? 'block' : 'none';
+                saveSettings();
+            });
+
+            document.getElementById('show-date').addEventListener('change', function() {
+                settings.showDate = this.checked;
+                document.getElementById('date-widget').style.display = this.checked ? 'block' : 'none';
+                saveSettings();
+            });
+
+            // Weather city input
+            document.getElementById('weather-city').addEventListener('change', function() {
+                settings.weatherCity = this.value;
+                updateRealWeather();
+                saveSettings();
+            });
+        }
+
+        // Initialize everything
+        function init() {
+            applyStoredSettings();
+            updateDateTime();
+            updateRealWeather();
+            setupSettingsListeners();
+            
+            // Update time every minute
+            setInterval(updateDateTime, 60000);
+            
+            // Update weather every 10 minutes
+            setInterval(updateRealWeather, 600000);
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
