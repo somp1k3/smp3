@@ -11,7 +11,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            cursor: none;
         }
 
         :root {
@@ -35,117 +34,6 @@
             padding: 20px;
             min-height: 100vh;
             transition: all var(--transition-speed) ease;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.2s ease;
-        }
-
-        .cursor-follower {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.1s ease;
-        }
-
-        /* Background Effects */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: float 20s infinite linear;
-        }
-
-        .shape:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-        }
-
-        .shape:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 60%;
-            right: 10%;
-            animation-delay: -5s;
-            background: radial-gradient(circle, rgba(244, 114, 182, 0.1) 0%, transparent 70%);
-        }
-
-        .shape:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            bottom: 20%;
-            left: 20%;
-            animation-delay: -10s;
-            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
-        }
-
-        .shape:nth-child(4) {
-            width: 180px;
-            height: 180px;
-            top: 30%;
-            right: 30%;
-            animation-delay: -15s;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
-        }
-
-        /* Particle Background */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        /* Glow Effects */
-        .glow-effect {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
-            filter: blur(40px);
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-            animation: glowMove 10s infinite alternate ease-in-out;
         }
 
         @keyframes gradient {
@@ -154,160 +42,16 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg) scale(1); 
-            }
-            33% { 
-                transform: translateY(-30px) rotate(120deg) scale(1.1); 
-            }
-            66% { 
-                transform: translateY(15px) rotate(240deg) scale(0.9); 
-            }
-        }
-
-        @keyframes glowMove {
-            0% { 
-                transform: translate(0, 0) scale(1);
-                opacity: 0.2;
-            }
-            50% { 
-                transform: translate(100px, 50px) scale(1.2);
-                opacity: 0.4;
-            }
-            100% { 
-                transform: translate(-50px, -100px) scale(0.8);
-                opacity: 0.3;
-            }
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            position: relative;
-            z-index: 2;
         }
 
-        /* Help Menu */
-        .help-menu {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .help-btn {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            padding: 12px 20px;
-            color: white;
-            cursor: none;
-            transition: all var(--transition-speed) ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .help-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--glow-color);
-        }
-
-        .help-content {
-            position: absolute;
-            bottom: 100%;
-            right: 0;
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            min-width: 300px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            animation: slideUp 0.3s ease;
-        }
-
-        .help-content.active {
-            display: flex;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .help-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text-primary);
-        }
-
-        .help-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .email-link {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 12px 15px;
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: all var(--transition-speed) ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            cursor: none;
-        }
-
-        .email-link:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .copy-btn {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 8px;
-            padding: 8px 15px;
-            color: white;
-            cursor: none;
-            transition: all var(--transition-speed) ease;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .copy-btn:hover {
-            background: #5a5fcf;
-            transform: translateY(-1px);
-        }
-
-        /* Notifications */
+        /* Notifications - moved to bottom left */
         .notifications {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            bottom: 20px;
+            left: 20px;
             z-index: 1001;
             display: flex;
             flex-direction: column;
@@ -322,14 +66,8 @@
             border-radius: 12px;
             padding: 12px 20px;
             color: white;
-            animation: slideInRight 0.5s ease;
+            animation: slideInLeft 0.5s ease;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.5s ease;
-        }
-
-        .notification.hiding {
-            opacity: 0;
-            transform: translateX(100%);
         }
 
         .notification.warning {
@@ -342,14 +80,9 @@
             border-color: rgba(23, 162, 184, 0.5);
         }
 
-        .notification.success {
-            background: rgba(40, 167, 69, 0.2);
-            border-color: rgba(40, 167, 69, 0.5);
-        }
-
-        @keyframes slideInRight {
+        @keyframes slideInLeft {
             from {
-                transform: translateX(100%);
+                transform: translateX(-100%);
                 opacity: 0;
             }
             to {
@@ -373,7 +106,7 @@
             border-radius: 10px;
             padding: 10px 15px;
             color: white;
-            cursor: none;
+            cursor: pointer;
             transition: all var(--transition-speed) ease;
             display: flex;
             align-items: center;
@@ -399,7 +132,7 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            min-width: 170px;
+            min-width: 150px;
         }
 
         .language-dropdown.active {
@@ -410,7 +143,7 @@
         .language-option {
             padding: 8px 12px;
             border-radius: 6px;
-            cursor: none;
+            cursor: pointer;
             transition: background var(--transition-speed) ease;
             display: flex;
             align-items: center;
@@ -449,27 +182,10 @@
             min-width: 150px;
             transition: all var(--transition-speed) ease;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .compact-widget::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.6s;
-        }
-
-        .compact-widget:hover::before {
-            left: 100%;
         }
 
         .compact-widget:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow-color);
         }
 
@@ -477,11 +193,6 @@
             font-size: 2.2rem;
             margin-bottom: 12px;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-            transition: transform 0.3s ease;
-        }
-
-        .compact-widget:hover .widget-icon {
-            transform: scale(1.2) rotate(10deg);
         }
 
         .widget-title {
@@ -560,23 +271,6 @@
             font-weight: 600;
             min-width: 160px;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        .social-link:hover::before {
-            left: 100%;
         }
 
         .social-link:hover {
@@ -594,24 +288,6 @@
             padding: 40px;
             margin: 40px 0;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .links-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         .section-title {
@@ -639,27 +315,10 @@
             transition: all var(--transition-speed) ease;
             text-decoration: none;
             color: var(--text-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .link-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.6s;
-        }
-
-        .link-card:hover::before {
-            left: 100%;
         }
 
         .link-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow-color);
         }
 
@@ -697,7 +356,7 @@
             border: none;
             color: white;
             font-size: 1.5rem;
-            cursor: none;
+            cursor: pointer;
             padding: 10px;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -791,7 +450,7 @@
             width: 25px;
             height: 25px;
             border-radius: 50%;
-            cursor: none;
+            cursor: pointer;
             border: 2px solid transparent;
             transition: transform 0.3s ease;
         }
@@ -870,53 +529,17 @@
                 max-width: none;
                 margin-bottom: 20px;
             }
-
-            .help-menu {
-                position: static;
-                margin-top: 20px;
-            }
-
-            .help-content {
-                position: static;
-                margin-bottom: 0;
-            }
-
-            /* Disable custom cursor on mobile */
-            .cursor, .cursor-follower {
-                display: none;
-            }
-            
-            * {
-                cursor: auto;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <!-- Background Effects -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <div class="particles" id="particles"></div>
-    <div class="glow-effect" style="top: 20%; left: 10%;"></div>
-    <div class="glow-effect" style="top: 60%; right: 15%; animation-delay: -2s;"></div>
-    <div class="glow-effect" style="bottom: 30%; left: 20%; animation-delay: -4s;"></div>
-
-    <!-- Notifications -->
+    <!-- Notifications - moved to bottom left -->
     <div class="notifications" id="notifications">
-        <div class="notification warning" id="dev-notification">
-            <i class="fas fa-tools"></i> <span id="dev-notification-text">Сайт находится в разработке</span>
+        <div class="notification warning">
+            <i class="fas fa-tools"></i> <span id="dev-notification">Сайт находится в разработке</span>
         </div>
-        <div class="notification info" id="tg-notification">
-            <i class="fab fa-telegram"></i> <span id="tg-notification-text">Я в Telegram: @testuhipis</span>
+        <div class="notification info">
+            <i class="fab fa-telegram"></i> <span id="tg-notification">Я в Telegram: @testuhipis</span>
         </div>
     </div>
 
@@ -941,30 +564,8 @@
                 <span>🇯🇵 日本語</span>
             </div>
             <div class="language-option" data-lang="orv">
-                <span>🏛️ Древнеруский</span>
+                <span>🏛️ Древне-Русский</span>
             </div>
-        </div>
-    </div>
-
-    <!-- Help Menu -->
-    <div class="help-menu">
-        <div class="help-btn" id="help-btn">
-            <i class="fas fa-question-circle"></i>
-            <span id="help-btn-text">Помощь</span>
-        </div>
-        <div class="help-content" id="help-content">
-            <div>
-                <div class="help-title" id="help-title">Нужна помощь?</div>
-                <div class="help-text" id="help-text">Если вы нашли ошибку или хотите помочь в развитии проекта, напишите нам:</div>
-            </div>
-            <a href="mailto:makarevichkv@bk.ru" class="email-link">
-                <i class="fas fa-envelope"></i>
-                makarevichkv@bk.ru
-            </a>
-            <button class="copy-btn" id="copy-email-btn">
-                <i class="fas fa-copy"></i>
-                <span id="copy-btn-text">Скопировать email</span>
-            </button>
         </div>
     </div>
 
@@ -993,20 +594,6 @@
                     <span id="glass-effect-label">Размытие стекла</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="glass-effect" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span id="cursor-effect-label">Кастомный курсор</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="cursor-effect" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span id="particles-effect-label">Частицы</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="particles-effect" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -1061,4 +648,234 @@
 
             <div class="compact-widget" id="time-widget">
                 <div class="widget-icon">🕐</div>
-                <div class="widget-title"
+                <div class="widget-title" id="time-widget-title">Время</div>
+                <div class="widget-value" id="current-time">13:57</div>
+                <div class="widget-desc" id="timezone">МСК</div>
+            </div>
+
+            <div class="compact-widget" id="date-widget">
+                <div class="widget-icon">📅</div>
+                <div class="widget-title" id="date-widget-title">Дата</div>
+                <div class="widget-value" id="current-date">30.11</div>
+                <div class="widget-desc" id="day-of-week">Четверг</div>
+            </div>
+        </div>
+
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="name">Somp3</h1>
+            <p class="tagline" id="tagline-text">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
+
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="https://t.me/testuhipis" target="_blank" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                    <span id="telegram-text">Telegram</span>
+                </a>
+                <a href="https://github.com/somp1k3" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                    <span id="github-text">GitHub</span>
+                </a>
+                <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-link">
+                    <i class="fab fa-steam"></i>
+                    <span id="steam-text">Steam</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Links Section -->
+        <div class="links-section">
+            <h2 class="section-title" id="links-title">Полезные ссылки</h2>
+            <div class="links-grid">
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
+                    <h4 id="portfolio-title">Портфолио</h4>
+                    <p id="portfolio-desc">Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.</p>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
+                    <h4 id="docs-title">Документы</h4>
+                    <p id="docs-desc">Техническая документация и руководства. Полезные материалы для разработчиков.</p>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
+                    <h4 id="resources-title">Ресурсы</h4>
+                    <p id="resources-desc">Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p id="footer-text">&copy; 2024 Somp3. Все права защищены.</p>
+        </div>
+    </div>
+
+    <script>
+        // Translation dictionary
+        const translations = {
+            ru: {
+                // Notifications
+                devNotification: "Сайт находится в разработке",
+                tgNotification: "Я в Telegram: @testuhipis",
+                
+                // Language selector
+                currentLanguage: "Русский",
+                
+                // Settings
+                themeTitle: "Цветовая тема",
+                effectsTitle: "Эффекты",
+                glassEffectLabel: "Размытие стекла",
+                widgetsTitle: "Виджеты",
+                showWeatherLabel: "Показывать погоду",
+                showTimeLabel: "Показывать время",
+                showDateLabel: "Показывать дату",
+                weatherTitle: "Погода",
+                weatherCityLabel: "Город",
+                
+                // Widgets
+                weatherWidgetTitle: "Погода",
+                timeWidgetTitle: "Время",
+                dateWidgetTitle: "Дата",
+                
+                // Content
+                tagline: "Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Полезные ссылки",
+                portfolioTitle: "Портфолио",
+                portfolioDesc: "Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.",
+                docsTitle: "Документы",
+                docsDesc: "Техническая документация и руководства. Полезные материалы для разработчиков.",
+                resourcesTitle: "Ресурсы",
+                resourcesDesc: "Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.",
+                footer: "&copy; 2024 Somp3. Все права защищены."
+            },
+            en: {
+                devNotification: "Website is under development",
+                tgNotification: "Find me on Telegram: @testuhipis",
+                currentLanguage: "English",
+                themeTitle: "Color Theme",
+                effectsTitle: "Effects",
+                glassEffectLabel: "Glass blur effect",
+                widgetsTitle: "Widgets",
+                showWeatherLabel: "Show weather",
+                showTimeLabel: "Show time",
+                showDateLabel: "Show date",
+                weatherTitle: "Weather",
+                weatherCityLabel: "City",
+                weatherWidgetTitle: "Weather",
+                timeWidgetTitle: "Time",
+                dateWidgetTitle: "Date",
+                tagline: "Hello! I'm a beginner developer and creator of various projects. I'm passionate about web development, game creation and software development.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Useful Links",
+                portfolioTitle: "Portfolio",
+                portfolioDesc: "My works and projects. Check out my latest developments and achievements in web development.",
+                docsTitle: "Documents",
+                docsDesc: "Technical documentation and guides. Useful materials for developers.",
+                resourcesTitle: "Resources",
+                resourcesDesc: "Collection of useful resources, tools and libraries for web development.",
+                footer: "&copy; 2024 Somp3. All rights reserved."
+            },
+            be: {
+                devNotification: "Сайт знаходзіцца ў распрацоўцы",
+                tgNotification: "Я ў Telegram: @testuhipis",
+                currentLanguage: "Беларуская",
+                themeTitle: "Каляровая тэма",
+                effectsTitle: "Эфекты",
+                glassEffectLabel: "Размыццё шкла",
+                widgetsTitle: "Віджэты",
+                showWeatherLabel: "Паказваць надвор'е",
+                showTimeLabel: "Паказваць час",
+                showDateLabel: "Паказваць дату",
+                weatherTitle: "Надвор'е",
+                weatherCityLabel: "Горад",
+                weatherWidgetTitle: "Надвор'е",
+                timeWidgetTitle: "Час",
+                dateWidgetTitle: "Дата",
+                tagline: "Прывітанне! Я пачынаючы распрацоўшчык і стваральнік розных праектаў. Захапляюся вэб-распрацоўкай, стварэннем гульняў і праграмным забеспячэннем.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Карысныя спасылкі",
+                portfolioTitle: "Партфоліа",
+                portfolioDesc: "Мае работы і праекты. Паглядзіце мае апошнія распрацоўкі і дасягненні ў вэб-распрацоўцы.",
+                docsTitle: "Дакументы",
+                docsDesc: "Тэхнічная дакументацыя і кіраўніцтвы. Карысныя матэрыялы для распрацоўшчыкаў.",
+                resourcesTitle: "Рэсурсы",
+                resourcesDesc: "Калекцыя карысных рэсурсаў, інструментаў і бібліятэк для вэб-распрацоўкі.",
+                footer: "&copy; 2024 Somp3. Усе правы абаронены."
+            },
+            ja: {
+                devNotification: "ウェブサイトは開発中です",
+                tgNotification: "Telegramで私を見つけて: @testuhipis",
+                currentLanguage: "日本語",
+                themeTitle: "カラーテーマ",
+                effectsTitle: "エフェクト",
+                glassEffectLabel: "ガラスぼかし効果",
+                widgetsTitle: "ウィジェット",
+                showWeatherLabel: "天気を表示",
+                showTimeLabel: "時間を表示",
+                showDateLabel: "日付を表示",
+                weatherTitle: "天気",
+                weatherCityLabel: "都市",
+                weatherWidgetTitle: "天気",
+                timeWidgetTitle: "時間",
+                dateWidgetTitle: "日付",
+                tagline: "こんにちは！私は初心者開発者であり、様々なプロジェクトのクリエイターです。Web開発、ゲーム制作、ソフトウェア開発に情熱を持っています。",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "便利なリンク",
+                portfolioTitle: "ポートフォリオ",
+                portfolioDesc: "私の作品とプロジェクト。Web開発における最新の開発と成果をご覧ください。",
+                docsTitle: "ドキュメント",
+                docsDesc: "技術文書とガイド。開発者向けの便利な資料。",
+                resourcesTitle: "リソース",
+                resourcesDesc: "Web開発のための便利なリソース、ツール、ライブラリのコレクション。",
+                footer: "&copy; 2024 Somp3. 全著作権所有."
+            },
+            orv: {
+                // Древнерусский язык
+                devNotification: "Сѣтьница въ дѣланьи ѥсть",
+                tgNotification: "Азъ въ Telegram: @testuhipis",
+                currentLanguage: "Древне-Русский",
+                themeTitle: "Цвѣтьнаꙗ тема",
+                effectsTitle: "Дѣиства",
+                glassEffectLabel: "Стекльно размытие",
+                widgetsTitle: "Виджеты",
+                showWeatherLabel: "Покаꙁовати погодоу",
+                showTimeLabel: "Покаꙁовати врѣмѧ",
+                showDateLabel: "Покаꙁовати датоу",
+                weatherTitle: "Погода",
+                weatherCityLabel: "Градъ",
+                weatherWidgetTitle: "Погода",
+                timeWidgetTitle: "Врѣмѧ",
+                dateWidgetTitle: "Дата",
+                tagline: "Здравъ бѫди! Аꙁъ ѥсмь начьинающии съꙁидатель и творець различьныхъ дѣлъ. Любо мьнѣ вѣтьхънѧѩ съꙁиданиꙗ, сътворениꙗ игръ и прѣложьствиꙗ.",
+                telegram: "Telegram",
+                github: "GitHub",
+                steam: "Steam",
+                linksTitle: "Потрѣбьнꙑи съвѫꙁи",
+                portfolioTitle: "Портфолио",
+                portfolioDesc: "Моꙗ дѣла и съꙁиданиꙗ. Виждь моꙗ послѣдьнꙗѩ съꙁиданиꙗ и постижениꙗ въ вѣтьхънѧѥмъ съꙁидании.",
+                docsTitle: "Грамотꙑ",
+                docsDesc: "Оустроишьнꙑѩ грамотꙑ и наказаниꙗ. Потрѣбьнꙑѩ вѣщи съꙁидателемъ.",
+                resourcesTitle: "Съкровища",
+                resourcesDesc: "Събиръниѥ потрѣбьныхъ съкровищь, оужищь и книгъницъ въ вѣтьхънѧѥмъ съꙁидании.",
+                footer: "&copy; 2024 Somp3. Вьсѧ права съхранѥна."
+            }
+        };
+
+        // Current language
+        let currentLanguage = localStorage.getItem('somp3-language') || 'ru';
+
+        // Настройки по умолчанию
+        const defaultSettings = {
+            glassEffect: true,
+            showWeather: true,
+            showTime: true,
+            showDate: true,
+            weatherCity: 'Москва',
+           
