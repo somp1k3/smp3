@@ -7,15 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
-            margin: 0;<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somp3 - Разработчик</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -35,7 +26,7 @@
         }
 
         body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             color: var(--text-primary);
@@ -61,7 +52,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
 
@@ -69,56 +60,74 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 25px;
             text-align: center;
-            min-width: 140px;
+            min-width: 150px;
             transition: all var(--transition-speed) ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .compact-widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .compact-widget:hover::before {
+            left: 100%;
         }
 
         .compact-widget:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--glow-color);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow-color);
         }
 
         .widget-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
 
         .widget-title {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
         }
 
         .widget-value {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
             background: linear-gradient(135deg, #fff, #e0e0e0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .widget-desc {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
+            min-height: 20px;
         }
 
         /* Header Section */
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .name {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -133,19 +142,20 @@
         }
 
         .tagline {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 35px;
+            line-height: 1.7;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         /* Social Links */
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 20px;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
 
@@ -153,33 +163,50 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 12px 20px;
+            border-radius: 15px;
+            padding: 15px 25px;
             text-decoration: none;
             color: var(--text-primary);
             transition: all var(--transition-speed) ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-weight: 600;
-            min-width: 140px;
+            min-width: 160px;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
         }
 
         .social-link:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 15px var(--glow-color);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-color);
             background: rgba(255, 255, 255, 0.25);
         }
 
         .social-link i {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             transition: transform var(--transition-speed) ease;
         }
 
         .social-link:hover i {
-            transform: scale(1.2) rotate(8deg);
+            transform: scale(1.3) rotate(10deg);
         }
 
         /* Links Section */
@@ -187,34 +214,35 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
         }
 
         .section-title {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             text-align: center;
             background: linear-gradient(135deg, #fff, #e0e0e0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         .links-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .link-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             transition: all var(--transition-speed) ease;
             text-decoration: none;
             color: var(--text-primary);
@@ -222,41 +250,56 @@
             overflow: hidden;
         }
 
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
         .link-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-color);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow-color);
             border-color: rgba(255, 255, 255, 0.5);
         }
 
         .link-card h4 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, #fff, #e0e0e0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .link-card p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.8);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .link-number {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: var(--accent-color);
             color: white;
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
 
         /* Settings Panel */
@@ -267,23 +310,29 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 20px;
+            padding: 20px;
             z-index: 1000;
-            max-width: 300px;
+            max-width: 320px;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .settings-toggle {
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 12px;
             transition: all var(--transition-speed) ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .settings-toggle:hover {
@@ -293,7 +342,7 @@
 
         .settings-content {
             display: none;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .settings-content.active {
@@ -307,34 +356,40 @@
         }
 
         .setting-group {
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 15px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .setting-group:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
         }
 
         .setting-group h4 {
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .setting-option {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
 
         .toggle-switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 20px;
+            width: 50px;
+            height: 26px;
         }
 
         .toggle-switch input {
@@ -352,16 +407,16 @@
             bottom: 0;
             background-color: rgba(255, 255, 255, 0.3);
             transition: .4s;
-            border-radius: 20px;
+            border-radius: 26px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
-            left: 2px;
-            bottom: 2px;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
@@ -372,42 +427,69 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(20px);
+            transform: translateX(24px);
         }
 
         .color-options {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
         .color-option {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid transparent;
+            border: 3px solid transparent;
             transition: transform var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .color-option:hover::before {
+            opacity: 1;
         }
 
         .color-option:hover {
-            transform: scale(1.1);
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 0 15px var(--glow-color);
         }
 
         .color-option.active {
             border-color: white;
-            transform: scale(1.1);
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--glow-color);
         }
 
         select, input[type="text"] {
             width: 100%;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px var(--glow-color);
         }
 
         select option {
@@ -434,7 +516,7 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(180deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         /* Water Effect */
@@ -475,9 +557,9 @@
         .footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            margin-top: 40px;
-            padding-top: 20px;
+            font-size: 1rem;
+            margin-top: 50px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -490,11 +572,12 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: var(--blur-amount);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 10px 20px;
+            border-radius: 12px;
+            padding: 12px 25px;
             color: white;
             z-index: 1001;
             display: none;
+            font-weight: 500;
         }
 
         .notification.show {
@@ -507,6 +590,21 @@
             to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .compact-widgets {
@@ -514,12 +612,12 @@
             }
             
             .compact-widget {
-                min-width: 120px;
-                padding: 15px;
+                min-width: 130px;
+                padding: 20px;
             }
             
             .name {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
             
             .social-links {
@@ -529,7 +627,7 @@
             
             .social-link {
                 width: 100%;
-                max-width: 200px;
+                max-width: 250px;
             }
             
             .links-grid {
@@ -564,10 +662,10 @@
             <div class="setting-group">
                 <h4><i class="fas fa-palette"></i> Цветовая тема</h4>
                 <div class="color-options">
-                    <div class="color-option active" style="background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);" data-gradient="default"></div>
-                    <div class="color-option" style="background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);" data-gradient="vibrant"></div>
-                    <div class="color-option" style="background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);" data-gradient="purple"></div>
+                    <div class="color-option active" style="background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);" data-gradient="purple"></div>
                     <div class="color-option" style="background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);" data-gradient="blue"></div>
+                    <div class="color-option" style="background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);" data-gradient="vibrant"></div>
+                    <div class="color-option" style="background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);" data-gradient="default"></div>
                 </div>
             </div>
 
@@ -663,20 +761,13 @@
                 <div class="setting-option">
                     <span>Автоопределение</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" id="auto-weather" checked>
+                        <input type="checkbox" id="auto-location" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="setting-option">
                     <span>Город</span>
                     <input type="text" id="weather-city" placeholder="Москва" value="Москва">
-                </div>
-                <div class="setting-option">
-                    <span>Единицы измерения</span>
-                    <select id="weather-unit">
-                        <option value="metric" selected>Цельсий</option>
-                        <option value="imperial">Фаренгейт</option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -688,7 +779,9 @@
             <div class="compact-widget" id="weather-widget">
                 <div class="widget-icon">🌤️</div>
                 <div class="widget-title">Погода</div>
-                <div class="widget-value" id="weather-temp">--°C</div>
+                <div class="widget-value" id="weather-temp">
+                    <span class="loading"></span>
+                </div>
                 <div class="widget-desc" id="weather-desc">Загрузка...</div>
             </div>
 
@@ -710,7 +803,7 @@
         <!-- Header Section -->
         <div class="header">
             <h1 class="name">Somp3</h1>
-            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
+            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения. Люблю изучать новые технологии и создавать инновационные решения.</p>
 
             <!-- Social Links -->
             <div class="social-links">
@@ -733,39 +826,31 @@
         <div class="links-section">
             <h2 class="section-title">Полезные ссылки</h2>
             <div class="links-grid">
-                <a href="#" class="link-card">
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
                     <div class="link-number">1</div>
-                    <h4>Мой блог</h4>
-                    <p>Личный блог о разработке и технологиях</p>
-                </a>
-                <a href="#" class="link-card">
-                    <div class="link-number">2</div>
                     <h4>Портфолио</h4>
-                    <p>Мои работы и проекты</p>
+                    <p>Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.</p>
                 </a>
-                <a href="#" class="link-card">
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
+                    <div class="link-number">2</div>
+                    <h4>Документы</h4>
+                    <p>Техническая документация и руководства. Полезные материалы для разработчиков.</p>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="link-card">
                     <div class="link-number">3</div>
-                    <h4>Документация</h4>
-                    <p>Полезные материалы и гайды</p>
-                </a>
-                <a href="#" class="link-card">
-                    <div class="link-number">4</div>
                     <h4>Ресурсы</h4>
-                    <p>Коллекция полезных ресурсов</p>
+                    <p>Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.</p>
                 </a>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>&copy; 2024 Somp3. Все права защищены.</p>
+            <p>&copy; 2024 Somp3. Все права защищены. Сделано с ❤️ и JavaScript</p>
         </div>
     </div>
 
     <script>
-        // API ключ для OpenWeatherMap (бесплатный)
-        const WEATHER_API_KEY = 'bd5e378503939ddaee76f12ad7a97608'; // Это публичный ключ для демо
-
         // Настройки по умолчанию
         const defaultSettings = {
             particles: true,
@@ -778,10 +863,9 @@
             hoverAnimations: true,
             smoothTransitions: true,
             animationSpeed: 'normal',
-            autoWeather: true,
+            autoLocation: true,
             weatherCity: 'Москва',
-            weatherUnit: 'metric',
-            theme: 'default'
+            theme: 'purple'
         };
 
         // Загрузка настроек из localStorage
@@ -803,6 +887,8 @@
                 notification.style.background = 'rgba(220, 53, 69, 0.8)';
             } else if (type === 'success') {
                 notification.style.background = 'rgba(40, 167, 69, 0.8)';
+            } else {
+                notification.style.background = 'rgba(255, 255, 255, 0.15)';
             }
             
             setTimeout(() => {
@@ -813,14 +899,15 @@
         // Сохранить настройки
         function saveSettings() {
             localStorage.setItem('somp3-settings', JSON.stringify(settings));
+            showNotification('Настройки сохранены!', 'success');
         }
 
         // Применить настройки при загрузке
         function applyStoredSettings() {
             // Применить все настройки из localStorage
             Object.keys(settings).forEach(key => {
-                const element = document.getElementById(key === 'weatherUnit' ? 'weather-unit' : 
-                                                     key === 'animationSpeed' ? 'animation-speed' : 
+                const element = document.getElementById(key === 'animationSpeed' ? 'animation-speed' : 
+                                                     key === 'autoLocation' ? 'auto-location' :
                                                      key.replace(/([A-Z])/g, '-$1').toLowerCase());
                 if (element) {
                     if (element.type === 'checkbox') {
@@ -848,17 +935,60 @@
             applyTheme(settings.theme);
         }
 
+        // Обновить эффект размытия
+        function updateBlurEffect() {
+            document.documentElement.style.setProperty('--blur-amount', settings.glassEffect ? 'blur(20px)' : 'blur(0px)');
+        }
+
+        // Обновить скорость анимации
+        function updateAnimationSpeed() {
+            const speed = settings.animationSpeed === 'slow' ? '0.5s' : 
+                         settings.animationSpeed === 'fast' ? '0.2s' : '0.3s';
+            document.documentElement.style.setProperty('--transition-speed', speed);
+        }
+
+        // Обновить анимации при наведении
+        function updateHoverAnimations() {
+            const elements = document.querySelectorAll('.compact-widget, .social-link, .link-card');
+            elements.forEach(el => {
+                el.style.pointerEvents = settings.hoverAnimations ? 'auto' : 'none';
+                if (!settings.hoverAnimations) {
+                    el.style.transform = 'none';
+                }
+            });
+        }
+
+        // Применить тему
+        function applyTheme(theme) {
+            const gradients = {
+                default: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+                vibrant: 'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)',
+                purple: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
+                blue: 'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)'
+            };
+            
+            document.body.style.background = gradients[theme];
+            
+            // Обновить активную кнопку темы
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-gradient') === theme) {
+                    opt.classList.add('active');
+                }
+            });
+        }
+
         // Toggle Settings Panel
         settingsToggle.addEventListener('click', () => {
             settingsContent.classList.toggle('active');
         });
 
-        // Update time and date
+        // Update time and date in real-time
         function updateDateTime() {
             const now = new Date();
             
             // Time
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
             const timeString = now.toLocaleTimeString('ru-RU', timeOptions);
             document.getElementById('current-time').textContent = timeString;
             
@@ -870,1088 +1000,4 @@
             // Day of week
             const dayOptions = { weekday: 'long' };
             const dayString = now.toLocaleDateString('ru-RU', dayOptions);
-            document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
-        }
-
-        // Real weather function
-        async function updateRealWeather() {
-            if (!settings.showWeather) return;
-
-            try {
-                const city = settings.weatherCity || 'Москва';
-                const unit = settings.weatherUnit || 'metric';
-                
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=${unit}&lang=ru`
-                );
-
-                if (!response.ok) {
-                    throw new Error('Город не найден');
-                }
-
-                const data = await response.json();
-                
-                const temp = Math.round(data.main.temp);
-                const description = data.weather[0].description;
-                const weatherMain = data.weather[0].main;
-                
-                // Get weather icon
-                const weatherIcons = {
-                    'Clear': '☀️',
-                    'Clouds': '⛅',
-                    'Rain': '🌧️',
-                    'Drizzle': '🌦️',
-                    'Thunderstorm': '⛈️',
-                    'Snow': '❄️',
-                    'Mist': '🌫️',
-                    'Smoke': '🌫️',
-                    'Haze': '🌫️',
-                    'Dust': '🌫️',
-                    'Fog': '🌫️'
-                };
-
-                const icon = weatherIcons[weatherMain] || '🌤️';
-                
-                document.getElementById('weather-temp').textContent = `${temp}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('weather-desc').textContent = description;
-                document.querySelector('#weather-widget .widget-icon').textContent = icon;
-                
-            } catch (error) {
-                console.error('Ошибка получения погоды:', error);
-                // Fallback to mock data
-                updateMockWeather();
-                showNotification('Не удалось получить погоду. Используются демо-данные.', 'error');
-            }
-        }
-
-        // Mock weather as fallback
-        function updateMockWeather() {
-            const weatherData = {
-                temp: Math.round(15 + Math.random() * 15),
-                descriptions: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
-                icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
-            };
-            
-            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.length);
-            
-            document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
-            document.getElementById('weather-desc').textContent = weatherData.descriptions[randomIndex];
-            document.querySelector('#weather-widget .widget-icon').textContent = weatherData.icons[randomIndex];
-        }
-
-        // Create particles
-        function createParticles() {
-            particlesContainer.innerHTML = '';
-            if (!settings.particles) return;
-            
-            for (let i = 0; i < 12; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.cssText = `
-                    width: ${Math.random() * 4 + 1}px;
-                    height: ${Math.random() * 4 + 1}px;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    opacity: ${Math.random() * 0.4 + 0.1};
-                    animation-delay: ${Math.random() * 5}s;
-                    animation-duration: ${Math.random() * 3 + 3}s;
-                    background: rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2});
-                `;
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Create water effect
-        function createWaterEffect() {
-            if (!settings.waterEffect) {
-                waterEffect.style.background = 'none';
-                waterEffect.classList.remove('active');
-                return;
-            }
-            
-            waterEffect.style.background = `
-                radial-gradient(circle at 20% 50%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(120, 219, 226, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.25) 0%, transparent 50%)
-            `;
-            waterEffect.classList.add('active');
-        }
-
-        // Create snow effect
-        function createSnowEffect() {
-            if (!settings.snowEffect) {
-                snowEffect.innerHTML = '';
-                snowEffect.classList.remove('active');
-                return;
-            }
-            
-            snowEffect.innerHTML = '';
-            for (let i = 0; i < 30; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.style.cssText = `
-                    position: absolute;
-                    background: white;
-                    border-radius: 50%;
-                    width: ${Math.random() * 4 + 2}px;
-                    height: ${Math.random() * 4 + 2}px;
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    opacity: ${Math.random() * 0.7 + 0.3};
-                    animation: fall linear infinite;
-                    animation-duration: ${Math.random() * 10 + 5}s;
-                    animation-delay: ${Math.random() * 5}s;
-                `;
-                snowEffect.appendChild(snowflake);
-            }
-            snowEffect.classList.add('active');
-        }
-
-        // Update
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        :root {
-            --bg-color: #0a0a0a;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #6366f1;
-            --border-color: rgba(255, 255, 255, 0.2);
-            --glow-color: rgba(99, 102, 241, 0.5);
-            --blur-amount: blur(20px);
-        }
-
-        body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-            transition: all 0.5s ease;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Compact Widgets Row */
-        .compact-widgets {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .compact-widget {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            min-width: 140px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .compact-widget:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--glow-color);
-        }
-
-        .widget-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
-        }
-
-        .widget-title {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .widget-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 3px;
-            background: linear-gradient(135deg, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .widget-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .name {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 300% 300%;
-            animation: gradientShift 3s ease infinite;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
-        }
-
-        /* Social Links */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 12px 20px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            min-width: 140px;
-            justify-content: center;
-            font-size: 0.9rem;
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 15px var(--glow-color);
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .social-link i {
-            font-size: 1.1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .social-link:hover i {
-            transform: scale(1.2) rotate(8deg);
-        }
-
-        /* Links Section */
-        .links-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            text-align: center;
-            background: linear-gradient(135deg, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .link-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: var(--text-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .link-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-color);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .link-card h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .link-card p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.5;
-        }
-
-        .link-number {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent-color);
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-
-        /* Settings Panel */
-        .settings-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--blur-amount);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        .settings-toggle {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .settings-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(90deg);
-        }
-
-        .settings-content {
-            display: none;
-            margin-top: 15px;
-        }
-
-        .settings-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .setting-group {
-            margin-bottom: 15px;
-        }
-
-        .setting-group h4 {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
-
-        .setting-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.3);
-            transition: .4s;
-            border-radius: 20px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--accent-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
-        .color-options {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 5px;
-        }
-
-        .color-option {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.3s ease;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.active {
-            border-color: white;
-            transform: scale(1.1);
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        /* Effects */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(180deg); }
-        }
-
-        /* Water Effect */
-        .water-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .water-effect.active {
-            opacity: 0.3;
-        }
-
-        /* Snow Effect */
-        .snow-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .snow-effect.active {
-            opacity: 0.5;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .compact-widgets {
-                gap: 10px;
-            }
-            
-            .compact-widget {
-                min-width: 120px;
-                padding: 15px;
-            }
-            
-            .name {
-                font-size: 2.5rem;
-            }
-            
-            .social-links {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .social-link {
-                width: 100%;
-                max-width: 200px;
-            }
-            
-            .links-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .settings-panel {
-                position: static;
-                max-width: none;
-                margin-bottom: 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Effects -->
-    <div class="particles" id="particles"></div>
-    <div class="water-effect" id="water-effect"></div>
-    <div class="snow-effect" id="snow-effect"></div>
-
-    <!-- Settings Panel -->
-    <div class="settings-panel">
-        <button class="settings-toggle" id="settings-toggle">
-            <i class="fas fa-cog"></i>
-        </button>
-        
-        <div class="settings-content" id="settings-content">
-            <!-- Theme Settings -->
-            <div class="setting-group">
-                <h4>🎨 Цветовая тема</h4>
-                <div class="color-options">
-                    <div class="color-option active" style="background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);" data-gradient="default"></div>
-                    <div class="color-option" style="background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);" data-gradient="vibrant"></div>
-                    <div class="color-option" style="background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);" data-gradient="purple"></div>
-                    <div class="color-option" style="background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);" data-gradient="blue"></div>
-                </div>
-            </div>
-
-            <!-- Effects Settings -->
-            <div class="setting-group">
-                <h4>✨ Эффекты</h4>
-                <div class="setting-option">
-                    <span>Частицы</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="particles-effect" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Эффект воды</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="water-effect-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Эффект снега</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="snow-effect-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Размытие стекла</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="glass-effect" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Widget Settings -->
-            <div class="setting-group">
-                <h4>🕹️ Виджеты</h4>
-                <div class="setting-option">
-                    <span>Показывать погоду</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="show-weather" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Показывать время</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="show-time" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Показывать дату</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="show-date" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Animation Settings -->
-            <div class="setting-group">
-                <h4>🎭 Анимации</h4>
-                <div class="setting-option">
-                    <span>Анимация при наведении</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="hover-animations" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Плавные переходы</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="smooth-transitions" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Скорость анимации</span>
-                    <select id="animation-speed">
-                        <option value="slow">Медленно</option>
-                        <option value="normal" selected>Нормально</option>
-                        <option value="fast">Быстро</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Weather Settings -->
-            <div class="setting-group">
-                <h4>🌤️ Погода</h4>
-                <div class="setting-option">
-                    <span>Автоопределение</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="auto-weather" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-option">
-                    <span>Город</span>
-                    <input type="text" id="weather-city" placeholder="Москва" style="width: 120px; padding: 5px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <!-- Compact Widgets Row -->
-        <div class="compact-widgets">
-            <div class="compact-widget" id="weather-widget">
-                <div class="widget-icon">🌤️</div>
-                <div class="widget-title">Погода</div>
-                <div class="widget-value" id="weather-temp">22°C</div>
-                <div class="widget-desc" id="weather-desc">Солнечно</div>
-            </div>
-
-            <div class="compact-widget" id="time-widget">
-                <div class="widget-icon">🕐</div>
-                <div class="widget-title">Время</div>
-                <div class="widget-value" id="current-time">13:57</div>
-                <div class="widget-desc" id="timezone">МСК</div>
-            </div>
-
-            <div class="compact-widget" id="date-widget">
-                <div class="widget-icon">📅</div>
-                <div class="widget-title">Дата</div>
-                <div class="widget-value" id="current-date">30.11</div>
-                <div class="widget-desc" id="day-of-week">Четверг</div>
-            </div>
-        </div>
-
-        <!-- Header Section -->
-        <div class="header">
-            <h1 class="name">Somp3</h1>
-            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
-
-            <!-- Social Links -->
-            <div class="social-links">
-                <a href="https://t.me/testuhipis" target="_blank" class="social-link">
-                    <i class="fab fa-telegram"></i>
-                    <span>Telegram</span>
-                </a>
-                <a href="https://github.com/somp1k3" target="_blank" class="social-link">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-link">
-                    <i class="fab fa-steam"></i>
-                    <span>Steam</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Links Section -->
-        <div class="links-section">
-            <h2 class="section-title">Полезные ссылки</h2>
-            <div class="links-grid">
-                <a href="#" class="link-card">
-                    <div class="link-number">1</div>
-                    <h4>Мой блог</h4>
-                    <p>Личный блог о разработке и технологиях</p>
-                </a>
-                <a href="#" class="link-card">
-                    <div class="link-number">2</div>
-                    <h4>Портфолио</h4>
-                    <p>Мои работы и проекты</p>
-                </a>
-                <a href="#" class="link-card">
-                    <div class="link-number">3</div>
-                    <h4>Документация</h4>
-                    <p>Полезные материалы и гайды</p>
-                </a>
-                <a href="#" class="link-card">
-                    <div class="link-number">4</div>
-                    <h4>Ресурсы</h4>
-                    <p>Коллекция полезных ресурсов</p>
-                </a>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>&copy; 2024 Somp3. Все права защищены.</p>
-        </div>
-    </div>
-
-    <script>
-        // Initialize settings
-        const settings = {
-            particles: true,
-            waterEffect: false,
-            snowEffect: false,
-            glassEffect: true,
-            showWeather: true,
-            showTime: true,
-            showDate: true,
-            hoverAnimations: true,
-            smoothTransitions: true,
-            animationSpeed: 'normal',
-            autoWeather: true,
-            weatherCity: 'Москва',
-            theme: 'default'
-        };
-
-        // DOM Elements
-        const settingsToggle = document.getElementById('settings-toggle');
-        const settingsContent = document.getElementById('settings-content');
-        const particlesContainer = document.getElementById('particles');
-        const waterEffect = document.getElementById('water-effect');
-        const snowEffect = document.getElementById('snow-effect');
-
-        // Toggle Settings Panel
-        settingsToggle.addEventListener('click', () => {
-            settingsContent.classList.toggle('active');
-        });
-
-        // Update time and date
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Time
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            const timeString = now.toLocaleTimeString('ru-RU', timeOptions);
-            document.getElementById('current-time').textContent = timeString;
-            
-            // Date
-            const dateOptions = { day: '2-digit', month: '2-digit' };
-            const dateString = now.toLocaleDateString('ru-RU', dateOptions);
-            document.getElementById('current-date').textContent = dateString;
-            
-            // Day of week
-            const dayOptions = { weekday: 'long' };
-            const dayString = now.toLocaleDateString('ru-RU', dayOptions);
-            document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
-        }
-
-        // Update weather
-        function updateWeather() {
-            const weatherData = {
-                temp: Math.round(15 + Math.random() * 15),
-                descriptions: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
-                icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
-            };
-            
-            const randomIndex = Math.floor(Math.random() * weatherData.descriptions.length);
-            
-            document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
-            document.getElementById('weather-desc').textContent = weatherData.descriptions[randomIndex];
-            document.querySelector('#weather-widget .widget-icon').textContent = weatherData.icons[randomIndex];
-        }
-
-        // Create particles
-        function createParticles() {
-            if (!settings.particles) return;
-            
-            particlesContainer.innerHTML = '';
-            for (let i = 0; i < 12; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.cssText = `
-                    width: ${Math.random() * 4 + 1}px;
-                    height: ${Math.random() * 4 + 1}px;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    opacity: ${Math.random() * 0.4 + 0.1};
-                    animation-delay: ${Math.random() * 5}s;
-                    animation-duration: ${Math.random() * 3 + 3}s;
-                    background: rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2});
-                `;
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Create water effect
-        function createWaterEffect() {
-            if (!settings.waterEffect) {
-                waterEffect.style.background = 'none';
-                return;
-            }
-            
-            waterEffect.style.background = `
-                radial-gradient(circle at 20% 50%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(120, 219, 226, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.25) 0%, transparent 50%)
-            `;
-            waterEffect.classList.add('active');
-        }
-
-        // Create snow effect
-        function createSnowEffect() {
-            if (!settings.snowEffect) {
-                snowEffect.innerHTML = '';
-                snowEffect.classList.remove('active');
-                return;
-            }
-            
-            snowEffect.innerHTML = '';
-            for (let i = 0; i < 30; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.style.cssText = `
-                    position: absolute;
-                    background: white;
-                    border-radius: 50%;
-                    width: ${Math.random() * 4 + 2}px;
-                    height: ${Math.random() * 4 + 2}px;
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    opacity: ${Math.random() * 0.7 + 0.3};
-                    animation: fall linear infinite;
-                    animation-duration: ${Math.random() * 10 + 5}s;
-                    animation-delay: ${Math.random() * 5}s;
-                `;
-                snowEffect.appendChild(snowflake);
-            }
-            snowEffect.classList.add('active');
-            
-            // Add snow animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fall {
-                    to {
-                        transform: translateY(100vh) rotate(360deg);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        // Setup event listeners for settings
-        function setupSettings() {
-            // Color themes
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const gradient = this.getAttribute('data-gradient');
-                    const gradients = {
-                        default: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-                        vibrant: 'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)',
-                        purple: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
-                        blue: 'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)'
-                    };
-                    
-                    document.body.style.background = gradients[gradient];
-                    settings.theme = gradient;
-                });
-            });
-
-            // Toggle switches
-            document.getElementById('particles-effect').addEventListener('change', function() {
-                settings.particles = this.checked;
-                createParticles();
-            });
-
-            document.getElementById('water-effect-toggle').addEventListener('change', function() {
-                settings.waterEffect = this.checked;
-                if (this.checked) {
-                    document.getElementById('snow-effect-toggle').checked = false;
-                    settings.snowEffect = false;
-                    createSnowEffect();
-                }
-                createWaterEffect();
-            });
-
-            document.getElementById('snow-effect-toggle').addEventListener('change', function() {
-                settings.snowEffect = this.checked;
-                if (this.checked) {
-                    document.getElementById('water-effect-toggle').checked = false;
-                    settings.waterEffect = false;
-                    createWaterEffect();
-                }
-                createSnowEffect();
-            });
-
-            document.getElementById('glass-effect').addEventListener('change', function() {
-                settings.glassEffect = this.checked;
-                document.documentElement.style.setProperty('--blur-amount', this.checked ? 'blur(20px)' : 'blur(0px)');
-            });
-
-            // Widget visibility
-            document.getElementById('show-weather').addEventListener('change', function() {
-                settings.showWeather = this.checked;
-                document.getElementById('weather-widget').style.display = this.checked ? 'block' : 'none';
-            });
-
-            document.getElementById('show-time').addEventListener('change', function() {
-                settings.showTime = this.checked;
-                document.getElementById('time-widget').style.display = this.checked ? 'block' : 'none';
-            });
-
-            document.getElementById('show-date').addEventListener('change', function() {
-                settings.showDate = this.checked;
-                document.getElementById('date-widget').style.display = this.checked ? 'block' : 'none';
-            });
-
-            // Animation settings
-            document.getElementById('hover-animations').addEventListener('change', function() {
-                settings.hoverAnimations = this.checked;
-                document.body.style.pointerEvents = this.checked ? 'auto' : 'none';
-            });
-
-            document.getElementById('animation-speed').addEventListener('change', function() {
-                settings.animationSpeed = this.value;
-                const speed = this.value === 'slow' ? '0.5s' : this.value === 'fast' ? '0.2s' : '0.3s';
-                document.documentElement.style.setProperty('--transition-speed', speed);
-            });
-
-            // Weather settings
-            document.getElementById('auto-weather').addEventListener('change', function() {
-                settings.autoWeather = this.checked;
-            });
-
-            document.getElementById('weather-city').addEventListener('change', function() {
-                settings.weatherCity = this.value;
-            });
-        }
-
-        // Initialize everything
-        function init() {
-            updateDateTime();
-            updateWeather();
-            createParticles();
-            createWaterEffect();
-            createSnowEffect();
-            setupSettings();
-            
-            // Update time every minute
-            setInterval(updateDateTime, 60000);
-            
-            // Update weather every 5 minutes
-            setInterval(updateWeather, 300000);
-        }
-
-        // Start the application
-        init();
-    </script>
-</body>
-</html>
+            document.getElementById('day-of-week').textContent = dayString
