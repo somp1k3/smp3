@@ -133,6 +133,14 @@
             max-width: 300px;
         }
 
+        .notification.error {
+            background: rgba(220, 53, 69, 0.8);
+        }
+
+        .notification.success {
+            background: rgba(40, 167, 69, 0.8);
+        }
+
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -255,6 +263,12 @@
         .widget p {
             font-size: 1.3rem;
             font-weight: bold;
+        }
+
+        .location-info {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
         }
 
         /* Profile Widgets */
@@ -553,6 +567,28 @@
             color: white;
         }
 
+        .location-permission {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .location-btn {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .location-btn:hover {
+            background: #3a5a8a;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -667,18 +703,21 @@
                 <h3 id="weather-title">Погода</h3>
                 <p id="weather-temp">--°C</p>
                 <small id="weather-desc">--</small>
+                <div class="location-info" id="location-info">Определение местоположения...</div>
             </div>
             
             <div class="widget">
                 <i class="fas fa-clock"></i>
                 <h3 id="time-title">Время</h3>
                 <p id="time">--:--</p>
+                <small id="timezone">--</small>
             </div>
             
             <div class="widget">
                 <i class="fas fa-calendar-alt"></i>
                 <h3 id="date-title">Дата</h3>
                 <p id="date">--.--.--</p>
+                <small id="day-of-week">--</small>
             </div>
         </div>
 
@@ -824,10 +863,10 @@
             </div>
             
             <div class="setting-group">
-                <h3 id="weather-title-settings">Погода</h3>
+                <h3 id="weather-title-settings">Погода и геолокация</h3>
                 <div class="setting-option">
                     <label for="weather-city" id="weather-city-label">Город</label>
-                    <input type="text" id="weather-city" placeholder="Москва" value="Москва">
+                    <input type="text" id="weather-city" placeholder="Москва">
                 </div>
                 <div class="setting-option">
                     <label for="weather-unit" id="weather-unit-label">Единицы измерения</label>
@@ -835,6 +874,19 @@
                         <option value="metric">Цельсий</option>
                         <option value="imperial">Фаренгейт</option>
                     </select>
+                </div>
+                <div class="setting-option">
+                    <label for="auto-location" id="auto-location-label">Автоопределение местоположения</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="auto-location">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="location-permission">
+                    <button class="location-btn" id="request-location">
+                        <i class="fas fa-location-arrow"></i> Запросить геолокацию
+                    </button>
+                    <span id="location-status"></span>
                 </div>
             </div>
             
@@ -859,6 +911,23 @@
                     </label>
                 </div>
             </div>
+
+            <div class="setting-group">
+                <h3>Управление данными</h3>
+                <div class="setting-option">
+                    <button class="location-btn" id="export-settings">
+                        <i class="fas fa-download"></i> Экспорт настроек
+                    </button>
+                    <button class="location-btn" id="import-settings">
+                        <i class="fas fa-upload"></i> Импорт настроек
+                    </button>
+                </div>
+                <div class="setting-option">
+                    <button class="location-btn" id="reset-settings">
+                        <i class="fas fa-trash"></i> Сбросить настройки
+                    </button>
+                </div>
+            </div>
             
             <button class="upload-btn" style="width: 100%; margin-top: 20px;" id="save-settings">
                 <i class="fas fa-save"></i> <span id="save-settings-text">Сохранить настройки</span>
@@ -869,7 +938,6 @@
     <script>
         // Конфигурация API
         const API_KEY = 'YOUR_API_KEY_HERE';
-        const DEFAULT_CITY = 'Moscow';
 
         // Элементы DOM
         const settingsBtn = document.getElementById('settings-btn');
@@ -883,10 +951,36 @@
         const colorOptions = document.querySelectorAll('.color-option');
         const weatherCity = document.getElementById('weather-city');
         const weatherUnit = document.getElementById('weather-unit');
+        const autoLocationToggle = document.getElementById('auto-location');
+        const requestLocationBtn = document.getElementById('request-location');
+        const locationStatus = document.getElementById('location-status');
         const languageSelect = document.getElementById('language');
         const saveSettingsBtn = document.getElementById('save-settings');
         const particlesContainer = document.getElementById('particles');
         const linksContainer = document.getElementById('links-container');
+        const exportSettingsBtn = document.getElementById('export-settings');
+        const importSettingsBtn = document.getElementById('import-settings');
+        const resetSettingsBtn = document.getElementById('reset-settings');
+
+        // Настройки по умолчанию
+        const defaultSettings = {
+            darkMode: false,
+            solidColor: false,
+            waterEffect: false,
+            snowEffect: false,
+            particlesEffect: true,
+            accentColor: '#4a6fa5',
+            weatherCity: 'Москва',
+            weatherUnit: 'metric',
+            autoLocation: false,
+            language: 'ru',
+            notifications: true,
+            customLinks: []
+        };
+
+        // Текущие настройки
+        let currentSettings = { ...defaultSettings };
+        let userLocation = null;
 
         // Переводы
         const translations = {
@@ -906,9 +1000,10 @@
                 snowEffect: "Эффект снега",
                 particles: "Частицы",
                 colorScheme: "Цветовая схема",
-                weatherSettings: "Погода",
+                weatherSettings: "Погода и геолокация",
                 weatherCity: "Город",
                 weatherUnit: "Единицы измерения",
+                autoLocation: "Автоопределение местоположения",
                 language: "Язык",
                 languageLabel: "Язык интерфейса",
                 notifications: "Уведомления",
@@ -916,7 +1011,15 @@
                 save: "Сохранить настройки",
                 about: "Обо мне",
                 projects: "Проекты",
-                contact: "Контакты"
+                contact: "Контакты",
+                locationRequest: "Запросить геолокацию",
+                locationGranted: "Доступ разрешен",
+                locationDenied: "Доступ запрещен",
+                locationError: "Ошибка геолокации",
+                locationUnavailable: "Геолокация недоступна",
+                exportSettings: "Экспорт настроек",
+                importSettings: "Импорт настроек",
+                resetSettings: "Сбросить настройки"
             },
             en: {
                 notification: "Website is under development",
@@ -928,282 +1031,4 @@
                 skills: "What I Do",
                 settings: "Website Settings",
                 appearance: "Appearance",
-                darkMode: "Dark Mode",
-                solidColor: "Solid Background",
-                waterEffect: "Water Effect",
-                snowEffect: "Snow Effect",
-                particles: "Particles",
-                colorScheme: "Color Scheme",
-                weatherSettings: "Weather",
-                weatherCity: "City",
-                weatherUnit: "Units",
-                language: "Language",
-                languageLabel: "Interface Language",
-                notifications: "Notifications",
-                notificationsLabel: "Show Notifications",
-                save: "Save Settings",
-                about: "About Me",
-                projects: "Projects",
-                contact: "Contact"
-            }
-        };
-
-        // Пример ссылок
-        const exampleLinks = [
-            {
-                title: { ru: "Мой блог", en: "My Blog" },
-                description: { ru: "Личный блог о разработке", en: "Personal development blog" },
-                url: "#"
-            },
-            {
-                title: { ru: "Портфолио", en: "Portfolio" },
-                description: { ru: "Мои работы и проекты", en: "My works and projects" },
-                url: "#"
-            },
-            {
-                title: { ru: "Документация", en: "Documentation" },
-                description: { ru: "Полезные материалы и гайды", en: "Useful materials and guides" },
-                url: "#"
-            }
-        ];
-
-        // Текущий язык
-        let currentLanguage = 'ru';
-
-        // Функция для применения перевода
-        function applyTranslation(lang) {
-            const t = translations[lang];
-            document.getElementById('notification-text').textContent = t.notification;
-            document.getElementById('tagline-text').textContent = t.tagline;
-            document.getElementById('weather-title').textContent = t.weather;
-            document.getElementById('time-title').textContent = t.time;
-            document.getElementById('date-title').textContent = t.date;
-            document.getElementById('links-title').textContent = t.links;
-            document.getElementById('skills-title').textContent = t.skills;
-            document.getElementById('settings-title').textContent = t.settings;
-            document.getElementById('appearance-title').textContent = t.appearance;
-            document.getElementById('dark-mode-label').textContent = t.darkMode;
-            document.getElementById('solid-color-label').textContent = t.solidColor;
-            document.getElementById('water-effect-label').textContent = t.waterEffect;
-            document.getElementById('snow-effect-label').textContent = t.snowEffect;
-            document.getElementById('particles-label').textContent = t.particles;
-            document.getElementById('color-scheme-label').textContent = t.colorScheme;
-            document.getElementById('weather-title-settings').textContent = t.weatherSettings;
-            document.getElementById('weather-city-label').textContent = t.weatherCity;
-            document.getElementById('weather-unit-label').textContent = t.weatherUnit;
-            document.getElementById('language-title').textContent = t.language;
-            document.getElementById('language-label').textContent = t.languageLabel;
-            document.getElementById('notifications-title').textContent = t.notifications;
-            document.getElementById('notifications-label').textContent = t.notificationsLabel;
-            document.getElementById('save-settings-text').textContent = t.save;
-            document.getElementById('footer-about').textContent = t.about;
-            document.getElementById('footer-projects').textContent = t.projects;
-            document.getElementById('footer-contact').textContent = t.contact;
-
-            // Обновляем ссылки
-            updateLinks(lang);
-        }
-
-        // Функция для обновления ссылок
-        function updateLinks(lang) {
-            linksContainer.innerHTML = '';
-            exampleLinks.forEach(link => {
-                const linkElement = document.createElement('div');
-                linkElement.className = 'link-item';
-                linkElement.innerHTML = `
-                    <h4>${link.title[lang]}</h4>
-                    <p>${link.description[lang]}</p>
-                    <a href="${link.url}" target="_blank">${lang === 'ru' ? 'Перейти' : 'Visit'}</a>
-                `;
-                linksContainer.appendChild(linkElement);
-            });
-        }
-
-        // Функция для получения погоды
-        async function getWeather() {
-            try {
-                const city = weatherCity.value || DEFAULT_CITY;
-                const unit = weatherUnit.value;
-                
-                if (API_KEY === 'YOUR_API_KEY_HERE') {
-                    // Демо-данные
-                    document.getElementById('weather-temp').textContent = '22°C';
-                    document.getElementById('weather-desc').textContent = 'ясно';
-                    return;
-                }
-                
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=${unit}&lang=${currentLanguage}`
-                );
-                
-                if (!response.ok) {
-                    throw new Error('Город не найден');
-                }
-                
-                const data = await response.json();
-                const temp = Math.round(data.main.temp);
-                const description = data.weather[0].description;
-                
-                document.getElementById('weather-temp').textContent = `${temp}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('weather-desc').textContent = description;
-                
-            } catch (error) {
-                console.error('Ошибка получения погоды:', error);
-                document.getElementById('weather-temp').textContent = '--°C';
-                document.getElementById('weather-desc').textContent = '--';
-            }
-        }
-
-        // Обновление времени и даты
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Время
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            const timeString = now.toLocaleTimeString(currentLanguage === 'ru' ? 'ru-RU' : 'en-US', timeOptions);
-            document.getElementById('time').textContent = timeString;
-            
-            // Дата
-            const dateOptions = { 
-                day: '2-digit', 
-                month: '2-digit', 
-                year: 'numeric'
-            };
-            const dateString = now.toLocaleDateString(currentLanguage === 'ru' ? 'ru-RU' : 'en-US', dateOptions);
-            document.getElementById('date').textContent = dateString;
-        }
-
-        // Создание частиц
-        function createParticles() {
-            particlesContainer.innerHTML = '';
-            if (!particlesEffectToggle.checked) return;
-            
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.cssText = `
-                    width: ${Math.random() * 5 + 2}px;
-                    height: ${Math.random() * 5 + 2}px;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    opacity: ${Math.random() * 0.5 + 0.2};
-                    animation-delay: ${Math.random() * 5}s;
-                    animation-duration: ${Math.random() * 3 + 3}s;
-                `;
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Настройки
-        settingsBtn.addEventListener('click', () => {
-            settingsPanel.classList.add('active');
-        });
-
-        closeSettings.addEventListener('click', () => {
-            settingsPanel.classList.remove('active');
-        });
-
-        // Закрытие панели настроек при клике вне её
-        settingsPanel.addEventListener('click', (e) => {
-            if (e.target === settingsPanel) {
-                settingsPanel.classList.remove('active');
-            }
-        });
-
-        // Переключение темного/светлого режима
-        darkModeToggle.addEventListener('change', () => {
-            document.body.classList.toggle('light-mode', darkModeToggle.checked);
-        });
-
-        // Переключение между градиентом и сплошным цветом
-        solidColorToggle.addEventListener('change', () => {
-            document.body.classList.toggle('solid-color', solidColorToggle.checked);
-        });
-
-        // Эффекты
-        waterEffectToggle.addEventListener('change', () => {
-            document.body.classList.toggle('water-effect', waterEffectToggle.checked);
-            if (waterEffectToggle.checked) {
-                snowEffectToggle.checked = false;
-                document.body.classList.remove('snow-effect');
-            }
-        });
-
-        snowEffectToggle.addEventListener('change', () => {
-            document.body.classList.toggle('snow-effect', snowEffectToggle.checked);
-            if (snowEffectToggle.checked) {
-                waterEffectToggle.checked = false;
-                document.body.classList.remove('water-effect');
-            }
-        });
-
-        particlesEffectToggle.addEventListener('change', () => {
-            createParticles();
-        });
-
-        // Выбор цвета фона
-        colorOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                colorOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                
-                document.documentElement.style.setProperty('--accent-color', option.dataset.color);
-                
-                if (document.body.classList.contains('solid-color')) {
-                    document.body.style.background = option.dataset.color;
-                }
-            });
-        });
-
-        // Смена языка
-        languageSelect.addEventListener('change', (e) => {
-            currentLanguage = e.target.value;
-            applyTranslation(currentLanguage);
-            getWeather();
-            updateDateTime();
-        });
-
-        // Сохранение настроек
-        saveSettingsBtn.addEventListener('click', () => {
-            // Здесь можно добавить сохранение в localStorage
-            settingsPanel.classList.remove('active');
-            createParticles();
-            
-            // Показать уведомление о сохранении
-            if (document.getElementById('notifications').checked) {
-                alert(currentLanguage === 'ru' ? 'Настройки сохранены!' : 'Settings saved!');
-            }
-        });
-
-        // Обновление погоды при изменении настроек
-        weatherCity.addEventListener('change', getWeather);
-        weatherUnit.addEventListener('change', getWeather);
-
-        // Инициализация
-        updateDateTime();
-        getWeather();
-        applyTranslation(currentLanguage);
-        createParticles();
-        
-        // Обновление времени каждую секунду
-        setInterval(updateDateTime, 1000);
-        
-        // Обновление погоды каждые 10 минут
-        setInterval(getWeather, 600000);
-
-        // Добавление пользовательских ссылок (можно расширить функционал)
-        function addCustomLink(title, description, url) {
-            const link = {
-                title: { ru: title, en: title },
-                description: { ru: description, en: description },
-                url: url
-            };
-            exampleLinks.push(link);
-            updateLinks(currentLanguage);
-        }
-
-        // Пример добавления ссылки
-        // addCustomLink("Новый проект", "Описание проекта", "https://example.com");
-    </script>
-</body>
-</html>
+                dark
