@@ -15,20 +15,28 @@
 
         :root {
             --bg-color: #0a0a0a;
-            --card-bg: #1a1a1a;
+            --card-bg: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
             --accent-color: #6366f1;
-            --border-color: #333333;
-            --success-color: #10b981;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --glow-color: rgba(99, 102, 241, 0.5);
         }
 
         body {
-            background-color: var(--bg-color);
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             color: var(--text-primary);
             line-height: 1.6;
-            padding: 40px 20px;
+            padding: 20px;
             min-height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -36,21 +44,85 @@
             margin: 0 auto;
         }
 
-        /* Header Styles */
+        /* Glass Morphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+        }
+
+        /* Main Widgets Row */
+        .main-widgets {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .main-widget {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-widget:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px var(--glow-color);
+        }
+
+        .widget-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .widget-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .widget-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Header Section */
         .header {
             text-align: center;
             margin-bottom: 50px;
         }
 
         .name {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% 200%;
+            background-size: 300% 300%;
             animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
         }
 
         @keyframes gradientShift {
@@ -59,209 +131,218 @@
         }
 
         .tagline {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Social Links - Smaller and Clickable */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-color);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .social-link i {
             font-size: 1.3rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 30px;
+            transition: transform 0.3s ease;
         }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+        .social-link:hover i {
+            transform: scale(1.3) rotate(10deg);
         }
 
-        /* Widgets Section */
-        .widgets-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .widget {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .widget:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
-        }
-
-        .widget-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .widget-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .widget-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .widget-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .widget-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Profile Widgets */
-        .profile-widgets {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .profile-widget {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .profile-widget:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .profile-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .profile-info h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .profile-info .username {
-            font-size: 1rem;
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-
-        .profile-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Links Section */
+        /* Links Section - Bigger */
         .links-section {
-            grid-column: 1 / -1;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .section-title {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             text-align: center;
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         .links-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .link-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.4s ease;
             text-decoration: none;
             color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
         }
 
         .link-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-3px);
-            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow-color);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .link-card h4 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--accent-color);
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .link-card p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
         }
 
-        /* Divider */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-            margin: 40px 0;
-            grid-column: 1 / -1;
+        .link-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 60px;
             padding-top: 30px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Color Picker */
+        .color-picker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.2);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
+            .main-widgets {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-widget {
+                width: 100%;
+                max-width: 300px;
             }
             
             .name {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-link {
+                width: 100%;
+                max-width: 250px;
             }
             
             .links-grid {
@@ -269,160 +350,114 @@
             }
         }
 
-        /* Weather specific */
-        .weather-details {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        .weather-icon {
-            font-size: 2rem;
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
         }
 
-        /* Additional animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
-
-        .widget, .profile-widget, .link-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .widget:nth-child(1) { animation-delay: 0.1s; }
-        .widget:nth-child(2) { animation-delay: 0.2s; }
-        .widget:nth-child(3) { animation-delay: 0.3s; }
-        .profile-widget:nth-child(1) { animation-delay: 0.4s; }
-        .profile-widget:nth-child(2) { animation-delay: 0.5s; }
-        .profile-widget:nth-child(3) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Color Picker -->
+    <div class="color-picker">
+        <div class="color-options">
+            <div class="color-option active" style="background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);" data-gradient="default"></div>
+            <div class="color-option" style="background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);" data-gradient="vibrant"></div>
+            <div class="color-option" style="background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);" data-gradient="purple"></div>
+            <div class="color-option" style="background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);" data-gradient="blue"></div>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- Header -->
+        <!-- Main Widgets Row -->
+        <div class="main-widgets">
+            <div class="main-widget">
+                <div class="widget-icon">🌤️</div>
+                <div class="widget-title">Погода</div>
+                <div class="widget-value" id="weather-temp">22°C</div>
+                <div class="widget-desc" id="weather-desc">Солнечно</div>
+            </div>
+
+            <div class="main-widget">
+                <div class="widget-icon">🕐</div>
+                <div class="widget-title">Время</div>
+                <div class="widget-value" id="current-time">13:57</div>
+                <div class="widget-desc" id="timezone">МСК</div>
+            </div>
+
+            <div class="main-widget">
+                <div class="widget-icon">📅</div>
+                <div class="widget-title">Дата</div>
+                <div class="widget-value" id="current-date">30.11</div>
+                <div class="widget-desc" id="day-of-week">Четверг</div>
+            </div>
+        </div>
+
+        <!-- Header Section -->
         <div class="header">
             <h1 class="name">Somp3</h1>
-            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
-        </div>
+            <p class="tagline">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения. Люлю изучать новые технологии и создавать инновационные решения.</p>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Left Column - Widgets -->
-            <div class="widgets-section">
-                <!-- Weather Widget -->
-                <div class="widget">
-                    <div class="widget-header">
-                        <div class="widget-icon">
-                            <i class="fas fa-cloud-sun"></i>
-                        </div>
-                        <div class="widget-title">Погода</div>
-                    </div>
-                    <div class="weather-details">
-                        <div class="weather-icon">☀️</div>
-                        <div>
-                            <div class="widget-value">22°C</div>
-                            <div class="widget-desc">Солнечно</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Time Widget -->
-                <div class="widget">
-                    <div class="widget-header">
-                        <div class="widget-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="widget-title">Время</div>
-                    </div>
-                    <div class="widget-value" id="current-time">13:57</div>
-                    <div class="widget-desc" id="current-date">30.11.2025</div>
-                </div>
-
-                <!-- Date Widget -->
-                <div class="widget">
-                    <div class="widget-header">
-                        <div class="widget-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="widget-title">Дата</div>
-                    </div>
-                    <div class="widget-value" id="full-date">30 ноября</div>
-                    <div class="widget-desc" id="day-of-week">Вторник</div>
-                </div>
-            </div>
-
-            <!-- Right Column - Profile Widgets -->
-            <div class="profile-widgets">
-                <!-- Telegram -->
-                <div class="profile-widget">
-                    <div class="profile-header">
-                        <div class="profile-icon">
-                            <i class="fab fa-telegram"></i>
-                        </div>
-                        <div class="profile-info">
-                            <h3>Telegram</h3>
-                            <div class="username">@testuhipis</div>
-                        </div>
-                    </div>
-                    <p class="profile-desc">Свяжитесь со мной</p>
-                </div>
-
-                <!-- GitHub -->
-                <div class="profile-widget">
-                    <div class="profile-header">
-                        <div class="profile-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="profile-info">
-                            <h3>GitHub</h3>
-                            <div class="username">somp1k3</div>
-                        </div>
-                    </div>
-                    <p class="profile-desc">Мои проекты</p>
-                </div>
-
-                <!-- Steam -->
-                <div class="profile-widget">
-                    <div class="profile-header">
-                        <div class="profile-icon">
-                            <i class="fab fa-steam"></i>
-                        </div>
-                        <div class="profile-info">
-                            <h3>Steam</h3>
-                            <div class="username">somp1k3</div>
-                        </div>
-                    </div>
-                    <p class="profile-desc">Игровой профиль</p>
-                </div>
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="https://t.me/testuhipis" target="_blank" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://github.com/somp1k3" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-link">
+                    <i class="fab fa-steam"></i>
+                    <span>Steam</span>
+                </a>
             </div>
         </div>
-
-        <!-- Divider -->
-        <div class="divider"></div>
 
         <!-- Links Section -->
         <div class="links-section">
             <h2 class="section-title">Полезные ссылки</h2>
             <div class="links-grid">
                 <a href="#" class="link-card">
+                    <div class="link-number">1</div>
                     <h4>Мой блог</h4>
-                    <p>Личный блог о разработке и технологиях</p>
+                    <p>Личный блог о разработке и технологиях. Статьи, туториалы и мысли о программировании.</p>
                 </a>
                 <a href="#" class="link-card">
+                    <div class="link-number">2</div>
                     <h4>Портфолио</h4>
-                    <p>Мои работы и проекты</p>
+                    <p>Мои работы и проекты. Полный список созданных приложений и веб-сайтов.</p>
                 </a>
                 <a href="#" class="link-card">
+                    <div class="link-number">3</div>
                     <h4>Документация</h4>
-                    <p>Полезные материалы и гайды</p>
+                    <p>Полезные материалы и гайды. Техническая документация и обучающие материалы.</p>
+                </a>
+                <a href="#" class="link-card">
+                    <div class="link-number">4</div>
+                    <h4>Ресурсы</h4>
+                    <p>Коллекция полезных ресурсов для разработчиков. Инструменты, библиотеки и фреймворки.</p>
                 </a>
             </div>
         </div>
@@ -444,14 +479,9 @@
             document.getElementById('current-time').textContent = timeString;
             
             // Date
-            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const dateOptions = { day: '2-digit', month: '2-digit' };
             const dateString = now.toLocaleDateString('ru-RU', dateOptions);
             document.getElementById('current-date').textContent = dateString;
-            
-            // Full date
-            const fullDateOptions = { day: 'numeric', month: 'long' };
-            const fullDateString = now.toLocaleDateString('ru-RU', fullDateOptions);
-            document.getElementById('full-date').textContent = fullDateString;
             
             // Day of week
             const dayOptions = { weekday: 'long' };
@@ -459,40 +489,122 @@
             document.getElementById('day-of-week').textContent = dayString.charAt(0).toUpperCase() + dayString.slice(1);
         }
 
-        // Update weather (mock data)
-        function updateWeather() {
-            // In a real implementation, you would fetch from a weather API
-            const weatherData = {
-                temp: 22,
-                description: 'Солнечно',
-                icon: '☀️'
-            };
-            
-            document.querySelector('.widget-value').textContent = `${weatherData.temp}°C`;
-            document.querySelector('.widget-desc').textContent = weatherData.description;
-            document.querySelector('.weather-icon').textContent = weatherData.icon;
+        // Update weather (mock data with API simulation)
+        async function updateWeather() {
+            try {
+                // Mock weather data - in real implementation use weather API
+                const weatherData = {
+                    temp: Math.round(15 + Math.random() * 15),
+                    descriptions: ['Солнечно', 'Облачно', 'Небольшой дождь', 'Пасмурно', 'Ясно'],
+                    icons: ['🌤️', '☀️', '⛅', '🌧️', '❄️']
+                };
+                
+                const randomIndex = Math.floor(Math.random() * weatherData.descriptions.length);
+                
+                document.getElementById('weather-temp').textContent = `${weatherData.temp}°C`;
+                document.getElementById('weather-desc').textContent = weatherData.descriptions[randomIndex];
+                document.querySelector('.widget-icon').textContent = weatherData.icons[randomIndex];
+                
+            } catch (error) {
+                console.log('Weather update error:', error);
+            }
+        }
+
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    width: ${Math.random() * 5 + 2}px;
+                    height: ${Math.random() * 5 + 2}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    opacity: ${Math.random() * 0.5 + 0.2};
+                    animation-delay: ${Math.random() * 5}s;
+                    animation-duration: ${Math.random() * 3 + 3}s;
+                `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Color theme changer
+        function setupColorThemes() {
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const gradient = this.getAttribute('data-gradient');
+                    const gradients = {
+                        default: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+                        vibrant: 'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)',
+                        purple: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
+                        blue: 'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)'
+                    };
+                    
+                    document.body.style.background = gradients[gradient];
+                });
+            });
         }
 
         // Initialize
         updateDateTime();
         updateWeather();
+        createParticles();
+        setupColorThemes();
         
         // Update time every minute
         setInterval(updateDateTime, 60000);
         
-        // Update weather every 30 minutes
-        setInterval(updateWeather, 1800000);
+        // Update weather every 10 minutes
+        setInterval(updateWeather, 600000);
 
-        // Add hover effects
-        document.querySelectorAll('.widget, .profile-widget, .link-card').forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            element.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
+        // Add click effects
+        document.querySelectorAll('.social-link, .link-card').forEach(element => {
+            element.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
             });
         });
+
+        // Add CSS for ripple effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
