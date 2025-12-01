@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UwU|Разработчик</title>
+    <title>UwU | Разработчик</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -848,7 +848,7 @@
 
         <!-- Header Section -->
         <div class="header">
-            <h1 class="name">Somp3</h1>
+            <h1 class="name">UwU</h1>
             <p class="tagline" id="tagline-text">Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.</p>
 
             <!-- Social Links -->
@@ -893,7 +893,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p id="footer-text">&copy; 2024 Somp3. Все права защищены.</p>
+            <p id="footer-text">&copy; 2024 UwU. Все права защищены.</p>
         </div>
     </div>
 
@@ -941,7 +941,7 @@
                 docsDesc: "Техническая документация и руководства. Полезные материалы для разработчиков.",
                 resourcesTitle: "Ресурсы",
                 resourcesDesc: "Коллекция полезных ресурсов, инструментов и библиотек для веб-разработки.",
-                footer: "&copy; 2024 Somp3. Все права защищены.",
+                footer: "&copy; 2024 UwU. Все права защищены.",
                 
                 // Help button
                 helpText: "Помощь",
@@ -979,7 +979,7 @@
                 docsDesc: "Technical documentation and guides. Useful materials for developers.",
                 resourcesTitle: "Resources",
                 resourcesDesc: "Collection of useful resources, tools and libraries for web development.",
-                footer: "&copy; 2024 Somp3. All rights reserved.",
+                footer: "&copy; 2024 UwU. All rights reserved.",
                 helpText: "Help",
                 helpEmail: "makarevichkv@bk.ru"
             },
@@ -1015,7 +1015,7 @@
                 docsDesc: "Тэхнічная дакументацыя і кіраўніцтвы. Карысныя матэрыялы для распрацоўшчыкаў.",
                 resourcesTitle: "Рэсурсы",
                 resourcesDesc: "Калекцыя карысных рэсурсаў, інструментаў і бібліятэк для вэб-распрацоўкі.",
-                footer: "&copy; 2024 Somp3. Усе правы абаронены.",
+                footer: "&copy; 2024 UwU. Усе правы абаронены.",
                 helpText: "Дапамога",
                 helpEmail: "makarevichkv@bk.ru"
             },
@@ -1051,7 +1051,7 @@
                 docsDesc: "技術文書とガイド。開発者向けの便利な資料。",
                 resourcesTitle: "リソース",
                 resourcesDesc: "Web開発のための便利なリソース、ツール、ライブラリのコレクション。",
-                footer: "&copy; 2024 Somp3. 全著作権所有.",
+                footer: "&copy; 2024 UwU. 全著作権所有.",
                 helpText: "ヘルプ",
                 helpEmail: "makarevichkv@bk.ru"
             },
@@ -1088,14 +1088,14 @@
                 docsDesc: "Оустроишьнꙑѩ грамотꙑ и наказаниꙗ. Потрѣбьнꙑѩ вѣщи съꙁидателемъ.",
                 resourcesTitle: "Съкровища",
                 resourcesDesc: "Събиръниѥ потрѣбьныхъ съкровищь, оужищь и книгъницъ въ вѣтьхънѧѥмъ съꙁидании.",
-                footer: "&copy; 2024 Somp3. Вьсѧ права съхранѥна.",
+                footer: "&copy; 2024 UwU. Вьсѧ права съхранѥна.",
                 helpText: "Помощь",
                 helpEmail: "makarevichkv@bk.ru"
             }
         };
 
         // Current language
-        let currentLanguage = localStorage.getItem('somp3-language') || 'ru';
+        let currentLanguage = localStorage.getItem('uwu-language') || 'ru';
 
         // Настройки по умолчанию
         const defaultSettings = {
@@ -1109,7 +1109,7 @@
         };
 
         // Загрузка настроек из localStorage
-        let settings = JSON.parse(localStorage.getItem('somp3-settings')) || {...defaultSettings};
+        let settings = JSON.parse(localStorage.getItem('uwu-settings')) || {...defaultSettings};
 
         // Apply translation
         function applyTranslation(lang) {
@@ -1254,7 +1254,7 @@
 
         // Сохранить настройки
         function saveSettings() {
-            localStorage.setItem('somp3-settings', JSON.stringify(settings));
+            localStorage.setItem('uwu-settings', JSON.stringify(settings));
         }
 
         // Toggle Settings Panel
@@ -1272,7 +1272,7 @@
             option.addEventListener('click', function() {
                 const lang = this.getAttribute('data-lang');
                 currentLanguage = lang;
-                localStorage.setItem('somp3-language', lang);
+                localStorage.setItem('uwu-language', lang);
                 applyTranslation(lang);
                 languageDropdown.classList.remove('active');
                 
