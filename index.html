@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somp3 - Developer</title>
+    <title>UwU|Разработчик</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -332,6 +332,26 @@
             color: var(--text-secondary);
         }
 
+        /* Donate Widget */
+        .donate-widget {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .donate-widget:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .donate-widget .widget-icon {
+            color: #ff6b6b;
+        }
+
+        .donate-widget .widget-value {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         /* Header Section */
         .header {
             text-align: center;
@@ -393,6 +413,16 @@
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--glow-color);
             background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Donate Link */
+        .donate-link {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .donate-link:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 107, 107, 0.5);
         }
 
         /* Links Section */
@@ -763,6 +793,13 @@
                         <span class="slider"></span>
                     </label>
                 </div>
+                <div class="setting-option">
+                    <span id="show-donate-label">Показывать донат</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="show-donate" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
             <!-- Weather Settings -->
@@ -799,6 +836,14 @@
                 <div class="widget-value" id="current-date">30.11</div>
                 <div class="widget-desc" id="day-of-week">Четверг</div>
             </div>
+
+            <!-- Donate Widget -->
+            <a href="https://www.donationalerts.com/r/uwu11" target="_blank" class="compact-widget donate-widget" id="donate-widget">
+                <div class="widget-icon">❤️</div>
+                <div class="widget-title" id="donate-widget-title">Поддержать</div>
+                <div class="widget-value" id="donate-value">Donate</div>
+                <div class="widget-desc" id="donate-desc">DonationAlerts</div>
+            </a>
         </div>
 
         <!-- Header Section -->
@@ -819,6 +864,10 @@
                 <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-link">
                     <i class="fab fa-steam"></i>
                     <span id="steam-text">Steam</span>
+                </a>
+                <a href="https://www.donationalerts.com/r/uwu11" target="_blank" class="social-link donate-link">
+                    <i class="fas fa-heart"></i>
+                    <span id="donate-text">Поддержать</span>
                 </a>
             </div>
         </div>
@@ -867,6 +916,7 @@
                 showWeatherLabel: "Показывать погоду",
                 showTimeLabel: "Показывать время",
                 showDateLabel: "Показывать дату",
+                showDonateLabel: "Показывать донат",
                 weatherTitle: "Погода",
                 weatherCityLabel: "Город",
                 
@@ -874,12 +924,16 @@
                 weatherWidgetTitle: "Погода",
                 timeWidgetTitle: "Время",
                 dateWidgetTitle: "Дата",
+                donateWidgetTitle: "Поддержать",
+                donateValue: "Donate",
+                donateDesc: "DonationAlerts",
                 
                 // Content
                 tagline: "Привет! Я начинающий разработчик и создатель различных проектов. Увлекаюсь веб-разработкой, созданием игр и программного обеспечения.",
                 telegram: "Telegram",
                 github: "GitHub",
                 steam: "Steam",
+                donate: "Поддержать",
                 linksTitle: "Полезные ссылки",
                 portfolioTitle: "Портфолио",
                 portfolioDesc: "Мои работы и проекты. Посмотрите мои последние разработки и достижения в веб-разработке.",
@@ -904,15 +958,20 @@
                 showWeatherLabel: "Show weather",
                 showTimeLabel: "Show time",
                 showDateLabel: "Show date",
+                showDonateLabel: "Show donate",
                 weatherTitle: "Weather",
                 weatherCityLabel: "City",
                 weatherWidgetTitle: "Weather",
                 timeWidgetTitle: "Time",
                 dateWidgetTitle: "Date",
+                donateWidgetTitle: "Support",
+                donateValue: "Donate",
+                donateDesc: "DonationAlerts",
                 tagline: "Hello! I'm a beginner developer and creator of various projects. I'm passionate about web development, game creation and software development.",
                 telegram: "Telegram",
                 github: "GitHub",
                 steam: "Steam",
+                donate: "Support",
                 linksTitle: "Useful Links",
                 portfolioTitle: "Portfolio",
                 portfolioDesc: "My works and projects. Check out my latest developments and achievements in web development.",
@@ -935,15 +994,20 @@
                 showWeatherLabel: "Паказваць надвор'е",
                 showTimeLabel: "Паказваць час",
                 showDateLabel: "Паказваць дату",
+                showDonateLabel: "Паказваць данат",
                 weatherTitle: "Надвор'е",
                 weatherCityLabel: "Горад",
                 weatherWidgetTitle: "Надвор'е",
                 timeWidgetTitle: "Час",
                 dateWidgetTitle: "Дата",
+                donateWidgetTitle: "Падтрымаць",
+                donateValue: "Donate",
+                donateDesc: "DonationAlerts",
                 tagline: "Прывітанне! Я пачынаючы распрацоўшчык і стваральнік розных праектаў. Захапляюся вэб-распрацоўкай, стварэннем гульняў і праграмным забеспячэннем.",
                 telegram: "Telegram",
                 github: "GitHub",
                 steam: "Steam",
+                donate: "Падтрымаць",
                 linksTitle: "Карысныя спасылкі",
                 portfolioTitle: "Партфоліа",
                 portfolioDesc: "Мае работы і праекты. Паглядзіце мае апошнія распрацоўкі і дасягненні ў вэб-распрацоўцы.",
@@ -966,15 +1030,20 @@
                 showWeatherLabel: "天気を表示",
                 showTimeLabel: "時間を表示",
                 showDateLabel: "日付を表示",
+                showDonateLabel: "寄付を表示",
                 weatherTitle: "天気",
                 weatherCityLabel: "都市",
                 weatherWidgetTitle: "天気",
                 timeWidgetTitle: "時間",
                 dateWidgetTitle: "日付",
+                donateWidgetTitle: "サポート",
+                donateValue: "寄付",
+                donateDesc: "DonationAlerts",
                 tagline: "こんにちは！私は初心者開発者であり、様々なプロジェクトのクリエイターです。Web開発、ゲーム制作、ソフトウェア開発に情熱を持っています。",
                 telegram: "Telegram",
                 github: "GitHub",
                 steam: "Steam",
+                donate: "サポート",
                 linksTitle: "便利なリンク",
                 portfolioTitle: "ポートフォリオ",
                 portfolioDesc: "私の作品とプロジェクト。Web開発における最新の開発と成果をご覧ください。",
@@ -998,15 +1067,20 @@
                 showWeatherLabel: "Покаꙁовати погодоу",
                 showTimeLabel: "Покаꙁовати врѣмѧ",
                 showDateLabel: "Покаꙁовати датоу",
+                showDonateLabel: "Покаꙁовати даръ",
                 weatherTitle: "Погода",
                 weatherCityLabel: "Градъ",
                 weatherWidgetTitle: "Погода",
                 timeWidgetTitle: "Врѣмѧ",
                 dateWidgetTitle: "Дата",
+                donateWidgetTitle: "Подъдрьжати",
+                donateValue: "Даръ",
+                donateDesc: "DonationAlerts",
                 tagline: "Здравъ бѫди! Аꙁъ ѥсмь начьинающии съꙁидатель и творець различьныхъ дѣлъ. Любо мьнѣ вѣтьхънѧѩ съꙁиданиꙗ, сътворениꙗ игръ и прѣложьствиꙗ.",
                 telegram: "Telegram",
                 github: "GitHub",
                 steam: "Steam",
+                donate: "Подъдрьжати",
                 linksTitle: "Потрѣбьнꙑи съвѫꙁи",
                 portfolioTitle: "Портфолио",
                 portfolioDesc: "Моꙗ дѣла и съꙁиданиꙗ. Виждь моꙗ послѣдьнꙗѩ съꙁиданиꙗ и постижениꙗ въ вѣтьхънѧѥмъ съꙁидании.",
@@ -1029,6 +1103,7 @@
             showWeather: true,
             showTime: true,
             showDate: true,
+            showDonate: true,
             weatherCity: 'Москва',
             theme: 'purple'
         };
@@ -1055,6 +1130,7 @@
             document.getElementById('show-weather-label').textContent = t.showWeatherLabel;
             document.getElementById('show-time-label').textContent = t.showTimeLabel;
             document.getElementById('show-date-label').textContent = t.showDateLabel;
+            document.getElementById('show-donate-label').textContent = t.showDonateLabel;
             document.getElementById('weather-title').textContent = t.weatherTitle;
             document.getElementById('weather-city-label').textContent = t.weatherCityLabel;
             
@@ -1062,12 +1138,16 @@
             document.getElementById('weather-widget-title').textContent = t.weatherWidgetTitle;
             document.getElementById('time-widget-title').textContent = t.timeWidgetTitle;
             document.getElementById('date-widget-title').textContent = t.dateWidgetTitle;
+            document.getElementById('donate-widget-title').textContent = t.donateWidgetTitle;
+            document.getElementById('donate-value').textContent = t.donateValue;
+            document.getElementById('donate-desc').textContent = t.donateDesc;
             
             // Content
             document.getElementById('tagline-text').textContent = t.tagline;
             document.getElementById('telegram-text').textContent = t.telegram;
             document.getElementById('github-text').textContent = t.github;
             document.getElementById('steam-text').textContent = t.steam;
+            document.getElementById('donate-text').textContent = t.donate;
             document.getElementById('links-title').textContent = t.linksTitle;
             document.getElementById('portfolio-title').textContent = t.portfolioTitle;
             document.getElementById('portfolio-desc').textContent = t.portfolioDesc;
@@ -1128,12 +1208,14 @@
             document.getElementById('show-weather').checked = settings.showWeather;
             document.getElementById('show-time').checked = settings.showTime;
             document.getElementById('show-date').checked = settings.showDate;
+            document.getElementById('show-donate').checked = settings.showDonate;
             document.getElementById('weather-city').value = settings.weatherCity;
 
             // Применить видимость виджетов
             document.getElementById('weather-widget').style.display = settings.showWeather ? 'block' : 'none';
             document.getElementById('time-widget').style.display = settings.showTime ? 'block' : 'none';
             document.getElementById('date-widget').style.display = settings.showDate ? 'block' : 'none';
+            document.getElementById('donate-widget').style.display = settings.showDonate ? 'block' : 'none';
 
             // Применить эффект размытия
             updateBlurEffect();
@@ -1342,6 +1424,12 @@
             document.getElementById('show-date').addEventListener('change', function() {
                 settings.showDate = this.checked;
                 document.getElementById('date-widget').style.display = this.checked ? 'block' : 'none';
+                saveSettings();
+            });
+
+            document.getElementById('show-donate').addEventListener('change', function() {
+                settings.showDonate = this.checked;
+                document.getElementById('donate-widget').style.display = this.checked ? 'block' : 'none';
                 saveSettings();
             });
 
