@@ -1026,13 +1026,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Season Effects */
-        .season-effect-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: -1;
-        }
-
         /* Loader */
         .loader {
             display: none;
@@ -1710,105 +1703,6 @@
             const weatherAnimation = document.getElementById('weather-animation');
             const liveBadge = document.getElementById('live-badge');
 
-            // Иконки погоды OpenWeather
-            const weatherIcons = {
-                '200': { icon: 'fas fa-bolt', text: 'Гроза с небольшим дождем', bg: 'stormy' },
-                '201': { icon: 'fas fa-bolt', text: 'Гроза с дождем', bg: 'stormy' },
-                '202': { icon: 'fas fa-bolt', text: 'Сильная гроза', bg: 'stormy' },
-                '210': { icon: 'fas fa-bolt', text: 'Небольшая гроза', bg: 'stormy' },
-                '211': { icon: 'fas fa-bolt', text: 'Гроза', bg: 'stormy' },
-                '212': { icon: 'fas fa-bolt', text: 'Сильная гроза', bg: 'stormy' },
-                '221': { icon: 'fas fa-bolt', text: 'Гроза с ливнем', bg: 'stormy' },
-                '230': { icon: 'fas fa-bolt', text: 'Гроза с моросящим дождем', bg: 'stormy' },
-                '231': { icon: 'fas fa-bolt', text: 'Гроза с моросящим дождем', bg: 'stormy' },
-                '232': { icon: 'fas fa-bolt', text: 'Гроза с сильным дождем', bg: 'stormy' },
-                '300': { icon: 'fas fa-cloud-rain', text: 'Слабая морось', bg: 'rainy' },
-                '301': { icon: 'fas fa-cloud-rain', text: 'Морось', bg: 'rainy' },
-                '302': { icon: 'fas fa-cloud-rain', text: 'Сильная морось', bg: 'rainy' },
-                '310': { icon: 'fas fa-cloud-rain', text: 'Моросящий дождь', bg: 'rainy' },
-                '311': { icon: 'fas fa-cloud-rain', text: 'Моросящий дождь', bg: 'rainy' },
-                '312': { icon: 'fas fa-cloud-rain', text: 'Сильный моросящий дождь', bg: 'rainy' },
-                '313': { icon: 'fas fa-cloud-rain', text: 'Ливень с моросью', bg: 'rainy' },
-                '314': { icon: 'fas fa-cloud-rain', text: 'Сильный ливень с моросью', bg: 'rainy' },
-                '321': { icon: 'fas fa-cloud-rain', text: 'Моросящий ливень', bg: 'rainy' },
-                '500': { icon: 'fas fa-cloud-rain', text: 'Небольшой дождь', bg: 'rainy' },
-                '501': { icon: 'fas fa-cloud-rain', text: 'Умеренный дождь', bg: 'rainy' },
-                '502': { icon: 'fas fa-cloud-showers-heavy', text: 'Сильный дождь', bg: 'rainy' },
-                '503': { icon: 'fas fa-cloud-showers-heavy', text: 'Очень сильный дождь', bg: 'rainy' },
-                '504': { icon: 'fas fa-cloud-showers-heavy', text: 'Ливень', bg: 'rainy' },
-                '511': { icon: 'fas fa-cloud-meatball', text: 'Ледяной дождь', bg: 'rainy' },
-                '520': { icon: 'fas fa-cloud-showers-heavy', text: 'Небольшой ливень', bg: 'rainy' },
-                '521': { icon: 'fas fa-cloud-showers-heavy', text: 'Ливень', bg: 'rainy' },
-                '522': { icon: 'fas fa-cloud-showers-water', text: 'Сильный ливень', bg: 'rainy' },
-                '531': { icon: 'fas fa-cloud-showers-heavy', text: 'Рваный ливень', bg: 'rainy' },
-                '600': { icon: 'fas fa-snowflake', text: 'Небольшой снег', bg: 'snowy' },
-                '601': { icon: 'fas fa-snowflake', text: 'Снег', bg: 'snowy' },
-                '602': { icon: 'fas fa-snowflake', text: 'Сильный снегопад', bg: 'snowy' },
-                '611': { icon: 'fas fa-snowflake', text: 'Мокрый снег', bg: 'snowy' },
-                '612': { icon: 'fas fa-snowflake', text: 'Небольшой мокрый снег', bg: 'snowy' },
-                '613': { icon: 'fas fa-snowflake', text: 'Мокрый снег', bg: 'snowy' },
-                '615': { icon: 'fas fa-snowflake', text: 'Небольшой дождь со снегом', bg: 'snowy' },
-                '616': { icon: 'fas fa-snowflake', text: 'Дождь со снегом', bg: 'snowy' },
-                '620': { icon: 'fas fa-snowflake', text: 'Небольшой снегопад', bg: 'snowy' },
-                '621': { icon: 'fas fa-snowflake', text: 'Снегопад', bg: 'snowy' },
-                '622': { icon: 'fas fa-snowflake', text: 'Сильный снегопад', bg: 'snowy' },
-                '701': { icon: 'fas fa-smog', text: 'Туман', bg: 'cloudy' },
-                '711': { icon: 'fas fa-smog', text: 'Дымка', bg: 'cloudy' },
-                '721': { icon: 'fas fa-smog', text: 'Дымка', bg: 'cloudy' },
-                '731': { icon: 'fas fa-wind', text: 'Пыльные вихри', bg: 'cloudy' },
-                '741': { icon: 'fas fa-smog', text: 'Туман', bg: 'cloudy' },
-                '751': { icon: 'fas fa-wind', text: 'Песчаная буря', bg: 'cloudy' },
-                '761': { icon: 'fas fa-wind', text: 'Пыль', bg: 'cloudy' },
-                '762': { icon: 'fas fa-volcano', text: 'Вулканический пепел', bg: 'cloudy' },
-                '771': { icon: 'fas fa-wind', text: 'Шквал', bg: 'stormy' },
-                '781': { icon: 'fas fa-tornado', text: 'Торнадо', bg: 'stormy' },
-                '800': { icon: 'fas fa-sun', text: 'Ясно', bg: 'sunny' },
-                '801': { icon: 'fas fa-cloud-sun', text: 'Небольшая облачность', bg: 'sunny' },
-                '802': { icon: 'fas fa-cloud', text: 'Рассеянные облака', bg: 'cloudy' },
-                '803': { icon: 'fas fa-cloud', text: 'Облачно с прояснениями', bg: 'cloudy' },
-                '804': { icon: 'fas fa-cloud', text: 'Пасмурно', bg: 'cloudy' }
-            };
-
-            // Сезонные настройки
-            const seasonConfig = {
-                spring: {
-                    name: 'Весна',
-                    colors: {
-                        primary: '#2ecc71',
-                        accent: '#ff9ff3',
-                        bg: 'linear-gradient(135deg, #00b09b 0%, #96c93d 100%)'
-                    },
-                    effects: ['blossoms', 'butterflies', 'gentle_rain']
-                },
-                summer: {
-                    name: 'Лето',
-                    colors: {
-                        primary: '#f39c12',
-                        accent: '#ff6b6b',
-                        bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-                    },
-                    effects: ['sunbeams', 'waves', 'beach']
-                },
-                autumn: {
-                    name: 'Осень',
-                    colors: {
-                        primary: '#e67e22',
-                        accent: '#d35400',
-                        bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-                    },
-                    effects: ['falling_leaves', 'fog', 'harvest']
-                },
-                winter: {
-                    name: 'Зима',
-                    colors: {
-                        primary: '#3498db',
-                        accent: '#2980b9',
-                        bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                    },
-                    effects: ['snowflakes', 'ice_crystals', 'aurora']
-                }
-            };
-
             // Состояние приложения
             let currentUnit = 'celsius';
             let currentWeatherData = null;
@@ -1823,7 +1717,7 @@
             let refreshIntervalSeconds = 20;
             let countdown = refreshIntervalSeconds;
 
-            // API ключи - ИСПРАВЛЕНО: используем другой источник данных
+            // API ключи - WeatherAPI
             const WEATHER_API_KEY = '8f6d8296a1fe4c03904173614251201'; // Рабочий ключ для WeatherAPI
             const WEATHER_API_URL = 'https://api.weatherapi.com/v1';
 
@@ -2007,21 +1901,7 @@
                 });
 
                 locationBtn.addEventListener('click', async () => {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(
-                            async (position) => {
-                                const { latitude, longitude } = position.coords;
-                                currentLocation = { lat: latitude, lon: longitude };
-                                await getWeatherByCoords(latitude, longitude);
-                            },
-                            (error) => {
-                                console.error('Ошибка геолокации:', error);
-                                showError('Не удалось определить местоположение. Разрешите доступ к геолокации или введите город вручную.');
-                            }
-                        );
-                    } else {
-                        showError('Геолокация не поддерживается вашим браузером.');
-                    }
+                    await getWeatherByGeolocation();
                 });
 
                 // Настройки
@@ -2497,24 +2377,16 @@
                 currentSeason = season;
                 appSettings.season = season;
                 
-                const config = seasonConfig[season];
-                if (config) {
-                    // Применяем цвета сезона
-                    if (appSettings.seasonAuto) {
-                        setColor('primary', config.colors.primary);
-                        setColor('accent', config.colors.accent);
-                        document.documentElement.style.setProperty('--season-bg', config.colors.bg);
-                    }
-                    
-                    // Обновляем UI
-                    seasonEffects.forEach(effect => {
-                        effect.classList.toggle('active', effect.dataset.season === season);
-                    });
-                    
-                    currentSeasonElement.textContent = config.name;
-                    applySeasonEffects();
-                }
+                // Обновляем UI
+                seasonEffects.forEach(effect => {
+                    effect.classList.toggle('active', effect.dataset.season === season);
+                });
                 
+                currentSeasonElement.textContent = season === 'spring' ? 'Весна' : 
+                                                  season === 'summer' ? 'Лето' : 
+                                                  season === 'autumn' ? 'Осень' : 'Зима';
+                
+                applySeasonEffects();
                 saveSettingsToStorage();
             }
 
@@ -2530,20 +2402,11 @@
             function applySeasonEffects() {
                 if (!appSettings.backgroundEffects) return;
                 
-                const config = seasonConfig[currentSeason];
-                if (!config) return;
-                
                 clearSeasonParticles();
                 
                 if (appSettings.particles) {
                     createSeasonParticles();
                 }
-                
-                // Применяем сезонные анимации
-                weatherAnimation.innerHTML = '';
-                config.effects.forEach(effect => {
-                    createSeasonEffect(effect);
-                });
             }
 
             // Основная функция получения погоды
@@ -2606,9 +2469,69 @@
                 }
             }
 
-            async function getWeatherByCoords(lat, lon) {
+            async function getWeatherByGeolocation() {
                 showLoader();
                 hideError();
+                
+                if (!navigator.geolocation) {
+                    showError('Геолокация не поддерживается вашим браузером');
+                    hideLoader();
+                    return;
+                }
+
+                // Показываем уведомление о запросе геолокации
+                const notification = createNotification({
+                    type: 'info',
+                    title: '📍 Запрос геолокации',
+                    message: 'Пожалуйста, разрешите доступ к вашему местоположению',
+                    duration: 5,
+                    icon: 'fas fa-location-arrow'
+                });
+                showNotification(notification);
+
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const { latitude, longitude } = position.coords;
+                        await getWeatherByCoords(latitude, longitude);
+                    },
+                    (error) => {
+                        hideLoader();
+                        console.error('Ошибка геолокации:', error);
+                        
+                        let errorMessage = 'Не удалось определить местоположение';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = 'Доступ к геолокации запрещен. Разрешите доступ в настройках браузера';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = 'Информация о местоположении недоступна';
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = 'Время ожидания геолокации истекло';
+                                break;
+                        }
+                        
+                        showError(errorMessage);
+                        
+                        // Показываем уведомление об ошибке
+                        const notification = createNotification({
+                            type: 'development',
+                            title: '⚠️ Ошибка геолокации',
+                            message: errorMessage,
+                            duration: 5,
+                            icon: 'fas fa-exclamation-triangle'
+                        });
+                        showNotification(notification);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            }
+
+            async function getWeatherByCoords(lat, lon) {
                 updateIndicator.style.display = 'flex';
                 
                 try {
@@ -2703,7 +2626,7 @@
                 updateWeatherBackground(bgClass);
                 
                 // Детали погоды
-                windSpeed.textContent = `${data.current.wind_kph / 3.6} м/с`;
+                windSpeed.textContent = `${(data.current.wind_kph / 3.6).toFixed(1)} м/с`;
                 humidity.textContent = `${data.current.humidity}%`;
                 pressure.textContent = `${data.current.pressure_mb} гПа`;
                 uvIndex.textContent = data.current.uv;
@@ -3000,7 +2923,7 @@
                 currentDate.textContent = now.toLocaleDateString('ru-RU', options);
             }
 
-            // Функции для сезонных эффектов (упрощенные)
+            // Функции для сезонных эффектов
             function createSeasonParticles() {
                 // Упрощенная реализация частиц
                 if (!appSettings.particles || !weatherAnimation) return;
@@ -3039,14 +2962,6 @@
                 if (weatherAnimation) {
                     weatherAnimation.innerHTML = '';
                 }
-            }
-
-            function createSeasonEffect(effect) {
-                // Упрощенная реализация эффектов
-                if (!appSettings.backgroundEffects) return;
-                
-                // Здесь можно добавить более сложные эффекты
-                // Для простоты просто создаем несколько частиц
             }
 
             function updateAnimationIntensity() {
