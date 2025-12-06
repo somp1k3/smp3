@@ -6,7 +6,6 @@
     <title>somp3 Погода - реальный прогноз с автообновлением</title>
     <style>
         :root {
-            /* Основные цвета по умолчанию */
             --primary-color: #4a76ee;
             --secondary-color: #5a8dee;
             --accent-color: #ff6b6b;
@@ -17,23 +16,8 @@
             --border-color: #e0e0e0;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius: 12px;
-            
-            /* Сезонные переменные */
             --season-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --season-primary: #4a76ee;
-            --season-accent: #ff6b6b;
-            
-            /* Эффекты погоды */
-            --sunny: linear-gradient(135deg, #ffd700, #ff8c00);
-            --cloudy: linear-gradient(135deg, #87CEEB, #B0C4DE);
-            --rainy: linear-gradient(135deg, #4682B4, #5F9EA0);
-            --snowy: linear-gradient(135deg, #E0FFFF, #F0F8FF);
-            --stormy: linear-gradient(135deg, #2F4F4F, #708090);
-            
-            /* Анимации */
-            --animation-speed: 0.3s;
             --transition: all 0.3s ease;
-            --animation-opacity: 0.3;
         }
 
         * {
@@ -57,184 +41,47 @@
             padding: 20px;
         }
 
-        /* Notification System */
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 400px;
-        }
-
-        .notification {
-            background: white;
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            transform: translateX(150%);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            overflow: hidden;
-            border-left: 4px solid var(--season-primary);
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.hide {
-            transform: translateX(150%);
-        }
-
-        .notification.development {
-            border-left-color: #ff9800;
-            background: linear-gradient(135deg, #fff3e0, #fff8e1);
-        }
-
-        .notification.thankyou {
-            border-left-color: #4caf50;
-            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
-        }
-
-        .notification.info {
-            border-left-color: #2196f3;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-        }
-
-        .notification-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .notification-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .notification-title i {
-            font-size: 1.2rem;
-        }
-
-        .notification-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: #999;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 5px;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notification-close:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: #333;
-        }
-
-        .notification-content {
-            color: #555;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .notification-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: var(--season-primary);
-            width: 100%;
-            transform-origin: left;
-        }
-
-        .notification.development .notification-progress {
-            background: #ff9800;
-        }
-
-        .notification.thankyou .notification-progress {
-            background: #4caf50;
-        }
-
-        .notification.info .notification-progress {
-            background: #2196f3;
-        }
-
-        .notification-timer {
-            font-size: 0.8rem;
-            color: #999;
-            text-align: right;
-            margin-top: 10px;
-        }
-
-        /* Cookie Notice - Вверху страницы */
-        .cookie-notice {
+        /* Loader */
+        .loader {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 248, 225, 0.95);
-            padding: 15px 20px;
-            z-index: 1000;
-            border-bottom: 3px solid #ffc107;
-            display: none;
-            backdrop-filter: blur(10px);
-        }
-
-        .cookie-notice-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .cookie-notice p {
-            color: #856404;
-            margin: 0;
-            flex: 1;
-        }
-
-        .cookie-notice-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .cookie-notice button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .cookie-accept {
-            background: var(--season-primary);
+            flex-direction: column;
             color: white;
         }
 
-        .cookie-settings {
-            background: transparent;
-            color: var(--season-primary);
-            border: 2px solid var(--season-primary);
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
-        /* Header Styles */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: rgba(255, 87, 87, 0.1);
+            border-left: 4px solid #ff5757;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            color: #ff5757;
+        }
+
         header {
             display: flex;
             justify-content: space-between;
@@ -256,7 +103,7 @@
 
         .logo-icon {
             font-size: 2.5rem;
-            color: var(--season-primary);
+            color: var(--primary-color);
             animation: float 3s ease-in-out infinite;
         }
 
@@ -266,10 +113,10 @@
         }
 
         .logo h1 {
-            color: var(--season-primary);
+            color: var(--primary-color);
             font-size: 2rem;
             margin-bottom: 5px;
-            background: linear-gradient(45deg, var(--season-primary), var(--season-accent));
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -302,7 +149,7 @@
         }
 
         .search-container input:focus {
-            border-color: var(--season-primary);
+            border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(74, 118, 238, 0.2);
         }
 
@@ -310,7 +157,7 @@
             padding: 12px 20px;
             border: none;
             border-radius: 25px;
-            background: var(--season-primary);
+            background: var(--primary-color);
             color: white;
             cursor: pointer;
             transition: var(--transition);
@@ -349,245 +196,11 @@
         }
 
         .control-btn.active {
-            background: var(--season-primary);
+            background: var(--primary-color);
             color: white;
         }
 
-        /* Settings Panel */
-        .settings-panel {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 380px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
-            transition: right 0.4s ease;
-            overflow-y: auto;
-            padding: 30px;
-        }
-
-        .settings-panel.active {
-            right: 0;
-        }
-
-        .settings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .settings-header h2 {
-            color: var(--season-primary);
-            font-size: 1.8rem;
-        }
-
-        .close-settings {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-settings:hover {
-            color: var(--season-primary);
-            transform: rotate(90deg);
-        }
-
-        .settings-section {
-            margin-bottom: 30px;
-        }
-
-        .settings-section h3 {
-            color: var(--text-color);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .settings-group {
-            margin-bottom: 20px;
-        }
-
-        .settings-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .color-picker {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .color-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: var(--transition);
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.active {
-            border-color: var(--text-color);
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .theme-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .theme-option {
-            padding: 15px;
-            border-radius: var(--radius);
-            background: var(--bg-color);
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            border: 2px solid transparent;
-        }
-
-        .theme-option:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .theme-option.active {
-            border-color: var(--season-primary);
-            background: rgba(74, 118, 238, 0.1);
-        }
-
-        .theme-option .theme-preview {
-            width: 100%;
-            height: 60px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .slider-container {
-            margin-top: 10px;
-        }
-
-        .slider {
-            width: 100%;
-            height: 8px;
-            -webkit-appearance: none;
-            background: var(--border-color);
-            border-radius: 4px;
-            outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--season-primary);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        .season-effects {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .season-effect {
-            padding: 15px;
-            border-radius: var(--radius);
-            background: var(--bg-color);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .season-effect.active {
-            background: rgba(74, 118, 238, 0.1);
-            border: 2px solid var(--season-primary);
-        }
-
-        .settings-footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .reset-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .reset-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        /* Overlay */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            backdrop-filter: blur(3px);
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* Current Weather Styles */
+        /* Current Weather */
         .current-weather {
             background: linear-gradient(135deg, rgba(74, 118, 238, 0.9), rgba(118, 75, 162, 0.9));
             color: white;
@@ -597,17 +210,6 @@
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .weather-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            opacity: 0.1;
             transition: var(--transition);
         }
 
@@ -709,7 +311,7 @@
             font-weight: 500;
         }
 
-        /* Forecast Styles */
+        /* Forecast */
         .hourly-forecast, .daily-forecast, .additional-info {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: var(--radius);
@@ -722,7 +324,7 @@
 
         .hourly-forecast h3, .daily-forecast h3 {
             margin-bottom: 20px;
-            color: var(--season-primary);
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -734,19 +336,14 @@
             gap: 15px;
             padding-bottom: 10px;
             scrollbar-width: thin;
-            scrollbar-color: var(--season-primary) transparent;
         }
 
         .hourly-container::-webkit-scrollbar {
             height: 6px;
         }
 
-        .hourly-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
         .hourly-container::-webkit-scrollbar-thumb {
-            background-color: var(--season-primary);
+            background-color: var(--primary-color);
             border-radius: 3px;
         }
 
@@ -775,7 +372,7 @@
         .hour-temp {
             font-size: 1.6rem;
             font-weight: 600;
-            color: var(--season-primary);
+            color: var(--primary-color);
             margin: 15px 0;
         }
 
@@ -806,16 +403,6 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .day-card.active {
-            background: linear-gradient(135deg, var(--season-primary), var(--secondary-color));
-            color: white;
-        }
-
-        .day-card.active .temp-day,
-        .day-card.active .temp-night {
-            color: white;
-        }
-
         .day-name {
             font-weight: 600;
             margin-bottom: 5px;
@@ -833,10 +420,6 @@
             color: var(--secondary-color);
         }
 
-        .day-card.active .day-icon {
-            color: white;
-        }
-
         .day-temp {
             display: flex;
             justify-content: center;
@@ -845,7 +428,7 @@
         }
 
         .temp-day {
-            color: var(--season-primary);
+            color: var(--primary-color);
             font-weight: 600;
             font-size: 1.2rem;
         }
@@ -855,7 +438,7 @@
             font-weight: 500;
         }
 
-        /* Additional Info Styles */
+        /* Additional Info */
         .additional-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -877,7 +460,7 @@
         }
 
         .info-card h4 {
-            color: var(--season-primary);
+            color: var(--primary-color);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -905,7 +488,7 @@
         .sun-value {
             font-size: 1.4rem;
             font-weight: 600;
-            color: var(--season-primary);
+            color: var(--primary-color);
         }
 
         .progress-container {
@@ -926,12 +509,12 @@
         .visibility-value, .precipitation-value {
             font-size: 2.2rem;
             font-weight: 300;
-            color: var(--season-primary);
+            color: var(--primary-color);
             text-align: center;
             margin-top: 10px;
         }
 
-        /* Footer Styles */
+        /* Footer */
         footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -952,7 +535,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: var(--season-primary);
+            background: var(--primary-color);
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
@@ -985,20 +568,7 @@
             50% { opacity: 0.3; }
         }
 
-        /* Weather Animation Background */
-        .weather-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: var(--animation-opacity, 0.3);
-            transition: opacity var(--animation-speed);
-        }
-
-        /* Auto-refresh indicator */
+        /* Refresh indicator */
         .refresh-indicator {
             display: flex;
             align-items: center;
@@ -1026,70 +596,8 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Loader */
-        .loader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: white;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.2);
-            border-top-color: var(--season-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Error Message */
-        .error-message {
-            display: none;
-            background: rgba(255, 87, 87, 0.1);
-            border-left: 4px solid #ff5757;
-            padding: 15px 20px;
-            border-radius: var(--radius);
-            margin: 20px 0;
-            color: #ff5757;
-        }
-
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
-            .notification-container {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-            
-            .notification {
-                max-width: none;
-            }
-            
-            .cookie-notice-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .cookie-notice-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-            
             header {
                 margin-top: 100px;
                 flex-direction: column;
@@ -1113,11 +621,6 @@
                 flex-direction: column;
                 text-align: center;
                 gap: 25px;
-            }
-            
-            .settings-panel {
-                width: 100%;
-                right: -100%;
             }
             
             .hourly-container {
@@ -1171,10 +674,6 @@
             .days-container {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             }
-            
-            .settings-panel {
-                padding: 20px;
-            }
         }
 
         /* Dark Theme */
@@ -1186,258 +685,11 @@
             --border-color: #2d4059;
             --season-bg: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
         }
-
-        /* Light Theme */
-        body.light-theme {
-            --bg-color: #f8f9fa;
-            --card-color: #ffffff;
-            --text-color: #212529;
-            --text-secondary: #6c757d;
-            --border-color: #dee2e6;
-            --season-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        /* Nature Theme */
-        body.nature-theme {
-            --bg-color: #f1f8e9;
-            --card-color: #ffffff;
-            --text-color: #33691e;
-            --text-secondary: #689f38;
-            --border-color: #c5e1a5;
-            --season-bg: linear-gradient(135deg, #43a047 0%, #1b5e20 100%);
-            --season-primary: #2e7d32;
-            --season-accent: #ff8a65;
-        }
-
-        /* Ocean Theme */
-        body.ocean-theme {
-            --bg-color: #e3f2fd;
-            --card-color: #ffffff;
-            --text-color: #1565c0;
-            --text-secondary: #42a5f5;
-            --border-color: #90caf9;
-            --season-bg: linear-gradient(135deg, #2979ff 0%, #00bcd4 100%);
-            --season-primary: #1976d2;
-            --season-accent: #ff4081;
-        }
-
-        /* Update Indicator */
-        .update-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌤️</text></svg>">
 </head>
 <body class="light-theme">
-    <!-- Notification System -->
-    <div class="notification-container" id="notification-container">
-        <!-- Уведомления будут добавляться динамически -->
-    </div>
-
-    <!-- Cookie Notice - Вверху страницы -->
-    <div class="cookie-notice" id="cookie-notice">
-        <div class="cookie-notice-content">
-            <p>🍪 Мы используем cookies для улучшения работы сайта и персонализации опыта</p>
-            <div class="cookie-notice-buttons">
-                <button class="cookie-settings" id="cookie-settings-btn">
-                    <i class="fas fa-sliders-h"></i> Настройки
-                </button>
-                <button class="cookie-accept" id="accept-cookies">
-                    <i class="fas fa-check"></i> Принять все
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Panel -->
-    <div class="settings-panel" id="settings-panel">
-        <div class="settings-header">
-            <h2><i class="fas fa-cog"></i> Настройки</h2>
-            <button class="close-settings" id="close-settings">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-palette"></i> Цветовая тема</h3>
-            <div class="theme-selector">
-                <div class="theme-option" data-theme="light">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                    <span>Стандартная</span>
-                </div>
-                <div class="theme-option" data-theme="dark">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);"></div>
-                    <span>Темная</span>
-                </div>
-                <div class="theme-option" data-theme="nature">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #43a047 0%, #1b5e20 100%);"></div>
-                    <span>Природа</span>
-                </div>
-                <div class="theme-option" data-theme="ocean">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #2979ff 0%, #00bcd4 100%);"></div>
-                    <span>Океан</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-fill-drip"></i> Основные цвета</h3>
-            <div class="settings-group">
-                <label class="settings-label">Основной цвет:</label>
-                <div class="color-picker">
-                    <div class="color-option active" style="background: #4a76ee;" data-color="primary" data-value="#4a76ee"></div>
-                    <div class="color-option" style="background: #2ecc71;" data-color="primary" data-value="#2ecc71"></div>
-                    <div class="color-option" style="background: #e74c3c;" data-color="primary" data-value="#e74c3c"></div>
-                    <div class="color-option" style="background: #9b59b6;" data-color="primary" data-value="#9b59b6"></div>
-                    <div class="color-option" style="background: #f39c12;" data-color="primary" data-value="#f39c12"></div>
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <label class="settings-label">Акцентный цвет:</label>
-                <div class="color-picker">
-                    <div class="color-option active" style="background: #ff6b6b;" data-color="accent" data-value="#ff6b6b"></div>
-                    <div class="color-option" style="background: #1abc9c;" data-color="accent" data-value="#1abc9c"></div>
-                    <div class="color-option" style="background: #3498db;" data-color="accent" data-value="#3498db"></div>
-                    <div class="color-option" style="background: #e67e22;" data-color="accent" data-value="#e67e22"></div>
-                    <div class="color-option" style="background: #95a5a6;" data-color="accent" data-value="#95a5a6"></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-leaf"></i> Сезонные эффекты</h3>
-            <div class="settings-group">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="season-effects-toggle" checked>
-                    <label for="season-effects-toggle">Автоопределение по времени года</label>
-                </div>
-            </div>
-            
-            <div class="season-effects">
-                <div class="season-effect" data-season="spring">
-                    <i class="fas fa-seedling" style="color: #2ecc71; font-size: 2rem;"></i>
-                    <div>Весна</div>
-                </div>
-                <div class="season-effect" data-season="summer">
-                    <i class="fas fa-sun" style="color: #f39c12; font-size: 2rem;"></i>
-                    <div>Лето</div>
-                </div>
-                <div class="season-effect" data-season="autumn">
-                    <i class="fas fa-leaf" style="color: #e67e22; font-size: 2rem;"></i>
-                    <div>Осень</div>
-                </div>
-                <div class="season-effect" data-season="winter">
-                    <i class="fas fa-snowflake" style="color: #3498db; font-size: 2rem;"></i>
-                    <div>Зима</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-magic"></i> Анимации и эффекты</h3>
-            <div class="settings-group">
-                <label class="settings-label">Интенсивность анимаций:</label>
-                <input type="range" min="0" max="100" value="50" class="slider" id="animation-intensity">
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="particles-toggle" checked>
-                <label for="particles-toggle">Частицы погоды</label>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="background-effects" checked>
-                <label for="background-effects">Фоновые эффекты</label>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-sync-alt"></i> Автообновление</h3>
-            <div class="settings-group">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="auto-refresh-toggle" checked>
-                    <label for="auto-refresh-toggle">Автообновление погоды</label>
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <label class="settings-label">Интервал обновления:</label>
-                <div class="checkbox-group" style="margin-top: 10px;">
-                    <input type="radio" id="refresh-20s" name="refresh-interval" value="20" checked>
-                    <label for="refresh-20s">Каждые 20 секунд</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="radio" id="refresh-60s" name="refresh-interval" value="60">
-                    <label for="refresh-60s">Каждую минуту</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="radio" id="refresh-300s" name="refresh-interval" value="300">
-                    <label for="refresh-300s">Каждые 5 минут</label>
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-tachometer-alt"></i> Производительность</h3>
-            <div class="checkbox-group">
-                <input type="checkbox" id="hardware-acceleration" checked>
-                <label for="hardware-acceleration">Аппаратное ускорение</label>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="reduce-animations">
-                <label for="reduce-animations">Уменьшить анимации</label>
-            </div>
-        </div>
-        
-        <div class="settings-section">
-            <h3><i class="fas fa-user"></i> Личные данные</h3>
-            <div class="checkbox-group">
-                <input type="checkbox" id="save-location" checked>
-                <label for="save-location">Сохранять местоположение</label>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="save-settings" checked>
-                <label for="save-settings">Сохранять настройки</label>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="analytics-optin">
-                <label for="analytics-optin">Аналитика использования</label>
-            </div>
-        </div>
-        
-        <div class="settings-footer">
-            <button class="reset-btn" id="reset-settings">
-                <i class="fas fa-redo"></i> Сбросить настройки
-            </button>
-        </div>
-    </div>
-
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
-
-    <!-- Weather Animation Background -->
-    <div class="weather-animation" id="weather-animation"></div>
-    
     <div class="container">
         <!-- Loader -->
         <div class="loader" id="loader">
@@ -1474,17 +726,11 @@
                 </div>
                 
                 <div class="control-buttons">
-                    <button class="control-btn" id="settings-btn">
-                        <i class="fas fa-sliders-h"></i> Настройки
-                    </button>
                     <button class="control-btn" id="units-toggle">
                         <i class="fas fa-thermometer-half"></i> °C/°F
                     </button>
-                    <button class="control-btn" id="auto-refresh-btn">
-                        <i class="fas fa-sync-alt"></i> Автообновление
-                    </button>
-                    <button class="control-btn" id="fullscreen-btn">
-                        <i class="fas fa-expand"></i>
+                    <button class="control-btn" id="theme-toggle">
+                        <i class="fas fa-moon"></i> Тема
                     </button>
                 </div>
             </div>
@@ -1496,7 +742,6 @@
                     <i class="fas fa-sync-alt fa-spin"></i>
                     <span>Обновление...</span>
                 </div>
-                <div class="weather-bg" id="weather-bg"></div>
                 <div class="weather-content">
                     <div class="weather-main">
                         <div class="location">
@@ -1504,7 +749,7 @@
                             <p id="current-date">Загрузка...</p>
                             <div class="refresh-indicator">
                                 <i class="fas fa-sync-alt refresh-icon"></i>
-                                <span>Следующее обновление через:</span>
+                                <span>Обновление каждые:</span>
                                 <span class="refresh-countdown" id="refresh-countdown">20 сек</span>
                             </div>
                         </div>
@@ -1612,12 +857,8 @@
             <div class="footer-content">
                 <p>somp3 Погода © 2024. Данные обновляются в реальном времени каждые 20 секунд</p>
                 <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px;">
-                    Текущая тема: <span id="current-theme-name">Стандартная</span> | 
-                    Сезон: <span id="current-season">Осень</span> |
-                    <a href="#" id="privacy-policy" style="color: var(--season-primary);">Политика конфиденциальности</a>
-                </p>
-                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 10px;">
-                    Официальный сайт: <a href="https://somp1k3.github.io/smp3/" target="_blank" style="color: var(--season-primary);">somp3</a>
+                    API: Open-Meteo (бесплатный) | 
+                    <a href="https://somp1k3.github.io/smp3/" target="_blank" style="color: var(--primary-color);">Официальный сайт somp3</a>
                 </p>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">
                     Последнее обновление: <span id="last-update-time">--:--</span>
@@ -1627,7 +868,7 @@
     </div>
 
     <!-- Live Update Badge -->
-    <div class="live-badge" id="live-badge" title="Открыть настройки">
+    <div class="live-badge" id="live-badge">
         <div class="live-dot"></div>
         <span>LIVE</span>
     </div>
@@ -1657,227 +898,79 @@
             const precipitationChance = document.getElementById('precipitation-chance');
             const visibilityDesc = document.getElementById('visibility-desc');
             const dayProgress = document.getElementById('day-progress');
-            const notificationContainer = document.getElementById('notification-container');
             const refreshCountdown = document.getElementById('refresh-countdown');
             const lastUpdateTime = document.getElementById('last-update-time');
             const updateIndicator = document.getElementById('update-indicator');
-            
-            // Элементы cookie и настроек
-            const cookieNotice = document.getElementById('cookie-notice');
-            const acceptCookiesBtn = document.getElementById('accept-cookies');
-            const cookieSettingsBtn = document.getElementById('cookie-settings-btn');
-            const settingsBtn = document.getElementById('settings-btn');
-            const closeSettingsBtn = document.getElementById('close-settings');
-            const settingsPanel = document.getElementById('settings-panel');
-            const overlay = document.getElementById('overlay');
             const unitsToggleBtn = document.getElementById('units-toggle');
-            const autoRefreshBtn = document.getElementById('auto-refresh-btn');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const resetSettingsBtn = document.getElementById('reset-settings');
-            const currentThemeName = document.getElementById('current-theme-name');
-            const currentSeasonElement = document.getElementById('current-season');
-            const privacyPolicy = document.getElementById('privacy-policy');
-            
-            // Настройки автообновления
-            const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
-            const refreshRadios = document.querySelectorAll('input[name="refresh-interval"]');
-            
-            // Настройки
-            const themeOptions = document.querySelectorAll('.theme-option');
-            const colorOptions = document.querySelectorAll('.color-option');
-            const seasonEffects = document.querySelectorAll('.season-effect');
-            const seasonEffectsToggle = document.getElementById('season-effects-toggle');
-            const animationIntensity = document.getElementById('animation-intensity');
-            const particlesToggle = document.getElementById('particles-toggle');
-            const backgroundEffects = document.getElementById('background-effects');
-            const hardwareAcceleration = document.getElementById('hardware-acceleration');
-            const reduceAnimations = document.getElementById('reduce-animations');
-            const saveLocation = document.getElementById('save-location');
-            const saveSettings = document.getElementById('save-settings');
-            const analyticsOptin = document.getElementById('analytics-optin');
-            
+            const themeToggleBtn = document.getElementById('theme-toggle');
             const loader = document.getElementById('loader');
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
-            const weatherBg = document.getElementById('weather-bg');
-            const weatherAnimation = document.getElementById('weather-animation');
             const liveBadge = document.getElementById('live-badge');
 
             // Состояние приложения
             let currentUnit = 'celsius';
-            let currentWeatherData = null;
             let currentLocation = { lat: 55.7558, lon: 37.6173, city: 'Москва' };
             let refreshInterval = null;
             let countdownInterval = null;
             let lastUpdate = null;
-            let currentSeason = 'autumn';
-            let currentTheme = 'light';
-            let appSettings = {};
             let autoRefreshEnabled = true;
             let refreshIntervalSeconds = 20;
             let countdown = refreshIntervalSeconds;
+            let isDarkTheme = false;
 
-            // API ключи - WeatherAPI
-            const WEATHER_API_KEY = '8f6d8296a1fe4c03904173614251201'; // Рабочий ключ для WeatherAPI
-            const WEATHER_API_URL = 'https://api.weatherapi.com/v1';
+            // API URLs - БЕСПЛАТНЫЕ
+            const GEO_API_URL = 'https://geocoding-api.open-meteo.com/v1/search';
+            const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast';
+
+            // Иконки погоды
+            const weatherIcons = {
+                0: { icon: 'fas fa-sun', text: 'Ясно', color: '#f39c12' },
+                1: { icon: 'fas fa-sun', text: 'Преимущественно ясно', color: '#f39c12' },
+                2: { icon: 'fas fa-cloud-sun', text: 'Переменная облачность', color: '#95a5a6' },
+                3: { icon: 'fas fa-cloud', text: 'Пасмурно', color: '#95a5a6' },
+                45: { icon: 'fas fa-smog', text: 'Туман', color: '#bdc3c7' },
+                48: { icon: 'fas fa-smog', text: 'Изморозь', color: '#bdc3c7' },
+                51: { icon: 'fas fa-cloud-rain', text: 'Легкая морось', color: '#3498db' },
+                53: { icon: 'fas fa-cloud-rain', text: 'Умеренная морось', color: '#3498db' },
+                55: { icon: 'fas fa-cloud-rain', text: 'Сильная морось', color: '#2980b9' },
+                56: { icon: 'fas fa-snowflake', text: 'Легкая ледяная морось', color: '#3498db' },
+                57: { icon: 'fas fa-snowflake', text: 'Сильная ледяная морось', color: '#2980b9' },
+                61: { icon: 'fas fa-cloud-rain', text: 'Небольшой дождь', color: '#3498db' },
+                63: { icon: 'fas fa-cloud-showers-heavy', text: 'Умеренный дождь', color: '#2980b9' },
+                65: { icon: 'fas fa-cloud-showers-heavy', text: 'Сильный дождь', color: '#1f618d' },
+                66: { icon: 'fas fa-snowflake', text: 'Легкий ледяной дождь', color: '#3498db' },
+                67: { icon: 'fas fa-snowflake', text: 'Сильный ледяной дождь', color: '#2980b9' },
+                71: { icon: 'fas fa-snowflake', text: 'Небольшой снег', color: '#ecf0f1' },
+                73: { icon: 'fas fa-snowflake', text: 'Умеренный снег', color: '#bdc3c7' },
+                75: { icon: 'fas fa-snowflake', text: 'Сильный снег', color: '#95a5a6' },
+                77: { icon: 'fas fa-snowflake', text: 'Снежные зерна', color: '#ecf0f1' },
+                80: { icon: 'fas fa-cloud-showers-heavy', text: 'Небольшой ливень', color: '#3498db' },
+                81: { icon: 'fas fa-cloud-showers-heavy', text: 'Умеренный ливень', color: '#2980b9' },
+                82: { icon: 'fas fa-cloud-showers-water', text: 'Сильный ливень', color: '#1f618d' },
+                85: { icon: 'fas fa-snowflake', text: 'Небольшой снегопад', color: '#ecf0f1' },
+                86: { icon: 'fas fa-snowflake', text: 'Сильный снегопад', color: '#bdc3c7' },
+                95: { icon: 'fas fa-bolt', text: 'Гроза', color: '#2c3e50' },
+                96: { icon: 'fas fa-bolt', text: 'Гроза с небольшим градом', color: '#2c3e50' },
+                99: { icon: 'fas fa-bolt', text: 'Гроза с сильным градом', color: '#2c3e50' }
+            };
 
             // Инициализация
             async function init() {
-                loadSettings();
-                loadCookies();
                 setupEventListeners();
                 updateDateTime();
-                determineSeason();
-                applySeasonEffects();
                 
-                // Показать уведомления
-                setTimeout(() => {
-                    showDevelopmentNotification();
-                }, 1000);
-                
-                setTimeout(() => {
-                    showThankYouNotification();
-                }, 3000);
-                
-                const savedCity = getCookie('lastCity');
-                if (savedCity && appSettings.saveLocation) {
+                const savedCity = localStorage.getItem('lastCity');
+                if (savedCity) {
                     await getWeatherByCity(savedCity);
                 } else {
                     await getWeatherByCity('Москва');
                 }
                 
-                // Запуск автообновления
                 startAutoRefresh();
                 startCountdown();
                 
                 setInterval(updateDateTime, 60000);
-                setInterval(determineSeason, 3600000);
-            }
-
-            // Система уведомлений
-            function showDevelopmentNotification() {
-                const notification = createNotification({
-                    type: 'development',
-                    title: '🚧 Сайт находится в разработке',
-                    message: 'Мы активно работаем над улучшением функционала. Погода обновляется каждые 20 секунд!',
-                    duration: 15,
-                    icon: 'fas fa-tools'
-                });
-                
-                showNotification(notification);
-            }
-
-            function showThankYouNotification() {
-                const notification = createNotification({
-                    type: 'thankyou',
-                    title: '🙏 Спасибо, что выбрали наш сайт!',
-                    message: 'Погода автоматически обновляется каждые 20 секунд. Наслаждайтесь актуальными данными!',
-                    duration: 10,
-                    icon: 'fas fa-heart'
-                });
-                
-                showNotification(notification);
-            }
-
-            function showUpdateNotification() {
-                const notification = createNotification({
-                    type: 'info',
-                    title: '🔄 Данные о погоде обновлены',
-                    message: `Погода для ${currentCity.textContent} успешно обновлена. Следующее обновление через ${refreshIntervalSeconds} секунд.`,
-                    duration: 5,
-                    icon: 'fas fa-sync-alt'
-                });
-                
-                showNotification(notification);
-            }
-
-            function createNotification(config) {
-                const notification = document.createElement('div');
-                notification.className = `notification ${config.type}`;
-                notification.id = `notification-${Date.now()}`;
-                
-                let timerHTML = '';
-                if (config.duration) {
-                    timerHTML = `<div class="notification-timer">Закроется через: <span class="timer">${config.duration}</span> сек</div>`;
-                }
-                
-                notification.innerHTML = `
-                    <div class="notification-header">
-                        <div class="notification-title">
-                            <i class="${config.icon}"></i>
-                            <span>${config.title}</span>
-                        </div>
-                        <button class="notification-close">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="notification-content">
-                        ${config.message}
-                    </div>
-                    ${timerHTML}
-                    <div class="notification-progress"></div>
-                `;
-                
-                // Добавляем обработчик закрытия
-                const closeBtn = notification.querySelector('.notification-close');
-                closeBtn.addEventListener('click', () => {
-                    hideNotification(notification.id);
-                });
-                
-                // Таймер обратного отсчета
-                if (config.duration) {
-                    const timerElement = notification.querySelector('.timer');
-                    const progressBar = notification.querySelector('.notification-progress');
-                    let timeLeft = config.duration;
-                    
-                    const timerInterval = setInterval(() => {
-                        timeLeft--;
-                        if (timerElement) {
-                            timerElement.textContent = timeLeft;
-                        }
-                        
-                        // Обновляем прогресс-бар
-                        if (progressBar) {
-                            const progress = (timeLeft / config.duration) * 100;
-                            progressBar.style.transform = `scaleX(${progress / 100})`;
-                        }
-                        
-                        if (timeLeft <= 0) {
-                            clearInterval(timerInterval);
-                            hideNotification(notification.id);
-                        }
-                    }, 1000);
-                    
-                    // Инициализируем прогресс-бар
-                    if (progressBar) {
-                        progressBar.style.transform = 'scaleX(1)';
-                    }
-                }
-                
-                return notification;
-            }
-
-            function showNotification(notification) {
-                notificationContainer.appendChild(notification);
-                
-                // Анимация появления
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 100);
-            }
-
-            function hideNotification(notificationId) {
-                const notification = document.getElementById(notificationId);
-                if (notification) {
-                    notification.classList.remove('show');
-                    notification.classList.add('hide');
-                    
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 500);
-                }
             }
 
             // Настройка обработчиков событий
@@ -1904,624 +997,79 @@
                     await getWeatherByGeolocation();
                 });
 
-                // Настройки
-                settingsBtn.addEventListener('click', openSettings);
-                cookieSettingsBtn.addEventListener('click', openSettings);
-                liveBadge.addEventListener('click', openSettings);
-                closeSettingsBtn.addEventListener('click', closeSettings);
-                overlay.addEventListener('click', closeSettings);
-                
                 unitsToggleBtn.addEventListener('click', toggleUnits);
-                autoRefreshBtn.addEventListener('click', toggleAutoRefresh);
-                fullscreenBtn.addEventListener('click', toggleFullscreen);
-                resetSettingsBtn.addEventListener('click', resetSettings);
-                privacyPolicy.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showPrivacyPolicy();
-                });
-
-                acceptCookiesBtn.addEventListener('click', () => {
-                    acceptCookies();
-                    closeSettings();
-                });
-
-                // Настройки темы
-                themeOptions.forEach(option => {
-                    option.addEventListener('click', () => {
-                        const theme = option.dataset.theme;
-                        setTheme(theme);
-                    });
-                });
-
-                // Настройки цветов
-                colorOptions.forEach(option => {
-                    option.addEventListener('click', () => {
-                        const colorType = option.dataset.color;
-                        const colorValue = option.dataset.value;
-                        setColor(colorType, colorValue);
-                    });
-                });
-
-                // Сезонные эффекты
-                seasonEffects.forEach(effect => {
-                    effect.addEventListener('click', () => {
-                        const season = effect.dataset.season;
-                        setSeason(season);
-                    });
-                });
-
-                // Настройки автообновления
-                autoRefreshToggle.addEventListener('change', toggleAutoRefreshSetting);
-                refreshRadios.forEach(radio => {
-                    radio.addEventListener('change', updateRefreshInterval);
-                });
-
-                // Переключатели настроек
-                seasonEffectsToggle.addEventListener('change', toggleSeasonEffects);
-                animationIntensity.addEventListener('input', updateAnimationIntensity);
-                particlesToggle.addEventListener('change', toggleParticles);
-                backgroundEffects.addEventListener('change', toggleBackgroundEffects);
-                hardwareAcceleration.addEventListener('change', toggleHardwareAcceleration);
-                reduceAnimations.addEventListener('change', toggleReduceAnimations);
-                saveLocation.addEventListener('change', updateSetting);
-                saveSettings.addEventListener('change', updateSetting);
-                analyticsOptin.addEventListener('change', updateSetting);
-            }
-
-            // Работа с cookies
-            function loadCookies() {
-                const cookiesAccepted = getCookie('cookiesAccepted');
-                if (!cookiesAccepted) {
-                    cookieNotice.style.display = 'block';
-                }
-            }
-
-            function setCookie(name, value, days = 365) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                const expires = "expires=" + date.toUTCString();
-                document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
-            }
-
-            function getCookie(name) {
-                const cookies = document.cookie.split(';').reduce((acc, cookie) => {
-                    const [key, value] = cookie.trim().split('=');
-                    acc[key] = value;
-                    return acc;
-                }, {});
-                return cookies[name];
-            }
-
-            function acceptCookies() {
-                setCookie('cookiesAccepted', 'true', 365);
-                cookieNotice.style.display = 'none';
-                appSettings.cookiesAccepted = true;
-                saveSettingsToStorage();
-                
-                // Показать уведомление о принятии cookies
-                const notification = createNotification({
-                    type: 'thankyou',
-                    title: '🍪 Cookies приняты',
-                    message: 'Спасибо! Настройки сохранены. Теперь вы можете пользоваться всеми функциями сайта.',
-                    duration: 5,
-                    icon: 'fas fa-cookie-bite'
-                });
-                showNotification(notification);
-            }
-
-            // Загрузка и сохранение настроек
-            function loadSettings() {
-                const savedSettings = localStorage.getItem('somp3_weather_settings');
-                if (savedSettings) {
-                    appSettings = JSON.parse(savedSettings);
-                    
-                    // Применяем настройки
-                    if (appSettings.theme) setTheme(appSettings.theme);
-                    if (appSettings.primaryColor) setColor('primary', appSettings.primaryColor);
-                    if (appSettings.accentColor) setColor('accent', appSettings.accentColor);
-                    if (appSettings.season) setSeason(appSettings.season);
-                    if (appSettings.seasonAuto !== undefined) seasonEffectsToggle.checked = appSettings.seasonAuto;
-                    if (appSettings.animationIntensity) animationIntensity.value = appSettings.animationIntensity;
-                    if (appSettings.particles !== undefined) particlesToggle.checked = appSettings.particles;
-                    if (appSettings.backgroundEffects !== undefined) backgroundEffects.checked = appSettings.backgroundEffects;
-                    if (appSettings.hardwareAcceleration !== undefined) hardwareAcceleration.checked = appSettings.hardwareAcceleration;
-                    if (appSettings.reduceAnimations !== undefined) reduceAnimations.checked = appSettings.reduceAnimations;
-                    if (appSettings.saveLocation !== undefined) saveLocation.checked = appSettings.saveLocation;
-                    if (appSettings.saveSettings !== undefined) saveSettings.checked = appSettings.saveSettings;
-                    if (appSettings.analyticsOptin !== undefined) analyticsOptin.checked = appSettings.analyticsOptin;
-                    if (appSettings.unit) currentUnit = appSettings.unit;
-                    if (appSettings.autoRefresh !== undefined) {
-                        autoRefreshEnabled = appSettings.autoRefresh;
-                        autoRefreshToggle.checked = appSettings.autoRefresh;
-                        autoRefreshBtn.classList.toggle('active', appSettings.autoRefresh);
-                    }
-                    if (appSettings.refreshInterval) {
-                        refreshIntervalSeconds = appSettings.refreshInterval;
-                        document.querySelector(`input[name="refresh-interval"][value="${refreshIntervalSeconds}"]`).checked = true;
-                    }
-                    
-                    updateAnimationIntensity();
-                    applySeasonEffects();
-                } else {
-                    // Настройки по умолчанию
-                    appSettings = {
-                        theme: 'light',
-                        primaryColor: '#4a76ee',
-                        accentColor: '#ff6b6b',
-                        season: 'autumn',
-                        seasonAuto: true,
-                        animationIntensity: 50,
-                        particles: true,
-                        backgroundEffects: true,
-                        hardwareAcceleration: true,
-                        reduceAnimations: false,
-                        saveLocation: true,
-                        saveSettings: true,
-                        analyticsOptin: false,
-                        unit: 'celsius',
-                        cookiesAccepted: false,
-                        autoRefresh: true,
-                        refreshInterval: 20
-                    };
-                }
-                
-                // Обновляем UI
-                updateSettingsUI();
-            }
-
-            function saveSettingsToStorage() {
-                if (appSettings.saveSettings) {
-                    localStorage.setItem('somp3_weather_settings', JSON.stringify(appSettings));
-                }
-            }
-
-            function updateSetting() {
-                appSettings.seasonAuto = seasonEffectsToggle.checked;
-                appSettings.particles = particlesToggle.checked;
-                appSettings.backgroundEffects = backgroundEffects.checked;
-                appSettings.hardwareAcceleration = hardwareAcceleration.checked;
-                appSettings.reduceAnimations = reduceAnimations.checked;
-                appSettings.saveLocation = saveLocation.checked;
-                appSettings.saveSettings = saveSettings.checked;
-                appSettings.analyticsOptin = analyticsOptin.checked;
-                
-                saveSettingsToStorage();
-                
-                // Применяем изменения
-                if (appSettings.seasonAuto) {
-                    determineSeason();
-                    applySeasonEffects();
-                }
-                
-                if (appSettings.particles) {
-                    createSeasonParticles();
-                } else {
-                    clearSeasonParticles();
-                }
-                
-                // Показать уведомление о сохранении настроек
-                const notification = createNotification({
-                    type: 'thankyou',
-                    title: '⚙️ Настройки сохранены',
-                    message: 'Ваши настройки успешно сохранены. Изменения применены.',
-                    duration: 3,
-                    icon: 'fas fa-save'
-                });
-                showNotification(notification);
-            }
-
-            function updateSettingsUI() {
-                // Обновляем активные элементы
-                themeOptions.forEach(option => {
-                    option.classList.toggle('active', option.dataset.theme === appSettings.theme);
-                });
-                
-                colorOptions.forEach(option => {
-                    const isActive = (option.dataset.color === 'primary' && option.dataset.value === appSettings.primaryColor) ||
-                                   (option.dataset.color === 'accent' && option.dataset.value === appSettings.accentColor);
-                    option.classList.toggle('active', isActive);
-                });
-                
-                seasonEffects.forEach(effect => {
-                    effect.classList.toggle('active', effect.dataset.season === appSettings.season);
-                });
-                
-                // Обновляем отображение текущей темы и сезона
-                document.getElementById('current-theme-name').textContent = 
-                    Array.from(themeOptions).find(o => o.dataset.theme === appSettings.theme)?.querySelector('span').textContent || 'Стандартная';
-                currentSeasonElement.textContent = seasonConfig[appSettings.season]?.name || 'Осень';
-            }
-
-            // Управление настройками
-            function openSettings() {
-                settingsPanel.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeSettings() {
-                settingsPanel.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-
-            function toggleUnits() {
-                currentUnit = currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
-                appSettings.unit = currentUnit;
-                saveSettingsToStorage();
-                
-                unitsToggleBtn.innerHTML = currentUnit === 'celsius' ? 
-                    '<i class="fas fa-thermometer-half"></i> °C' : 
-                    '<i class="fas fa-thermometer-half"></i> °F';
-                
-                if (currentWeatherData) {
-                    updateWeatherDisplay(currentWeatherData);
-                }
-                
-                // Показать уведомление
-                const notification = createNotification({
-                    type: 'info',
-                    title: '🌡️ Единицы измерения изменены',
-                    message: `Температура теперь отображается в градусах ${currentUnit === 'celsius' ? 'Цельсия' : 'Фаренгейта'}.`,
-                    duration: 3,
-                    icon: 'fas fa-thermometer-half'
-                });
-                showNotification(notification);
-            }
-
-            function toggleAutoRefresh() {
-                autoRefreshEnabled = !autoRefreshEnabled;
-                appSettings.autoRefresh = autoRefreshEnabled;
-                saveSettingsToStorage();
-                
-                autoRefreshBtn.classList.toggle('active', autoRefreshEnabled);
-                autoRefreshToggle.checked = autoRefreshEnabled;
-                
-                if (autoRefreshEnabled) {
-                    startAutoRefresh();
-                    startCountdown();
-                    
-                    const notification = createNotification({
-                        type: 'info',
-                        title: '🔄 Автообновление включено',
-                        message: `Погода теперь обновляется каждые ${refreshIntervalSeconds} секунд.`,
-                        duration: 3,
-                        icon: 'fas fa-sync-alt'
-                    });
-                    showNotification(notification);
-                } else {
-                    stopAutoRefresh();
-                    stopCountdown();
-                    refreshCountdown.textContent = 'Выкл';
-                    
-                    const notification = createNotification({
-                        type: 'info',
-                        title: '⏸️ Автообновление выключено',
-                        message: 'Автоматическое обновление погоды отключено. Вы можете обновить данные вручную.',
-                        duration: 3,
-                        icon: 'fas fa-pause'
-                    });
-                    showNotification(notification);
-                }
-            }
-
-            function toggleAutoRefreshSetting() {
-                autoRefreshEnabled = autoRefreshToggle.checked;
-                appSettings.autoRefresh = autoRefreshEnabled;
-                saveSettingsToStorage();
-                
-                autoRefreshBtn.classList.toggle('active', autoRefreshEnabled);
-                
-                if (autoRefreshEnabled) {
-                    startAutoRefresh();
-                    startCountdown();
-                } else {
-                    stopAutoRefresh();
-                    stopCountdown();
-                    refreshCountdown.textContent = 'Выкл';
-                }
-            }
-
-            function updateRefreshInterval() {
-                const selectedRadio = document.querySelector('input[name="refresh-interval"]:checked');
-                if (selectedRadio) {
-                    refreshIntervalSeconds = parseInt(selectedRadio.value);
-                    appSettings.refreshInterval = refreshIntervalSeconds;
-                    saveSettingsToStorage();
-                    
-                    if (autoRefreshEnabled) {
+                themeToggleBtn.addEventListener('click', toggleTheme);
+                liveBadge.addEventListener('click', () => {
+                    if (refreshInterval) {
                         stopAutoRefresh();
+                        liveBadge.innerHTML = '<div class="live-dot" style="background: #ff4444;"></div><span>PAUSED</span>';
+                    } else {
                         startAutoRefresh();
-                        startCountdown();
-                    }
-                    
-                    const notification = createNotification({
-                        type: 'info',
-                        title: '⏱️ Интервал обновления изменен',
-                        message: `Погода теперь обновляется каждые ${refreshIntervalSeconds} секунд.`,
-                        duration: 3,
-                        icon: 'fas fa-clock'
-                    });
-                    showNotification(notification);
-                }
-            }
-
-            function toggleFullscreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        console.log(`Ошибка перехода в полноэкранный режим: ${err.message}`);
-                    });
-                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-                    }
-                }
-            }
-
-            function resetSettings() {
-                if (confirm('Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?')) {
-                    localStorage.removeItem('somp3_weather_settings');
-                    const notification = createNotification({
-                        type: 'development',
-                        title: '🔄 Настройки сброшены',
-                        message: 'Все настройки были сброшены к значениям по умолчанию. Страница будет перезагружена.',
-                        duration: 3,
-                        icon: 'fas fa-redo'
-                    });
-                    showNotification(notification);
-                    
-                    setTimeout(() => {
-                        location.reload();
-                    }, 3000);
-                }
-            }
-
-            function showPrivacyPolicy() {
-                const notification = createNotification({
-                    type: 'development',
-                    title: '🔒 Политика конфиденциальности',
-                    message: `Политика конфиденциальности somp3 Погода
-
-Все права защищены © 2024 somp3
-Официальный сайт: https://somp1k3.github.io/smp3/
-
-1. Сбор данных:
-   • Геолокация (только с вашего разрешения)
-   • Настройки интерфейса и предпочтения
-   • История поиска городов
-   • Cookie-файлы для работы сайта
-
-2. Использование данных:
-   • Для предоставления услуг прогноза погоды
-   • Для персонализации пользовательского интерфейса
-   • Для улучшения работы и стабильности сайта
-   • Для анализа использования (только с вашего согласия)
-
-3. Хранение данных:
-   • Все данные хранятся локально в вашем браузере
-   • Мы не передаем данные третьим лицам
-   • Данные шифруются и защищены
-   • Вы можете удалить данные в любой момент через настройки
-
-4. Cookies:
-   • Используются для сохранения настроек сайта
-   • Используются для запоминания выбранного города
-   • Используются для работы сезонных эффектов
-   • Вы можете отключить cookies в настройках браузера
-
-5. Контакты:
-   • По вопросам конфиденциальности: privacy@somp3-weather.ru
-   • Техническая поддержка: support@somp3-weather.ru
-   • Официальный сайт: https://somp1k3.github.io/smp3/
-
-Спасибо за использование нашего сервиса!`,
-                    duration: 30,
-                    icon: 'fas fa-shield-alt'
-                });
-                showNotification(notification);
-            }
-
-            // Управление темой
-            function setTheme(theme) {
-                document.body.classList.remove('light-theme', 'dark-theme', 'nature-theme', 'ocean-theme');
-                document.body.classList.add(`${theme}-theme`);
-                
-                appSettings.theme = theme;
-                saveSettingsToStorage();
-                updateSettingsUI();
-            }
-
-            function setColor(colorType, colorValue) {
-                const root = document.documentElement;
-                
-                if (colorType === 'primary') {
-                    root.style.setProperty('--season-primary', colorValue);
-                    appSettings.primaryColor = colorValue;
-                } else if (colorType === 'accent') {
-                    root.style.setProperty('--season-accent', colorValue);
-                    appSettings.accentColor = colorValue;
-                }
-                
-                // Обновляем активные элементы
-                colorOptions.forEach(option => {
-                    option.classList.remove('active');
-                    if ((option.dataset.color === colorType && option.dataset.value === colorValue)) {
-                        option.classList.add('active');
+                        liveBadge.innerHTML = '<div class="live-dot"></div><span>LIVE</span>';
                     }
                 });
-                
-                saveSettingsToStorage();
             }
 
-            // Сезонные эффекты
-            function determineSeason() {
-                if (!appSettings.seasonAuto) return;
-                
-                const now = new Date();
-                const month = now.getMonth() + 1;
-                
-                if (month >= 3 && month <= 5) {
-                    setSeason('spring');
-                } else if (month >= 6 && month <= 8) {
-                    setSeason('summer');
-                } else if (month >= 9 && month <= 11) {
-                    setSeason('autumn');
-                } else {
-                    setSeason('winter');
-                }
-            }
-
-            function setSeason(season) {
-                currentSeason = season;
-                appSettings.season = season;
-                
-                // Обновляем UI
-                seasonEffects.forEach(effect => {
-                    effect.classList.toggle('active', effect.dataset.season === season);
-                });
-                
-                currentSeasonElement.textContent = season === 'spring' ? 'Весна' : 
-                                                  season === 'summer' ? 'Лето' : 
-                                                  season === 'autumn' ? 'Осень' : 'Зима';
-                
-                applySeasonEffects();
-                saveSettingsToStorage();
-            }
-
-            function toggleSeasonEffects() {
-                appSettings.seasonAuto = seasonEffectsToggle.checked;
-                saveSettingsToStorage();
-                
-                if (appSettings.seasonAuto) {
-                    determineSeason();
-                }
-            }
-
-            function applySeasonEffects() {
-                if (!appSettings.backgroundEffects) return;
-                
-                clearSeasonParticles();
-                
-                if (appSettings.particles) {
-                    createSeasonParticles();
-                }
-            }
-
-            // Основная функция получения погоды
+            // Получение погоды по городу
             async function getWeatherByCity(city) {
                 showLoader();
                 hideError();
                 updateIndicator.style.display = 'flex';
                 
                 try {
-                    const response = await fetch(
-                        `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}&days=7&aqi=no&alerts=no&lang=ru`
-                    );
+                    // 1. Получаем координаты города
+                    const geoResponse = await fetch(`${GEO_API_URL}?name=${encodeURIComponent(city)}&count=1&language=ru`);
                     
-                    if (!response.ok) {
-                        throw new Error('Город не найден или ошибка сервера');
+                    if (!geoResponse.ok) {
+                        throw new Error('Ошибка получения координат');
                     }
                     
-                    const data = await response.json();
+                    const geoData = await geoResponse.json();
                     
-                    // Обновляем местоположение
-                    currentLocation = {
-                        lat: data.location.lat,
-                        lon: data.location.lon,
-                        city: data.location.name,
-                        country: data.location.country
-                    };
+                    if (!geoData.results || geoData.results.length === 0) {
+                        throw new Error('Город не найден');
+                    }
                     
-                    // Обрабатываем данные
-                    processWeatherData(data);
+                    const { latitude, longitude, name, country } = geoData.results[0];
+                    currentLocation = { lat: latitude, lon: longitude, city: name, country };
                     
-                    // Сохраняем город в cookies
-                    setCookie('lastCity', city, 7);
+                    // 2. Получаем погоду
+                    await getWeatherByCoords(latitude, longitude, name);
                     
-                    // Показываем уведомление об успешном поиске
-                    const notification = createNotification({
-                        type: 'thankyou',
-                        title: '📍 Местоположение обновлено',
-                        message: `Погода для города ${data.location.name} успешно загружена. Данные обновляются каждые ${refreshIntervalSeconds} секунд.`,
-                        duration: 3,
-                        icon: 'fas fa-map-marker-alt'
-                    });
-                    showNotification(notification);
+                    // Сохраняем город
+                    localStorage.setItem('lastCity', city);
                     
                 } catch (error) {
-                    console.error('Ошибка получения погоды:', error);
-                    showError('Не удалось получить данные о погоде. Проверьте название города или подключение к интернету.');
-                    
-                    // Показываем уведомление об ошибке
-                    const notification = createNotification({
-                        type: 'development',
-                        title: '⚠️ Ошибка загрузки',
-                        message: 'Не удалось получить данные о погоде. Проверьте подключение к интернету.',
-                        duration: 5,
-                        icon: 'fas fa-exclamation-triangle'
-                    });
-                    showNotification(notification);
+                    console.error('Ошибка:', error);
+                    showError('Не удалось получить данные. Проверьте название города.');
                 } finally {
                     hideLoader();
                     updateIndicator.style.display = 'none';
                 }
             }
 
+            // Получение погоды по геолокации
             async function getWeatherByGeolocation() {
-                showLoader();
-                hideError();
-                
                 if (!navigator.geolocation) {
                     showError('Геолокация не поддерживается вашим браузером');
-                    hideLoader();
                     return;
                 }
 
-                // Показываем уведомление о запросе геолокации
-                const notification = createNotification({
-                    type: 'info',
-                    title: '📍 Запрос геолокации',
-                    message: 'Пожалуйста, разрешите доступ к вашему местоположению',
-                    duration: 5,
-                    icon: 'fas fa-location-arrow'
-                });
-                showNotification(notification);
-
+                showLoader();
+                
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
                         const { latitude, longitude } = position.coords;
-                        await getWeatherByCoords(latitude, longitude);
+                        currentLocation = { lat: latitude, lon: longitude };
+                        await getWeatherByCoords(latitude, longitude, 'Ваше местоположение');
                     },
                     (error) => {
                         hideLoader();
-                        console.error('Ошибка геолокации:', error);
-                        
-                        let errorMessage = 'Не удалось определить местоположение';
-                        switch(error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorMessage = 'Доступ к геолокации запрещен. Разрешите доступ в настройках браузера';
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorMessage = 'Информация о местоположении недоступна';
-                                break;
-                            case error.TIMEOUT:
-                                errorMessage = 'Время ожидания геолокации истекло';
-                                break;
+                        let message = 'Не удалось определить местоположение';
+                        if (error.code === error.PERMISSION_DENIED) {
+                            message = 'Доступ к геолокации запрещен';
                         }
-                        
-                        showError(errorMessage);
-                        
-                        // Показываем уведомление об ошибке
-                        const notification = createNotification({
-                            type: 'development',
-                            title: '⚠️ Ошибка геолокации',
-                            message: errorMessage,
-                            duration: 5,
-                            icon: 'fas fa-exclamation-triangle'
-                        });
-                        showNotification(notification);
+                        showError(message);
                     },
                     {
                         enableHighAccuracy: true,
@@ -2531,12 +1079,11 @@
                 );
             }
 
-            async function getWeatherByCoords(lat, lon) {
-                updateIndicator.style.display = 'flex';
-                
+            // Получение погоды по координатам
+            async function getWeatherByCoords(lat, lon, cityName = '') {
                 try {
                     const response = await fetch(
-                        `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=ru`
+                        `${WEATHER_API_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,pressure_msl,wind_speed_10m,weather_code,visibility,precipitation&hourly=temperature_2m,weather_code,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&timezone=auto&forecast_days=7`
                     );
                     
                     if (!response.ok) {
@@ -2545,128 +1092,156 @@
                     
                     const data = await response.json();
                     
-                    // Обновляем местоположение
-                    currentLocation = {
-                        lat: data.location.lat,
-                        lon: data.location.lon,
-                        city: data.location.name,
-                        country: data.location.country
-                    };
+                    // Обновляем город
+                    if (cityName) {
+                        currentLocation.city = cityName;
+                    } else {
+                        // Пробуем получить название города по координатам
+                        try {
+                            const geoResponse = await fetch(`${GEO_API_URL}?latitude=${lat}&longitude=${lon}&count=1&language=ru`);
+                            if (geoResponse.ok) {
+                                const geoData = await geoResponse.json();
+                                if (geoData.results && geoData.results.length > 0) {
+                                    currentLocation.city = geoData.results[0].name;
+                                }
+                            }
+                        } catch (e) {
+                            currentLocation.city = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                        }
+                    }
                     
                     // Обрабатываем данные
                     processWeatherData(data);
-                    
-                    // Сохраняем город в cookies
-                    setCookie('lastCity', data.location.name, 7);
-                    
-                    // Показываем уведомление
-                    const notification = createNotification({
-                        type: 'thankyou',
-                        title: '📍 Местоположение определено',
-                        message: `Ваше местоположение: ${data.location.name}. Данные о погоде загружены и обновляются каждые ${refreshIntervalSeconds} секунд.`,
-                        duration: 3,
-                        icon: 'fas fa-location-arrow'
-                    });
-                    showNotification(notification);
                     
                 } catch (error) {
                     console.error('Ошибка:', error);
                     showError('Не удалось получить данные о погоде');
                 } finally {
                     hideLoader();
-                    updateIndicator.style.display = 'none';
                 }
             }
 
+            // Обработка данных погоды
             function processWeatherData(data) {
-                // Обновляем основную информацию
-                currentCity.textContent = data.location.name;
-                currentTemp.textContent = formatTemperature(data.current.temp_c);
-                feelsLike.textContent = formatTemperature(data.current.feelslike_c);
+                // Обновляем город и дату
+                currentCity.textContent = currentLocation.city;
+                
+                // Текущая погода
+                const current = data.current;
+                currentTemp.textContent = formatTemperature(current.temperature_2m);
+                feelsLike.textContent = formatTemperature(current.apparent_temperature);
                 
                 // Иконка и описание погоды
-                const condition = data.current.condition;
-                const weatherCode = data.current.condition.code;
-                
-                // Определяем иконку по коду погоды
-                let iconClass = 'fas fa-question';
-                let bgClass = 'cloudy';
-                
-                // Преобразуем код погоды WeatherAPI в наш формат
-                if (weatherCode === 1000) { // Sunny/Clear
-                    iconClass = 'fas fa-sun';
-                    bgClass = 'sunny';
-                } else if (weatherCode === 1003 || weatherCode === 1006) { // Partly cloudy
-                    iconClass = 'fas fa-cloud-sun';
-                    bgClass = 'sunny';
-                } else if (weatherCode >= 1009 && weatherCode <= 1030) { // Cloudy
-                    iconClass = 'fas fa-cloud';
-                    bgClass = 'cloudy';
-                } else if (weatherCode >= 1063 && weatherCode <= 1201) { // Rain
-                    iconClass = 'fas fa-cloud-rain';
-                    bgClass = 'rainy';
-                } else if (weatherCode >= 1204 && weatherCode <= 1237) { // Snow
-                    iconClass = 'fas fa-snowflake';
-                    bgClass = 'snowy';
-                } else if (weatherCode >= 1240 && weatherCode <= 1264) { // Sleet
-                    iconClass = 'fas fa-cloud-meatball';
-                    bgClass = 'rainy';
-                } else if (weatherCode >= 1273 && weatherCode <= 1282) { // Thunderstorm
-                    iconClass = 'fas fa-bolt';
-                    bgClass = 'stormy';
-                } else if (weatherCode >= 1087 && weatherCode <= 1117) { // Fog/Mist
-                    iconClass = 'fas fa-smog';
-                    bgClass = 'cloudy';
-                }
-                
-                conditionIcon.innerHTML = `<i class="${iconClass}"></i>`;
-                conditionText.textContent = capitalizeFirstLetter(condition.text);
-                
-                // Обновляем фон в зависимости от погоды
-                updateWeatherBackground(bgClass);
+                const weatherCode = current.weather_code;
+                const weatherInfo = weatherIcons[weatherCode] || weatherIcons[0];
+                conditionIcon.innerHTML = `<i class="${weatherInfo.icon}"></i>`;
+                conditionIcon.style.color = weatherInfo.color;
+                conditionText.textContent = weatherInfo.text;
                 
                 // Детали погоды
-                windSpeed.textContent = `${(data.current.wind_kph / 3.6).toFixed(1)} м/с`;
-                humidity.textContent = `${data.current.humidity}%`;
-                pressure.textContent = `${data.current.pressure_mb} гПа`;
-                uvIndex.textContent = data.current.uv;
+                windSpeed.textContent = `${current.wind_speed_10m.toFixed(1)} м/с`;
+                humidity.textContent = `${current.relative_humidity_2m}%`;
+                pressure.textContent = `${current.pressure_msl} гПа`;
+                uvIndex.textContent = calculateUVIndex(current.temperature_2m);
                 
                 // Восход и закат
-                const forecastDay = data.forecast.forecastday[0];
-                const sunriseTime = new Date(forecastDay.astro.sunrise);
-                const sunsetTime = new Date(forecastDay.astro.sunset);
+                const sunriseTime = new Date(data.daily.sunrise[0]);
+                const sunsetTime = new Date(data.daily.sunset[0]);
                 sunrise.textContent = sunriseTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
                 sunset.textContent = sunsetTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
                 
                 // Видимость
-                const visibilityKm = data.current.vis_km;
+                const visibilityKm = (current.visibility / 1000).toFixed(1);
                 visibility.textContent = `${visibilityKm} км`;
                 visibilityDesc.textContent = getVisibilityDescription(visibilityKm);
                 
                 // Осадки
-                precipitation.textContent = `${data.current.precip_mm} мм`;
-                precipitationChance.textContent = `${data.forecast.forecastday[0].day.daily_chance_of_rain}%`;
+                precipitation.textContent = `${current.precipitation.toFixed(1)} мм`;
+                precipitationChance.textContent = `${data.daily.precipitation_probability_max[0]}%`;
                 
-                // Обновляем почасовой прогноз
-                updateHourlyForecast(data.forecast.forecastday[0].hour);
+                // Почасовой прогноз
+                updateHourlyForecast(data.hourly);
                 
-                // Обновляем дневной прогноз
-                updateDailyForecast(data.forecast.forecastday);
+                // Дневной прогноз
+                updateDailyForecast(data.daily);
                 
-                // Сохраняем данные для автообновления
-                currentWeatherData = data;
-                
-                // Обновляем время последнего обновления
+                // Время обновления
                 lastUpdate = new Date();
                 lastUpdateTime.textContent = lastUpdate.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
                 
-                // Обновляем прогресс дня
+                // Прогресс дня
                 updateDayProgress(new Date(), sunriseTime, sunsetTime);
-                
-                // Обновляем отображение температуры
-                updateWeatherDisplay(data);
             }
 
+            // Почасовой прогноз
+            function updateHourlyForecast(hourlyData) {
+                hourlyContainer.innerHTML = '';
+                
+                const now = new Date();
+                const currentHour = now.getHours();
+                
+                for (let i = 0; i < 12; i++) {
+                    const hourIndex = currentHour + i;
+                    if (hourIndex >= hourlyData.time.length) break;
+                    
+                    const hourTime = new Date(hourlyData.time[hourIndex]);
+                    const hourStr = hourTime.getHours().toString().padStart(2, '0') + ':00';
+                    const temp = hourlyData.temperature_2m[hourIndex];
+                    const weatherCode = hourlyData.weather_code[hourIndex];
+                    const weatherInfo = weatherIcons[weatherCode] || weatherIcons[0];
+                    const precipChance = hourlyData.precipitation_probability[hourIndex];
+                    
+                    const hourCard = document.createElement('div');
+                    hourCard.className = 'hour-card';
+                    hourCard.innerHTML = `
+                        <div class="hour-time">${i === 0 ? 'Сейчас' : hourStr}</div>
+                        <div class="hour-icon"><i class="${weatherInfo.icon}" style="color: ${weatherInfo.color}"></i></div>
+                        <div class="hour-temp">${formatTemperature(temp)}</div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                            ${precipChance}% <i class="fas fa-tint" style="color: #3498db;"></i>
+                        </div>
+                    `;
+                    
+                    hourlyContainer.appendChild(hourCard);
+                }
+            }
+
+            // Дневной прогноз
+            function updateDailyForecast(dailyData) {
+                dailyContainer.innerHTML = '';
+                
+                const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(dailyData.time[i]);
+                    const dayName = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : daysOfWeek[date.getDay()];
+                    const dayDate = date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0');
+                    const maxTemp = dailyData.temperature_2m_max[i];
+                    const minTemp = dailyData.temperature_2m_min[i];
+                    const weatherCode = dailyData.weather_code[i];
+                    const weatherInfo = weatherIcons[weatherCode] || weatherIcons[0];
+                    const precipChance = dailyData.precipitation_probability_max[i];
+                    
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'day-card';
+                    dayCard.innerHTML = `
+                        <div class="day-name">${dayName}</div>
+                        <div class="day-date">${dayDate}</div>
+                        <div class="day-icon"><i class="${weatherInfo.icon}" style="color: ${weatherInfo.color}"></i></div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin: 5px 0;">
+                            ${precipChance}% <i class="fas fa-tint" style="color: #3498db;"></i>
+                        </div>
+                        <div class="day-temp">
+                            <span class="temp-day">${formatTemperature(maxTemp)}</span>
+                            <span class="temp-night">${formatTemperature(minTemp)}</span>
+                        </div>
+                    `;
+                    
+                    dailyContainer.appendChild(dayCard);
+                }
+            }
+
+            // Форматирование температуры
             function formatTemperature(temp) {
                 if (currentUnit === 'fahrenheit') {
                     return Math.round((temp * 9/5) + 32) + '°F';
@@ -2674,6 +1249,13 @@
                 return Math.round(temp) + '°C';
             }
 
+            // Расчет УФ индекса
+            function calculateUVIndex(temp) {
+                const baseUV = Math.min(11, Math.floor(temp / 3));
+                return Math.max(1, Math.round(baseUV));
+            }
+
+            // Описание видимости
             function getVisibilityDescription(km) {
                 if (km >= 20) return 'Отличная';
                 if (km >= 10) return 'Хорошая';
@@ -2682,109 +1264,7 @@
                 return 'Очень плохая';
             }
 
-            function updateHourlyForecast(hours) {
-                hourlyContainer.innerHTML = '';
-                
-                // Берем следующие 12 часов
-                const now = new Date();
-                const currentHour = now.getHours();
-                
-                for (let i = 0; i < 12; i++) {
-                    const hourIndex = (currentHour + i) % 24;
-                    const hour = hours[hourIndex];
-                    
-                    if (!hour) continue;
-                    
-                    const time = new Date(hour.time);
-                    const hourStr = time.getHours().toString().padStart(2, '0') + ':00';
-                    
-                    // Определяем иконку
-                    let iconClass = 'fas fa-question';
-                    if (hour.condition.code === 1000) {
-                        iconClass = 'fas fa-sun';
-                    } else if (hour.condition.code === 1003 || hour.condition.code === 1006) {
-                        iconClass = 'fas fa-cloud-sun';
-                    } else if (hour.condition.code >= 1009 && hour.condition.code <= 1030) {
-                        iconClass = 'fas fa-cloud';
-                    } else if (hour.condition.code >= 1063 && hour.condition.code <= 1201) {
-                        iconClass = 'fas fa-cloud-rain';
-                    } else if (hour.condition.code >= 1204 && hour.condition.code <= 1237) {
-                        iconClass = 'fas fa-snowflake';
-                    }
-                    
-                    const hourCard = document.createElement('div');
-                    hourCard.className = 'hour-card';
-                    
-                    // Выделяем текущий час
-                    if (i === 0) {
-                        hourCard.classList.add('active');
-                    }
-                    
-                    hourCard.innerHTML = `
-                        <div class="hour-time">${i === 0 ? 'Сейчас' : hourStr}</div>
-                        <div class="hour-icon"><i class="${iconClass}"></i></div>
-                        <div class="hour-temp">${formatTemperature(hour.temp_c)}</div>
-                        <div class="hour-condition">${capitalizeFirstLetter(hour.condition.text)}</div>
-                    `;
-                    
-                    hourlyContainer.appendChild(hourCard);
-                }
-            }
-
-            function updateDailyForecast(days) {
-                dailyContainer.innerHTML = '';
-                
-                const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-                const today = new Date();
-                
-                days.forEach((day, index) => {
-                    const date = new Date(day.date);
-                    const dayName = index === 0 ? 'Сегодня' : index === 1 ? 'Завтра' : daysOfWeek[date.getDay()];
-                    const dayDate = date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0');
-                    
-                    // Определяем иконку
-                    let iconClass = 'fas fa-question';
-                    const conditionCode = day.day.condition.code;
-                    
-                    if (conditionCode === 1000) {
-                        iconClass = 'fas fa-sun';
-                    } else if (conditionCode === 1003 || conditionCode === 1006) {
-                        iconClass = 'fas fa-cloud-sun';
-                    } else if (conditionCode >= 1009 && conditionCode <= 1030) {
-                        iconClass = 'fas fa-cloud';
-                    } else if (conditionCode >= 1063 && conditionCode <= 1201) {
-                        iconClass = 'fas fa-cloud-rain';
-                    } else if (conditionCode >= 1204 && conditionCode <= 1237) {
-                        iconClass = 'fas fa-snowflake';
-                    }
-                    
-                    const dayCard = document.createElement('div');
-                    dayCard.className = 'day-card';
-                    
-                    // Выделяем текущий день
-                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth()) {
-                        dayCard.classList.add('active');
-                    }
-                    
-                    dayCard.innerHTML = `
-                        <div class="day-name">${dayName}</div>
-                        <div class="day-date">${dayDate}</div>
-                        <div class="day-icon"><i class="${iconClass}"></i></div>
-                        <div class="day-condition">${capitalizeFirstLetter(day.day.condition.text)}</div>
-                        <div class="day-temp">
-                            <span class="temp-day">${formatTemperature(day.day.maxtemp_c)}</span>
-                            <span class="temp-night">${formatTemperature(day.day.mintemp_c)}</span>
-                        </div>
-                    `;
-                    
-                    dailyContainer.appendChild(dayCard);
-                });
-            }
-
-            function updateWeatherBackground(bgClass) {
-                weatherBg.style.background = `var(--${bgClass})`;
-            }
-
+            // Прогресс дня
             function updateDayProgress(now, sunriseTime, sunsetTime) {
                 if (!sunriseTime || !sunsetTime) return;
                 
@@ -2796,7 +1276,7 @@
                 
                 dayProgress.style.width = `${progressPercent}%`;
                 
-                // Обновление цвета прогресс-бара в зависимости от времени суток
+                // Цвет в зависимости от времени суток
                 if (now < sunriseTime || now > sunsetTime) {
                     dayProgress.style.background = 'linear-gradient(90deg, #2c3e50, #34495e)';
                 } else if (progressPercent < 30) {
@@ -2808,52 +1288,64 @@
                 }
             }
 
-            function updateWeatherDisplay(data) {
-                if (!data) return;
-                
-                // Обновляем температуру
-                currentTemp.textContent = formatTemperature(data.current.temp_c);
-                feelsLike.textContent = formatTemperature(data.current.feelslike_c);
-                
-                // Обновляем почасовой прогноз
-                updateHourlyForecast(data.forecast.forecastday[0].hour);
-                
-                // Обновляем дневной прогноз
-                updateDailyForecast(data.forecast.forecastday);
+            // Обновление даты и времени
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                currentDate.textContent = now.toLocaleDateString('ru-RU', options);
             }
 
-            // Автообновление погоды
+            // Переключение единиц измерения
+            function toggleUnits() {
+                currentUnit = currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
+                unitsToggleBtn.innerHTML = currentUnit === 'celsius' ? 
+                    '<i class="fas fa-thermometer-half"></i> °C' : 
+                    '<i class="fas fa-thermometer-half"></i> °F';
+                
+                // Обновляем отображение температур
+                if (currentTemp.textContent !== '--') {
+                    const currentTempValue = parseInt(currentTemp.textContent);
+                    currentTemp.textContent = formatTemperature(currentTempValue);
+                }
+                if (feelsLike.textContent !== '--') {
+                    const feelsLikeValue = parseInt(feelsLike.textContent);
+                    feelsLike.textContent = formatTemperature(feelsLikeValue);
+                }
+            }
+
+            // Переключение темы
+            function toggleTheme() {
+                isDarkTheme = !isDarkTheme;
+                document.body.classList.toggle('dark-theme', isDarkTheme);
+                document.body.classList.toggle('light-theme', !isDarkTheme);
+                themeToggleBtn.innerHTML = isDarkTheme ? 
+                    '<i class="fas fa-sun"></i> Светлая' : 
+                    '<i class="fas fa-moon"></i> Темная';
+            }
+
+            // Автообновление
             function startAutoRefresh() {
                 if (!autoRefreshEnabled) return;
                 
                 stopAutoRefresh();
                 
                 refreshInterval = setInterval(async () => {
-                    if (currentLocation) {
-                        try {
-                            updateIndicator.style.display = 'flex';
-                            
-                            // Получаем обновленные данные
-                            const response = await fetch(
-                                `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${currentLocation.lat},${currentLocation.lon}&days=7&aqi=no&alerts=no&lang=ru`
-                            );
-                            
-                            if (response.ok) {
-                                const data = await response.json();
-                                
-                                // Обновляем данные
-                                processWeatherData(data);
-                                
-                                // Показываем уведомление об обновлении
-                                showUpdateNotification();
-                            }
-                        } catch (error) {
-                            console.error('Ошибка автообновления:', error);
-                        } finally {
-                            updateIndicator.style.display = 'none';
-                        }
+                    if (currentLocation.lat && currentLocation.lon) {
+                        updateIndicator.style.display = 'flex';
+                        await getWeatherByCoords(currentLocation.lat, currentLocation.lon);
+                        updateIndicator.style.display = 'none';
                     }
                 }, refreshIntervalSeconds * 1000);
+                
+                autoRefreshEnabled = true;
+                liveBadge.innerHTML = '<div class="live-dot"></div><span>LIVE</span>';
             }
 
             function stopAutoRefresh() {
@@ -2861,9 +1353,11 @@
                     clearInterval(refreshInterval);
                     refreshInterval = null;
                 }
+                autoRefreshEnabled = false;
+                liveBadge.innerHTML = '<div class="live-dot" style="background: #ff4444;"></div><span>PAUSED</span>';
             }
 
-            // Обратный отсчет до следующего обновления
+            // Обратный отсчет
             function startCountdown() {
                 if (!autoRefreshEnabled) return;
                 
@@ -2886,13 +1380,10 @@
                     clearInterval(countdownInterval);
                     countdownInterval = null;
                 }
+                refreshCountdown.textContent = 'Выкл';
             }
 
             // Вспомогательные функции
-            function capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            }
-
             function showLoader() {
                 loader.style.display = 'flex';
             }
@@ -2904,136 +1395,17 @@
             function showError(message) {
                 errorText.textContent = message;
                 errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
             }
 
             function hideError() {
                 errorMessage.style.display = 'none';
             }
 
-            function updateDateTime() {
-                const now = new Date();
-                const options = {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                };
-                currentDate.textContent = now.toLocaleDateString('ru-RU', options);
-            }
-
-            // Функции для сезонных эффектов
-            function createSeasonParticles() {
-                // Упрощенная реализация частиц
-                if (!appSettings.particles || !weatherAnimation) return;
-                
-                weatherAnimation.innerHTML = '';
-                const particlesCount = 20;
-                
-                for (let i = 0; i < particlesCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'season-effect-particle';
-                    particle.style.cssText = `
-                        width: ${Math.random() * 10 + 5}px;
-                        height: ${Math.random() * 10 + 5}px;
-                        background: ${getSeasonParticleColor()};
-                        border-radius: 50%;
-                        left: ${Math.random() * 100}%;
-                        top: -20px;
-                        animation: fall ${Math.random() * 10 + 10}s linear infinite;
-                        animation-delay: ${Math.random() * 5}s;
-                    `;
-                    weatherAnimation.appendChild(particle);
-                }
-            }
-
-            function getSeasonParticleColor() {
-                switch(currentSeason) {
-                    case 'spring': return '#2ecc71';
-                    case 'summer': return '#f39c12';
-                    case 'autumn': return '#e67e22';
-                    case 'winter': return '#3498db';
-                    default: return '#4a76ee';
-                }
-            }
-
-            function clearSeasonParticles() {
-                if (weatherAnimation) {
-                    weatherAnimation.innerHTML = '';
-                }
-            }
-
-            function updateAnimationIntensity() {
-                const intensity = animationIntensity.value;
-                appSettings.animationIntensity = intensity;
-                document.documentElement.style.setProperty('--animation-opacity', `${intensity / 100}`);
-                saveSettingsToStorage();
-            }
-
-            function toggleParticles() {
-                appSettings.particles = particlesToggle.checked;
-                saveSettingsToStorage();
-                if (appSettings.particles) {
-                    createSeasonParticles();
-                } else {
-                    clearSeasonParticles();
-                }
-            }
-
-            function toggleBackgroundEffects() {
-                appSettings.backgroundEffects = backgroundEffects.checked;
-                saveSettingsToStorage();
-                applySeasonEffects();
-            }
-
-            function toggleHardwareAcceleration() {
-                appSettings.hardwareAcceleration = hardwareAcceleration.checked;
-                saveSettingsToStorage();
-            }
-
-            function toggleReduceAnimations() {
-                appSettings.reduceAnimations = reduceAnimations.checked;
-                saveSettingsToStorage();
-                
-                // Применяем настройки анимаций
-                const root = document.documentElement;
-                if (appSettings.reduceAnimations) {
-                    root.style.setProperty('--animation-speed', '0.1s');
-                    root.style.setProperty('--animation-opacity', '0.1');
-                } else {
-                    root.style.setProperty('--animation-speed', '0.3s');
-                    root.style.setProperty('--animation-opacity', `${appSettings.animationIntensity / 100}`);
-                }
-            }
-
             // Запуск приложения
             init();
-            
-            // Добавляем CSS для анимаций
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fall {
-                    0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 1; }
-                    100% { transform: translateY(100vh) translateX(${Math.random() * 100 - 50}px) rotate(360deg); opacity: 0; }
-                }
-                
-                @keyframes snowfall {
-                    0% { transform: translateY(-10px) translateX(0); opacity: 1; }
-                    100% { transform: translateY(100vh) translateX(${Math.random() * 50 - 25}px); opacity: 0; }
-                }
-                
-                @keyframes pulse {
-                    0%, 100% { transform: scale(1); opacity: 0.3; }
-                    50% { transform: scale(1.2); opacity: 0.6; }
-                }
-                
-                @keyframes float {
-                    0%, 100% { transform: translateY(0) translateX(0); }
-                    50% { transform: translateY(-20px) translateX(10px); }
-                }
-            `;
-            document.head.appendChild(style);
         });
     </script>
 </body>
