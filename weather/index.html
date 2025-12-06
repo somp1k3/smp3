@@ -1823,10 +1823,9 @@
             let refreshIntervalSeconds = 20;
             let countdown = refreshIntervalSeconds;
 
-            // API ключи (реальные для OpenWeather)
-            const WEATHER_API_KEY = 'c4a0b9c9a5f84611e7d7a89c2d8dd5d2'; // Рабочий ключ OpenWeather
-            const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5';
-            const GEO_API_URL = 'https://api.openweathermap.org/geo/1.0';
+            // API ключи - ИСПРАВЛЕНО: используем другой источник данных
+            const WEATHER_API_KEY = '8f6d8296a1fe4c03904173614251201'; // Рабочий ключ для WeatherAPI
+            const WEATHER_API_URL = 'https://api.weatherapi.com/v1';
 
             // Инициализация
             async function init() {
@@ -1850,7 +1849,7 @@
                 if (savedCity && appSettings.saveLocation) {
                     await getWeatherByCity(savedCity);
                 } else {
-                    await getWeatherByLocation();
+                    await getWeatherByCity('Москва');
                 }
                 
                 // Запуск автообновления
@@ -2008,7 +2007,21 @@
                 });
 
                 locationBtn.addEventListener('click', async () => {
-                    await getWeatherByLocation();
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                                const { latitude, longitude } = position.coords;
+                                currentLocation = { lat: latitude, lon: longitude };
+                                await getWeatherByCoords(latitude, longitude);
+                            },
+                            (error) => {
+                                console.error('Ошибка геолокации:', error);
+                                showError('Не удалось определить местоположение. Разрешите доступ к геолокации или введите город вручную.');
+                            }
+                        );
+                    } else {
+                        showError('Геолокация не поддерживается вашим браузером.');
+                    }
                 });
 
                 // Настройки
@@ -2533,60 +2546,42 @@
                 });
             }
 
-            // Работа с погодой - РЕАЛЬНЫЕ ДАННЫЕ
+            // Основная функция получения погоды
             async function getWeatherByCity(city) {
                 showLoader();
                 hideError();
                 updateIndicator.style.display = 'flex';
                 
                 try {
-                    // Получаем координаты города
-                    const geoResponse = await fetch(`${GEO_API_URL}/direct?q=${encodeURIComponent(city)}&limit=1&appid=${WEATHER_API_KEY}`);
+                    const response = await fetch(
+                        `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}&days=7&aqi=no&alerts=no&lang=ru`
+                    );
                     
-                    if (!geoResponse.ok) {
-                        throw new Error('Город не найден');
+                    if (!response.ok) {
+                        throw new Error('Город не найден или ошибка сервера');
                     }
                     
-                    const geoData = await geoResponse.json();
+                    const data = await response.json();
                     
-                    if (!geoData || geoData.length === 0) {
-                        throw new Error('Город не найден');
-                    }
-                    
-                    const { lat, lon, name, country } = geoData[0];
-                    currentLocation = { lat, lon, city: name, country };
-                    
-                    // Получаем текущую погоду
-                    const weatherResponse = await fetch(`${WEATHER_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=ru`);
-                    
-                    if (!weatherResponse.ok) {
-                        throw new Error('Ошибка получения погоды');
-                    }
-                    
-                    const weatherData = await weatherResponse.json();
-                    
-                    // Получаем прогноз на 5 дней
-                    const forecastResponse = await fetch(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=ru&cnt=40`);
-                    
-                    if (!forecastResponse.ok) {
-                        throw new Error('Ошибка получения прогноза');
-                    }
-                    
-                    const forecastData = await forecastResponse.json();
+                    // Обновляем местоположение
+                    currentLocation = {
+                        lat: data.location.lat,
+                        lon: data.location.lon,
+                        city: data.location.name,
+                        country: data.location.country
+                    };
                     
                     // Обрабатываем данные
-                    processWeatherData(weatherData, forecastData, name);
+                    processWeatherData(data);
                     
                     // Сохраняем город в cookies
                     setCookie('lastCity', city, 7);
-                    setCookie('lastLat', lat, 7);
-                    setCookie('lastLon', lon, 7);
                     
                     // Показываем уведомление об успешном поиске
                     const notification = createNotification({
                         type: 'thankyou',
                         title: '📍 Местоположение обновлено',
-                        message: `Погода для города ${name} успешно загружена. Данные обновляются каждые ${refreshIntervalSeconds} секунд.`,
+                        message: `Погода для города ${data.location.name} успешно загружена. Данные обновляются каждые ${refreshIntervalSeconds} секунд.`,
                         duration: 3,
                         icon: 'fas fa-map-marker-alt'
                     });
@@ -2594,7 +2589,7 @@
                     
                 } catch (error) {
                     console.error('Ошибка получения погоды:', error);
-                    showError('Не удалось получить данные о погоде. Проверьте название города.');
+                    showError('Не удалось получить данные о погоде. Проверьте название города или подключение к интернету.');
                     
                     // Показываем уведомление об ошибке
                     const notification = createNotification({
@@ -2611,130 +2606,132 @@
                 }
             }
 
-            async function getWeatherByLocation() {
-                if (!navigator.geolocation) {
-                    showError('Геолокация не поддерживается вашим браузером');
-                    return;
-                }
-
+            async function getWeatherByCoords(lat, lon) {
                 showLoader();
+                hideError();
                 updateIndicator.style.display = 'flex';
                 
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        const { latitude, longitude } = position.coords;
-                        currentLocation = { lat: latitude, lon: longitude, city: 'Текущее местоположение' };
-                        
-                        try {
-                            // Получаем текущую погоду
-                            const weatherResponse = await fetch(`${WEATHER_API_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric&lang=ru`);
-                            
-                            if (!weatherResponse.ok) {
-                                throw new Error('Ошибка получения погоды');
-                            }
-                            
-                            const weatherData = await weatherResponse.json();
-                            
-                            // Получаем прогноз
-                            const forecastResponse = await fetch(`${WEATHER_API_URL}/forecast?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric&lang=ru&cnt=40`);
-                            
-                            if (!forecastResponse.ok) {
-                                throw new Error('Ошибка получения прогноза');
-                            }
-                            
-                            const forecastData = await forecastResponse.json();
-                            
-                            // Получаем название города по координатам
-                            const geoResponse = await fetch(`${GEO_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${WEATHER_API_KEY}`);
-                            let cityName = 'Текущее местоположение';
-                            
-                            if (geoResponse.ok) {
-                                const geoData = await geoResponse.json();
-                                if (geoData && geoData.length > 0) {
-                                    cityName = geoData[0].name;
-                                }
-                            }
-                            
-                            currentLocation.city = cityName;
-                            processWeatherData(weatherData, forecastData, cityName);
-                            
-                            // Сохраняем в cookies
-                            setCookie('lastCity', cityName, 7);
-                            setCookie('lastLat', latitude, 7);
-                            setCookie('lastLon', longitude, 7);
-                            
-                            // Показываем уведомление
-                            const notification = createNotification({
-                                type: 'thankyou',
-                                title: '📍 Местоположение определено',
-                                message: `Ваше местоположение: ${cityName}. Данные о погоде загружены и обновляются каждые ${refreshIntervalSeconds} секунд.`,
-                                duration: 3,
-                                icon: 'fas fa-location-arrow'
-                            });
-                            showNotification(notification);
-                            
-                        } catch (error) {
-                            console.error('Ошибка:', error);
-                            showError('Не удалось получить данные о погоде');
-                        } finally {
-                            hideLoader();
-                            updateIndicator.style.display = 'none';
-                        }
-                    },
-                    (error) => {
-                        console.error('Ошибка геолокации:', error);
-                        hideLoader();
-                        updateIndicator.style.display = 'none';
-                        showError('Не удалось определить ваше местоположение. Разрешите доступ к геолокации.');
+                try {
+                    const response = await fetch(
+                        `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=ru`
+                    );
+                    
+                    if (!response.ok) {
+                        throw new Error('Ошибка получения погоды');
                     }
-                );
+                    
+                    const data = await response.json();
+                    
+                    // Обновляем местоположение
+                    currentLocation = {
+                        lat: data.location.lat,
+                        lon: data.location.lon,
+                        city: data.location.name,
+                        country: data.location.country
+                    };
+                    
+                    // Обрабатываем данные
+                    processWeatherData(data);
+                    
+                    // Сохраняем город в cookies
+                    setCookie('lastCity', data.location.name, 7);
+                    
+                    // Показываем уведомление
+                    const notification = createNotification({
+                        type: 'thankyou',
+                        title: '📍 Местоположение определено',
+                        message: `Ваше местоположение: ${data.location.name}. Данные о погоде загружены и обновляются каждые ${refreshIntervalSeconds} секунд.`,
+                        duration: 3,
+                        icon: 'fas fa-location-arrow'
+                    });
+                    showNotification(notification);
+                    
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    showError('Не удалось получить данные о погоде');
+                } finally {
+                    hideLoader();
+                    updateIndicator.style.display = 'none';
+                }
             }
 
-            function processWeatherData(weatherData, forecastData, cityName) {
+            function processWeatherData(data) {
                 // Обновляем основную информацию
-                currentCity.textContent = cityName;
-                currentTemp.textContent = formatTemperature(weatherData.main.temp);
-                feelsLike.textContent = formatTemperature(weatherData.main.feels_like);
+                currentCity.textContent = data.location.name;
+                currentTemp.textContent = formatTemperature(data.current.temp_c);
+                feelsLike.textContent = formatTemperature(data.current.feelslike_c);
                 
                 // Иконка и описание погоды
-                const weatherCode = weatherData.weather[0].id.toString();
-                const weatherInfo = weatherIcons[weatherCode] || { icon: 'fas fa-question', text: 'Неизвестно' };
-                conditionIcon.innerHTML = `<i class="${weatherInfo.icon}"></i>`;
-                conditionText.textContent = capitalizeFirstLetter(weatherData.weather[0].description);
+                const condition = data.current.condition;
+                const weatherCode = data.current.condition.code;
+                
+                // Определяем иконку по коду погоды
+                let iconClass = 'fas fa-question';
+                let bgClass = 'cloudy';
+                
+                // Преобразуем код погоды WeatherAPI в наш формат
+                if (weatherCode === 1000) { // Sunny/Clear
+                    iconClass = 'fas fa-sun';
+                    bgClass = 'sunny';
+                } else if (weatherCode === 1003 || weatherCode === 1006) { // Partly cloudy
+                    iconClass = 'fas fa-cloud-sun';
+                    bgClass = 'sunny';
+                } else if (weatherCode >= 1009 && weatherCode <= 1030) { // Cloudy
+                    iconClass = 'fas fa-cloud';
+                    bgClass = 'cloudy';
+                } else if (weatherCode >= 1063 && weatherCode <= 1201) { // Rain
+                    iconClass = 'fas fa-cloud-rain';
+                    bgClass = 'rainy';
+                } else if (weatherCode >= 1204 && weatherCode <= 1237) { // Snow
+                    iconClass = 'fas fa-snowflake';
+                    bgClass = 'snowy';
+                } else if (weatherCode >= 1240 && weatherCode <= 1264) { // Sleet
+                    iconClass = 'fas fa-cloud-meatball';
+                    bgClass = 'rainy';
+                } else if (weatherCode >= 1273 && weatherCode <= 1282) { // Thunderstorm
+                    iconClass = 'fas fa-bolt';
+                    bgClass = 'stormy';
+                } else if (weatherCode >= 1087 && weatherCode <= 1117) { // Fog/Mist
+                    iconClass = 'fas fa-smog';
+                    bgClass = 'cloudy';
+                }
+                
+                conditionIcon.innerHTML = `<i class="${iconClass}"></i>`;
+                conditionText.textContent = capitalizeFirstLetter(condition.text);
                 
                 // Обновляем фон в зависимости от погоды
-                updateWeatherBackground(weatherCode);
+                updateWeatherBackground(bgClass);
                 
                 // Детали погоды
-                windSpeed.textContent = `${weatherData.wind.speed.toFixed(1)} м/с`;
-                humidity.textContent = `${weatherData.main.humidity}%`;
-                pressure.textContent = `${weatherData.main.pressure} гПа`;
-                uvIndex.textContent = calculateUVIndex(weatherData.main.temp);
+                windSpeed.textContent = `${data.current.wind_kph / 3.6} м/с`;
+                humidity.textContent = `${data.current.humidity}%`;
+                pressure.textContent = `${data.current.pressure_mb} гПа`;
+                uvIndex.textContent = data.current.uv;
                 
                 // Восход и закат
-                const sunriseTime = new Date(weatherData.sys.sunrise * 1000);
-                const sunsetTime = new Date(weatherData.sys.sunset * 1000);
+                const forecastDay = data.forecast.forecastday[0];
+                const sunriseTime = new Date(forecastDay.astro.sunrise);
+                const sunsetTime = new Date(forecastDay.astro.sunset);
                 sunrise.textContent = sunriseTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
                 sunset.textContent = sunsetTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
                 
                 // Видимость
-                const visibilityKm = (weatherData.visibility / 1000).toFixed(1);
+                const visibilityKm = data.current.vis_km;
                 visibility.textContent = `${visibilityKm} км`;
                 visibilityDesc.textContent = getVisibilityDescription(visibilityKm);
                 
-                // Осадки (если есть в данных)
-                const precip = weatherData.rain ? weatherData.rain['1h'] || 0 : weatherData.snow ? weatherData.snow['1h'] || 0 : 0;
-                precipitation.textContent = `${precip.toFixed(1)} мм`;
-                precipitationChance.textContent = `${Math.min(99, Math.round(weatherData.main.humidity / 1.5))}%`;
+                // Осадки
+                precipitation.textContent = `${data.current.precip_mm} мм`;
+                precipitationChance.textContent = `${data.forecast.forecastday[0].day.daily_chance_of_rain}%`;
                 
                 // Обновляем почасовой прогноз
-                updateHourlyForecast(forecastData.list);
+                updateHourlyForecast(data.forecast.forecastday[0].hour);
                 
                 // Обновляем дневной прогноз
-                updateDailyForecast(forecastData.list);
+                updateDailyForecast(data.forecast.forecastday);
                 
                 // Сохраняем данные для автообновления
-                currentWeatherData = { weather: weatherData, forecast: forecastData, city: cityName };
+                currentWeatherData = data;
                 
                 // Обновляем время последнего обновления
                 lastUpdate = new Date();
@@ -2742,6 +2739,9 @@
                 
                 // Обновляем прогресс дня
                 updateDayProgress(new Date(), sunriseTime, sunsetTime);
+                
+                // Обновляем отображение температуры
+                updateWeatherDisplay(data);
             }
 
             function formatTemperature(temp) {
@@ -2749,12 +2749,6 @@
                     return Math.round((temp * 9/5) + 32) + '°F';
                 }
                 return Math.round(temp) + '°C';
-            }
-
-            function calculateUVIndex(temp) {
-                // Простой расчет УФ индекса на основе температуры
-                const baseUV = Math.min(11, Math.floor(temp / 3));
-                return Math.max(1, Math.round(baseUV));
             }
 
             function getVisibilityDescription(km) {
@@ -2765,89 +2759,81 @@
                 return 'Очень плохая';
             }
 
-            function updateHourlyForecast(forecastList) {
+            function updateHourlyForecast(hours) {
                 hourlyContainer.innerHTML = '';
                 
-                // Берем первые 12 часов прогноза
-                const hours = forecastList.slice(0, 12);
+                // Берем следующие 12 часов
+                const now = new Date();
+                const currentHour = now.getHours();
                 
-                hours.forEach((hour, index) => {
-                    const time = new Date(hour.dt * 1000);
+                for (let i = 0; i < 12; i++) {
+                    const hourIndex = (currentHour + i) % 24;
+                    const hour = hours[hourIndex];
+                    
+                    if (!hour) continue;
+                    
+                    const time = new Date(hour.time);
                     const hourStr = time.getHours().toString().padStart(2, '0') + ':00';
                     
-                    const weatherCode = hour.weather[0].id.toString();
-                    const weatherInfo = weatherIcons[weatherCode] || { icon: 'fas fa-question', text: 'Неизвестно' };
+                    // Определяем иконку
+                    let iconClass = 'fas fa-question';
+                    if (hour.condition.code === 1000) {
+                        iconClass = 'fas fa-sun';
+                    } else if (hour.condition.code === 1003 || hour.condition.code === 1006) {
+                        iconClass = 'fas fa-cloud-sun';
+                    } else if (hour.condition.code >= 1009 && hour.condition.code <= 1030) {
+                        iconClass = 'fas fa-cloud';
+                    } else if (hour.condition.code >= 1063 && hour.condition.code <= 1201) {
+                        iconClass = 'fas fa-cloud-rain';
+                    } else if (hour.condition.code >= 1204 && hour.condition.code <= 1237) {
+                        iconClass = 'fas fa-snowflake';
+                    }
                     
                     const hourCard = document.createElement('div');
                     hourCard.className = 'hour-card';
                     
                     // Выделяем текущий час
-                    const now = new Date();
-                    if (time.getHours() === now.getHours()) {
+                    if (i === 0) {
                         hourCard.classList.add('active');
                     }
                     
                     hourCard.innerHTML = `
-                        <div class="hour-time">${index === 0 ? 'Сейчас' : hourStr}</div>
-                        <div class="hour-icon"><i class="${weatherInfo.icon}"></i></div>
-                        <div class="hour-temp">${formatTemperature(hour.main.temp)}</div>
-                        <div class="hour-condition">${capitalizeFirstLetter(hour.weather[0].description)}</div>
+                        <div class="hour-time">${i === 0 ? 'Сейчас' : hourStr}</div>
+                        <div class="hour-icon"><i class="${iconClass}"></i></div>
+                        <div class="hour-temp">${formatTemperature(hour.temp_c)}</div>
+                        <div class="hour-condition">${capitalizeFirstLetter(hour.condition.text)}</div>
                     `;
                     
                     hourlyContainer.appendChild(hourCard);
-                });
+                }
             }
 
-            function updateDailyForecast(forecastList) {
+            function updateDailyForecast(days) {
                 dailyContainer.innerHTML = '';
                 
                 const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
                 const today = new Date();
                 
-                // Группируем прогноз по дням
-                const dailyForecasts = {};
-                
-                forecastList.forEach(hour => {
-                    const date = new Date(hour.dt * 1000);
-                    const dayKey = date.toDateString();
-                    
-                    if (!dailyForecasts[dayKey]) {
-                        dailyForecasts[dayKey] = {
-                            date: date,
-                            temps: [],
-                            conditions: [],
-                            descriptions: []
-                        };
-                    }
-                    
-                    dailyForecasts[dayKey].temps.push(hour.main.temp);
-                    dailyForecasts[dayKey].conditions.push(hour.weather[0].id);
-                    dailyForecasts[dayKey].descriptions.push(hour.weather[0].description);
-                });
-                
-                // Преобразуем в массив и берем первые 7 дней
-                const dailyArray = Object.values(dailyForecasts).slice(0, 7);
-                
-                dailyArray.forEach((day, index) => {
-                    const date = day.date;
+                days.forEach((day, index) => {
+                    const date = new Date(day.date);
                     const dayName = index === 0 ? 'Сегодня' : index === 1 ? 'Завтра' : daysOfWeek[date.getDay()];
                     const dayDate = date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0');
                     
-                    // Находим максимальную и минимальную температуру
-                    const maxTemp = Math.max(...day.temps);
-                    const minTemp = Math.min(...day.temps);
+                    // Определяем иконку
+                    let iconClass = 'fas fa-question';
+                    const conditionCode = day.day.condition.code;
                     
-                    // Находим наиболее частую погоду
-                    const conditionCounts = {};
-                    day.conditions.forEach(cond => {
-                        conditionCounts[cond] = (conditionCounts[cond] || 0) + 1;
-                    });
-                    
-                    const mostCommonCondition = Object.keys(conditionCounts).reduce((a, b) => 
-                        conditionCounts[a] > conditionCounts[b] ? a : b
-                    );
-                    
-                    const weatherInfo = weatherIcons[mostCommonCondition] || { icon: 'fas fa-question', text: 'Неизвестно' };
+                    if (conditionCode === 1000) {
+                        iconClass = 'fas fa-sun';
+                    } else if (conditionCode === 1003 || conditionCode === 1006) {
+                        iconClass = 'fas fa-cloud-sun';
+                    } else if (conditionCode >= 1009 && conditionCode <= 1030) {
+                        iconClass = 'fas fa-cloud';
+                    } else if (conditionCode >= 1063 && conditionCode <= 1201) {
+                        iconClass = 'fas fa-cloud-rain';
+                    } else if (conditionCode >= 1204 && conditionCode <= 1237) {
+                        iconClass = 'fas fa-snowflake';
+                    }
                     
                     const dayCard = document.createElement('div');
                     dayCard.className = 'day-card';
@@ -2860,11 +2846,11 @@
                     dayCard.innerHTML = `
                         <div class="day-name">${dayName}</div>
                         <div class="day-date">${dayDate}</div>
-                        <div class="day-icon"><i class="${weatherInfo.icon}"></i></div>
-                        <div class="day-condition">${capitalizeFirstLetter(day.descriptions[0])}</div>
+                        <div class="day-icon"><i class="${iconClass}"></i></div>
+                        <div class="day-condition">${capitalizeFirstLetter(day.day.condition.text)}</div>
                         <div class="day-temp">
-                            <span class="temp-day">${formatTemperature(maxTemp)}</span>
-                            <span class="temp-night">${formatTemperature(minTemp)}</span>
+                            <span class="temp-day">${formatTemperature(day.day.maxtemp_c)}</span>
+                            <span class="temp-night">${formatTemperature(day.day.mintemp_c)}</span>
                         </div>
                     `;
                     
@@ -2872,9 +2858,8 @@
                 });
             }
 
-            function updateWeatherBackground(weatherCode) {
-                const weatherInfo = weatherIcons[weatherCode] || { bg: 'cloudy' };
-                weatherBg.style.background = `var(--${weatherInfo.bg})`;
+            function updateWeatherBackground(bgClass) {
+                weatherBg.style.background = `var(--${bgClass})`;
             }
 
             function updateDayProgress(now, sunriseTime, sunsetTime) {
@@ -2900,6 +2885,20 @@
                 }
             }
 
+            function updateWeatherDisplay(data) {
+                if (!data) return;
+                
+                // Обновляем температуру
+                currentTemp.textContent = formatTemperature(data.current.temp_c);
+                feelsLike.textContent = formatTemperature(data.current.feelslike_c);
+                
+                // Обновляем почасовой прогноз
+                updateHourlyForecast(data.forecast.forecastday[0].hour);
+                
+                // Обновляем дневной прогноз
+                updateDailyForecast(data.forecast.forecastday);
+            }
+
             // Автообновление погоды
             function startAutoRefresh() {
                 if (!autoRefreshEnabled) return;
@@ -2912,22 +2911,18 @@
                             updateIndicator.style.display = 'flex';
                             
                             // Получаем обновленные данные
-                            const weatherResponse = await fetch(`${WEATHER_API_URL}/weather?lat=${currentLocation.lat}&lon=${currentLocation.lon}&appid=${WEATHER_API_KEY}&units=metric&lang=ru`);
+                            const response = await fetch(
+                                `${WEATHER_API_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${currentLocation.lat},${currentLocation.lon}&days=7&aqi=no&alerts=no&lang=ru`
+                            );
                             
-                            if (weatherResponse.ok) {
-                                const weatherData = await weatherResponse.json();
+                            if (response.ok) {
+                                const data = await response.json();
                                 
-                                const forecastResponse = await fetch(`${WEATHER_API_URL}/forecast?lat=${currentLocation.lat}&lon=${currentLocation.lon}&appid=${WEATHER_API_KEY}&units=metric&lang=ru&cnt=40`);
+                                // Обновляем данные
+                                processWeatherData(data);
                                 
-                                if (forecastResponse.ok) {
-                                    const forecastData = await forecastResponse.json();
-                                    
-                                    // Обновляем данные
-                                    processWeatherData(weatherData, forecastData, currentLocation.city);
-                                    
-                                    // Показываем уведомление об обновлении
-                                    showUpdateNotification();
-                                }
+                                // Показываем уведомление об обновлении
+                                showUpdateNotification();
                             }
                         } catch (error) {
                             console.error('Ошибка автообновления:', error);
@@ -3005,17 +3000,53 @@
                 currentDate.textContent = now.toLocaleDateString('ru-RU', options);
             }
 
-            // Функции для сезонных эффектов (сокращены для экономии места)
+            // Функции для сезонных эффектов (упрощенные)
             function createSeasonParticles() {
-                // Реализация частиц сезона
+                // Упрощенная реализация частиц
+                if (!appSettings.particles || !weatherAnimation) return;
+                
+                weatherAnimation.innerHTML = '';
+                const particlesCount = 20;
+                
+                for (let i = 0; i < particlesCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'season-effect-particle';
+                    particle.style.cssText = `
+                        width: ${Math.random() * 10 + 5}px;
+                        height: ${Math.random() * 10 + 5}px;
+                        background: ${getSeasonParticleColor()};
+                        border-radius: 50%;
+                        left: ${Math.random() * 100}%;
+                        top: -20px;
+                        animation: fall ${Math.random() * 10 + 10}s linear infinite;
+                        animation-delay: ${Math.random() * 5}s;
+                    `;
+                    weatherAnimation.appendChild(particle);
+                }
+            }
+
+            function getSeasonParticleColor() {
+                switch(currentSeason) {
+                    case 'spring': return '#2ecc71';
+                    case 'summer': return '#f39c12';
+                    case 'autumn': return '#e67e22';
+                    case 'winter': return '#3498db';
+                    default: return '#4a76ee';
+                }
             }
 
             function clearSeasonParticles() {
-                // Очистка частиц
+                if (weatherAnimation) {
+                    weatherAnimation.innerHTML = '';
+                }
             }
 
             function createSeasonEffect(effect) {
-                // Создание эффектов сезона
+                // Упрощенная реализация эффектов
+                if (!appSettings.backgroundEffects) return;
+                
+                // Здесь можно добавить более сложные эффекты
+                // Для простоты просто создаем несколько частиц
             }
 
             function updateAnimationIntensity() {
@@ -3028,11 +3059,17 @@
             function toggleParticles() {
                 appSettings.particles = particlesToggle.checked;
                 saveSettingsToStorage();
+                if (appSettings.particles) {
+                    createSeasonParticles();
+                } else {
+                    clearSeasonParticles();
+                }
             }
 
             function toggleBackgroundEffects() {
                 appSettings.backgroundEffects = backgroundEffects.checked;
                 saveSettingsToStorage();
+                applySeasonEffects();
             }
 
             function toggleHardwareAcceleration() {
@@ -3043,6 +3080,16 @@
             function toggleReduceAnimations() {
                 appSettings.reduceAnimations = reduceAnimations.checked;
                 saveSettingsToStorage();
+                
+                // Применяем настройки анимаций
+                const root = document.documentElement;
+                if (appSettings.reduceAnimations) {
+                    root.style.setProperty('--animation-speed', '0.1s');
+                    root.style.setProperty('--animation-opacity', '0.1');
+                } else {
+                    root.style.setProperty('--animation-speed', '0.3s');
+                    root.style.setProperty('--animation-opacity', `${appSettings.animationIntensity / 100}`);
+                }
             }
 
             // Запуск приложения
