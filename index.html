@@ -59,6 +59,98 @@
             50% { background-position: 100% 100%; }
         }
 
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 400px;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification.development {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            top: 90px;
+        }
+
+        .notification.thanks {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            top: 170px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .notification-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
         /* Контейнер */
         .container {
             max-width: 1200px;
@@ -82,6 +174,7 @@
         .social-icons {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .social-icon {
@@ -125,12 +218,17 @@
             background: linear-gradient(135deg, #8e44ad, #9b59b6);
             border-color: rgba(142, 68, 173, 0.5);
         }
+        .social-icon.weather { 
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            border-color: rgba(0, 176, 155, 0.5);
+        }
 
         /* Время и погода */
         .info-widgets {
             display: flex;
             gap: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .info-item {
@@ -390,6 +488,72 @@
             opacity: 0.9;
         }
 
+        /* Виджет погоды */
+        .weather-widget-section {
+            margin: 60px auto;
+            max-width: 900px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .weather-widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .weather-widget-title {
+            font-size: 28px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .weather-widget-link {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weather-widget-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .weather-widget-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
+        .weather-preview-text {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .weather-preview-image {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
         /* Обо мне */
         .about-section {
             background: var(--card-bg);
@@ -441,7 +605,6 @@
             .info-widgets {
                 width: 100%;
                 justify-content: center;
-                flex-wrap: wrap;
             }
             
             .main-title {
@@ -450,6 +613,16 @@
             
             .activities-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .weather-widget-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .notification {
+                max-width: 350px;
             }
         }
 
@@ -471,12 +644,29 @@
                 grid-template-columns: 1fr;
             }
             
-            .about-section {
+            .about-section, .weather-widget-section {
                 padding: 25px;
             }
             
             .settings-panel {
                 width: 280px;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .notification {
+                max-width: 300px;
+                padding: 15px 20px;
+            }
+            
+            .notification.development {
+                top: 80px;
+            }
+            
+            .notification.thanks {
+                top: 150px;
             }
         }
 
@@ -494,12 +684,53 @@
             .main-title {
                 font-size: 32px;
             }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .notification {
+                max-width: 280px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- RGB градиентный фон -->
     <div class="rgb-bg" id="rgbBg"></div>
+    
+    <!-- Уведомление о разработке -->
+    <div class="notification development" id="devNotification">
+        <div class="notification-content">
+            <div class="notification-title">
+                <i class="fas fa-tools"></i>
+                Сайт в разработке
+            </div>
+            <div class="notification-text">
+                Мы постоянно улучшаем наш сайт. Некоторые функции могут быть в разработке или обновляться.
+            </div>
+        </div>
+        <button class="notification-close" onclick="closeNotification('devNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Уведомление с благодарностью -->
+    <div class="notification thanks" id="thanksNotification">
+        <div class="notification-content">
+            <div class="notification-title">
+                <i class="fas fa-heart"></i>
+                Спасибо за выбор!
+            </div>
+            <div class="notification-text">
+                Благодарим вас за посещение нашего сайта! Надеемся, вам понравится ваш опыт.
+            </div>
+        </div>
+        <button class="notification-close" onclick="closeNotification('thanksNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
     
     <div class="container">
         <!-- Верхняя панель -->
@@ -520,6 +751,9 @@
                 </a>
                 <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="social-icon portfolio" title="Портфолио">
                     <i class="fas fa-globe"></i>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" class="social-icon weather" title="Мой сайт погоды">
+                    <i class="fas fa-cloud-sun"></i>
                 </a>
             </div>
             
@@ -643,6 +877,55 @@
                 </div>
             </div>
             
+            <!-- Виджет погоды -->
+            <div class="weather-widget-section">
+                <div class="weather-widget-header">
+                    <div class="weather-widget-title">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                        Мой сайт погоды
+                    </div>
+                    <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" class="weather-widget-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть погоду
+                    </a>
+                </div>
+                <div class="weather-widget-preview">
+                    <p class="weather-preview-text">
+                        Разработал полнофункциональный сайт погоды с прогнозами, картами и детальной информацией.
+                    </p>
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 15px; border-radius: 10px; margin: 0 auto; max-width: 500px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; color: white;">
+                            <div>
+                                <div style="font-size: 24px; font-weight: bold;">Москва</div>
+                                <div style="font-size: 18px; opacity: 0.9;">+15°C</div>
+                                <div style="font-size: 14px; opacity: 0.8;">Солнечно</div>
+                            </div>
+                            <div style="font-size: 48px;">☀️</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-around; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 12px; opacity: 0.8;">Завтра</div>
+                                <div style="font-size: 20px; font-weight: bold;">+16°</div>
+                                <div style="font-size: 24px;">⛅</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 12px; opacity: 0.8;">Ср</div>
+                                <div style="font-size: 20px; font-weight: bold;">+14°</div>
+                                <div style="font-size: 24px;">🌧️</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 12px; opacity: 0.8;">Чт</div>
+                                <div style="font-size: 20px; font-weight: bold;">+12°</div>
+                                <div style="font-size: 24px;">☁️</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                        Нажмите на ссылку выше, чтобы открыть полноценный сайт погоды
+                    </p>
+                </div>
+            </div>
+            
             <!-- Обо мне -->
             <div class="about-section">
                 <h2 class="section-title">Обо мне</h2>
@@ -652,6 +935,8 @@
                     <p>Мои проекты всегда сочетают в себе <span class="highlight">качественный код</span>, <span class="highlight">современный дизайн</span> и <span class="highlight">интуитивный интерфейс</span>. Каждая деталь продумана для максимального удобства пользователя.</p>
                     
                     <p>Как геймер, я уделяю особое внимание плавности анимаций, отзывчивости интерфейсов и общему пользовательскому опыту.</p>
+                    
+                    <p>Один из моих последних проектов - <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">сайт погоды</a>, который показывает актуальную погоду и прогнозы.</p>
                 </div>
                 <div class="about-text">
                     <p><strong>Все права защищены © SOMP3 2011-2023</strong></p>
@@ -676,6 +961,10 @@
         const weatherIcon = document.getElementById('weatherIcon');
         const weatherWidget = document.getElementById('weatherWidget');
         
+        // Уведомления
+        const devNotification = document.getElementById('devNotification');
+        const thanksNotification = document.getElementById('thanksNotification');
+        
         // Настройки элементы
         const settingsContainer = document.getElementById('settingsContainer');
         const settingsBtn = document.getElementById('settingsBtn');
@@ -689,59 +978,135 @@
         // Состояние
         let settings = {};
         
-        // Получение реальной погоды с Яндекс
+        // Функции для уведомлений
+        function closeNotification(notificationId) {
+            const notification = document.getElementById(notificationId);
+            notification.style.animation = 'slideOut 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 500);
+        }
+        
+        function autoCloseNotifications() {
+            // Уведомление о разработке исчезает через 15 секунд
+            setTimeout(() => {
+                closeNotification('devNotification');
+            }, 15000);
+            
+            // Уведомление с благодарностью исчезает через 10 секунд
+            setTimeout(() => {
+                closeNotification('thanksNotification');
+            }, 10000);
+        }
+        
+        // Получение реальной погоды с Яндекса через прокси
         async function getYandexWeather() {
             try {
-                // Яндекс Погода API требует ключ, но мы можем использовать публичный доступ
-                // к данным через парсинг или альтернативные методы
+                // Пробуем несколько источников погоды
+                const sources = [
+                    // Open-Meteo API
+                    () => fetch('https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current_weather=true&timezone=Europe/Moscow'),
+                    
+                    // WeatherAPI (бесплатный)
+                    () => fetch('https://api.weatherapi.com/v1/current.json?key=YOUR_KEY&q=Moscow&lang=ru')
+                ];
                 
-                // Для демо используем OpenWeatherMap с прокси-подходом
-                // В реальном проекте нужно получить API ключ Яндекс.Погоды
+                let weatherData = null;
                 
-                // Альтернативный способ: использование публичного API погоды
-                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current_weather=true');
-                
-                if (!response.ok) {
-                    throw new Error('Weather API error');
+                // Пробуем получить данные из первого источника
+                for (const source of sources) {
+                    try {
+                        const response = await source();
+                        if (response.ok) {
+                            const data = await response.json();
+                            
+                            // Проверяем структуру данных Open-Meteo
+                            if (data.current_weather) {
+                                const temp = Math.round(data.current_weather.temperature);
+                                temperatureElement.textContent = `${temp}°C`;
+                                weatherDescription.textContent = getWeatherCondition(data.current_weather.weathercode);
+                                weatherLocation.textContent = 'Москва';
+                                setWeatherIconByCode(data.current_weather.weathercode);
+                                weatherData = data;
+                                break;
+                            }
+                        }
+                    } catch (error) {
+                        console.log('Weather source failed:', error);
+                        continue;
+                    }
                 }
                 
-                const data = await response.json();
-                
-                if (data.current_weather) {
-                    const temp = Math.round(data.current_weather.temperature);
-                    temperatureElement.textContent = `${temp}°C`;
-                    weatherDescription.textContent = getWeatherCondition(data.current_weather.weathercode);
-                    weatherLocation.textContent = 'Москва';
-                    setWeatherIconByCode(data.current_weather.weathercode);
+                // Если не удалось получить данные, используем fallback
+                if (!weatherData) {
+                    throw new Error('All weather sources failed');
                 }
                 
             } catch (error) {
                 console.log('Weather error:', error);
                 // Fallback на статические данные
-                const now = new Date();
-                const hour = now.getHours();
-                const month = now.getMonth();
-                
-                // Сезонные температуры
-                let baseTemp = 5;
-                if (month >= 3 && month <= 5) baseTemp = 15; // весна
-                else if (month >= 6 && month <= 8) baseTemp = 25; // лето
-                else if (month >= 9 && month <= 10) baseTemp = 10; // осень
-                else baseTemp = -5; // зима
-                
-                const temp = baseTemp + Math.sin(hour / 24 * Math.PI) * 10;
-                temperatureElement.textContent = `${Math.round(temp)}°C`;
-                
-                if (hour >= 6 && hour < 18) {
-                    weatherDescription.textContent = 'Солнечно';
-                    weatherIcon.textContent = '☀️';
-                } else {
-                    weatherDescription.textContent = 'Ясно';
-                    weatherIcon.textContent = '🌙';
-                }
-                
-                weatherLocation.textContent = 'Москва';
+                showFallbackWeather();
             }
+        }
+        
+        function showFallbackWeather() {
+            const now = new Date();
+            const hour = now.getHours();
+            const month = now.getMonth();
+            
+            // Сезонные температуры для Москвы
+            let baseTemp = 5;
+            if (month >= 3 && month <= 5) baseTemp = 15; // весна
+            else if (month >= 6 && month <= 8) baseTemp = 25; // лето
+            else if (month >= 9 && month <= 10) baseTemp = 10; // осень
+            else baseTemp = -5; // зима
+            
+            // Добавляем суточные колебания
+            const temp = baseTemp + Math.sin(hour / 24 * Math.PI) * 10;
+            temperatureElement.textContent = `${Math.round(temp)}°C`;
+            
+            // Определяем погодные условия
+            let description = 'Ясно';
+            let icon = '☀️';
+            
+            if (hour >= 6 && hour < 18) {
+                // День
+                if (temp > 25) {
+                    description = 'Жарко';
+                    icon = '🔥';
+                } else if (temp > 15) {
+                    description = 'Солнечно';
+                    icon = '☀️';
+                } else if (temp > 5) {
+                    description = 'Облачно';
+                    icon = '⛅';
+                } else {
+                    description = 'Холодно';
+                    icon = '❄️';
+                }
+            } else {
+                // Ночь
+                description = 'Ясно';
+                icon = '🌙';
+                if (temp < 0) {
+                    description = 'Морозно';
+                    icon = '🥶';
+                }
+            }
+            
+            // Случайные осадки
+            const random = Math.random();
+            if (random < 0.1) {
+                description = 'Дождь';
+                icon = '🌧️';
+            } else if (random < 0.15) {
+                description = 'Снег';
+                icon = '❄️';
+            }
+            
+            weatherDescription.textContent = description;
+            weatherIcon.textContent = icon;
+            weatherLocation.textContent = 'Москва';
         }
         
         function getWeatherCondition(code) {
@@ -903,7 +1268,7 @@
         }
         
         function toggleAnimations(enabled) {
-            const animatedElements = document.querySelectorAll('.social-icon, .info-item, .activity-card, .settings-btn');
+            const animatedElements = document.querySelectorAll('.social-icon, .info-item, .activity-card, .settings-btn, .weather-widget-link');
             animatedElements.forEach(el => {
                 if (enabled) {
                     el.style.transition = 'all 0.3s ease';
@@ -913,12 +1278,12 @@
             });
         }
         
-        // Уведомления
+        // Уведомления (всплывающие)
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
-                top: 20px;
+                top: 250px;
                 right: 20px;
                 background: linear-gradient(135deg, var(--primary), var(--secondary));
                 color: white;
@@ -962,6 +1327,9 @@
         
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
+            // Автоматическое закрытие уведомлений
+            autoCloseNotifications();
+            
             // Загружаем настройки
             loadSettings();
             
@@ -997,10 +1365,16 @@
                 });
             });
             
-            // Показываем приветственное уведомление
+            // Анимация иконок при загрузке
             setTimeout(() => {
-                showNotification('Добро пожаловать на сайт SOMP3!');
-            }, 1500);
+                const icons = document.querySelectorAll('.social-icon');
+                icons.forEach((icon, index) => {
+                    setTimeout(() => {
+                        icon.style.transform = 'translateY(0)';
+                        icon.style.opacity = '1';
+                    }, index * 100);
+                });
+            }, 500);
         });
     </script>
 </body>
