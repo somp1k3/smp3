@@ -218,12 +218,12 @@
             background: linear-gradient(135deg, #8e44ad, #9b59b6);
             border-color: rgba(142, 68, 173, 0.5);
         }
-        .social-icon.weather { 
+        .social-icon.website { 
             background: linear-gradient(135deg, #00b09b, #96c93d);
             border-color: rgba(0, 176, 155, 0.5);
         }
 
-        /* Время и погода */
+        /* Время */
         .info-widgets {
             display: flex;
             gap: 20px;
@@ -258,38 +258,6 @@
         .info-date {
             font-size: 14px;
             opacity: 0.9;
-        }
-
-        .weather-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .weather-icon {
-            font-size: 32px;
-        }
-
-        .weather-temp {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .weather-details {
-            text-align: left;
-        }
-
-        .weather-desc {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 3px;
-        }
-
-        .weather-location {
-            font-size: 13px;
-            opacity: 0.7;
         }
 
         /* Основной контент */
@@ -488,8 +456,8 @@
             opacity: 0.9;
         }
 
-        /* Виджет погоды */
-        .weather-widget-section {
+        /* Виджет сайта */
+        .website-widget-section {
             margin: 60px auto;
             max-width: 900px;
             background: var(--card-bg);
@@ -499,14 +467,14 @@
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        .weather-widget-header {
+        .website-widget-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 25px;
         }
 
-        .weather-widget-title {
+        .website-widget-title {
             font-size: 28px;
             color: var(--accent);
             display: flex;
@@ -514,7 +482,7 @@
             gap: 12px;
         }
 
-        .weather-widget-link {
+        .website-widget-link {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 10px 20px;
@@ -527,12 +495,12 @@
             gap: 8px;
         }
 
-        .weather-widget-link:hover {
+        .website-widget-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .weather-widget-preview {
+        .website-widget-preview {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             padding: 20px;
@@ -541,13 +509,13 @@
             margin-top: 20px;
         }
 
-        .weather-preview-text {
+        .website-preview-text {
             font-size: 16px;
             opacity: 0.9;
             margin-bottom: 15px;
         }
 
-        .weather-preview-image {
+        .website-preview-image {
             max-width: 100%;
             border-radius: 10px;
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -615,7 +583,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .weather-widget-header {
+            .website-widget-header {
                 flex-direction: column;
                 gap: 20px;
                 text-align: center;
@@ -644,7 +612,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .about-section, .weather-widget-section {
+            .about-section, .website-widget-section {
                 padding: 25px;
             }
             
@@ -743,6 +711,9 @@
                 <a href="https://github.com/somp1k3" target="_blank" class="social-icon gh" title="GitHub">
                     <i class="fab fa-github"></i>
                 </a>
+                <a href="https://somp1k3.github.io/smp3/pr/" target="_blank" class="social-icon website" title="Мой сайт">
+                    <i class="fas fa-globe"></i>
+                </a>
                 <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-icon steam" title="Steam">
                     <i class="fab fa-steam"></i>
                 </a>
@@ -750,29 +721,15 @@
                     <i class="fas fa-donate"></i>
                 </a>
                 <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="social-icon portfolio" title="Портфолио">
-                    <i class="fas fa-globe"></i>
-                </a>
-                <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" class="social-icon weather" title="Мой сайт погоды">
-                    <i class="fas fa-cloud-sun"></i>
+                    <i class="fas fa-briefcase"></i>
                 </a>
             </div>
             
-            <!-- Время и погода -->
+            <!-- Только время -->
             <div class="info-widgets">
                 <div class="info-item">
                     <div class="info-time" id="currentTime">00:00:00</div>
                     <div class="info-date" id="currentDate">1 янв 2023</div>
-                </div>
-                
-                <div class="info-item" id="weatherWidget">
-                    <div class="weather-info">
-                        <div class="weather-icon" id="weatherIcon">⛅</div>
-                        <div class="weather-details">
-                            <div class="weather-temp" id="temperature">--°C</div>
-                            <div class="weather-desc" id="weatherDescription">Загрузка...</div>
-                            <div class="weather-location" id="weatherLocation">Москва</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -808,14 +765,6 @@
                             <span>Яркий режим</span>
                             <label class="switch">
                                 <input type="checkbox" id="brightModeToggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <span>Погода</span>
-                            <label class="switch">
-                                <input type="checkbox" id="weatherToggle" checked>
                                 <span class="slider"></span>
                             </label>
                         </div>
@@ -877,51 +826,51 @@
                 </div>
             </div>
             
-            <!-- Виджет погоды -->
-            <div class="weather-widget-section">
-                <div class="weather-widget-header">
-                    <div class="weather-widget-title">
-                        <i class="fas fa-cloud-sun-rain"></i>
-                        Мой сайт погоды
+            <!-- Виджет сайта -->
+            <div class="website-widget-section">
+                <div class="website-widget-header">
+                    <div class="website-widget-title">
+                        <i class="fas fa-globe"></i>
+                        Мой сайт
                     </div>
-                    <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" class="weather-widget-link">
+                    <a href="https://somp1k3.github.io/smp3/pr/" target="_blank" class="website-widget-link">
                         <i class="fas fa-external-link-alt"></i>
-                        Открыть погоду
+                        Открыть сайт
                     </a>
                 </div>
-                <div class="weather-widget-preview">
-                    <p class="weather-preview-text">
-                        Разработал полнофункциональный сайт погоды с прогнозами, картами и детальной информацией.
+                <div class="website-widget-preview">
+                    <p class="website-preview-text">
+                        Посетите мой сайт для просмотра последних проектов и информации.
                     </p>
                     <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 15px; border-radius: 10px; margin: 0 auto; max-width: 500px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; color: white;">
                             <div>
-                                <div style="font-size: 24px; font-weight: bold;">Москва</div>
-                                <div style="font-size: 18px; opacity: 0.9;">+15°C</div>
-                                <div style="font-size: 14px; opacity: 0.8;">Солнечно</div>
+                                <div style="font-size: 24px; font-weight: bold;">Мой сайт</div>
+                                <div style="font-size: 18px; opacity: 0.9;">somp1k3.github.io/smp3/pr/</div>
+                                <div style="font-size: 14px; opacity: 0.8;">Проекты и разработки</div>
                             </div>
-                            <div style="font-size: 48px;">☀️</div>
+                            <div style="font-size: 48px;">🌐</div>
                         </div>
                         <div style="display: flex; justify-content: space-around; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2);">
                             <div style="text-align: center;">
-                                <div style="font-size: 12px; opacity: 0.8;">Завтра</div>
-                                <div style="font-size: 20px; font-weight: bold;">+16°</div>
-                                <div style="font-size: 24px;">⛅</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Проекты</div>
+                                <div style="font-size: 20px; font-weight: bold;">10+</div>
+                                <div style="font-size: 24px;">🚀</div>
                             </div>
                             <div style="text-align: center;">
-                                <div style="font-size: 12px; opacity: 0.8;">Ср</div>
-                                <div style="font-size: 20px; font-weight: bold;">+14°</div>
-                                <div style="font-size: 24px;">🌧️</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Технологии</div>
+                                <div style="font-size: 20px; font-weight: bold;">15+</div>
+                                <div style="font-size: 24px;">⚡</div>
                             </div>
                             <div style="text-align: center;">
-                                <div style="font-size: 12px; opacity: 0.8;">Чт</div>
-                                <div style="font-size: 20px; font-weight: bold;">+12°</div>
-                                <div style="font-size: 24px;">☁️</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Опыт</div>
+                                <div style="font-size: 20px; font-weight: bold;">5+ лет</div>
+                                <div style="font-size: 24px;">⭐</div>
                             </div>
                         </div>
                     </div>
                     <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
-                        Нажмите на ссылку выше, чтобы открыть полноценный сайт погоды
+                        Нажмите на ссылку выше, чтобы открыть сайт
                     </p>
                 </div>
             </div>
@@ -936,7 +885,7 @@
                     
                     <p>Как геймер, я уделяю особое внимание плавности анимаций, отзывчивости интерфейсов и общему пользовательскому опыту.</p>
                     
-                    <p>Один из моих последних проектов - <a href="https://somp1k3.github.io/smp3/weather/" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">сайт погоды</a>, который показывает актуальную погоду и прогнозы.</p>
+                    <p>Посетите мой <a href="https://somp1k3.github.io/smp3/pr/" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">сайт</a> для просмотра последних проектов и информации.</p>
                 </div>
                 <div class="about-text">
                     <p><strong>Все права защищены © SOMP3 2011-2023</strong></p>
@@ -955,11 +904,6 @@
         // Элементы DOM
         const timeElement = document.getElementById('currentTime');
         const dateElement = document.getElementById('currentDate');
-        const temperatureElement = document.getElementById('temperature');
-        const weatherDescription = document.getElementById('weatherDescription');
-        const weatherLocation = document.getElementById('weatherLocation');
-        const weatherIcon = document.getElementById('weatherIcon');
-        const weatherWidget = document.getElementById('weatherWidget');
         
         // Уведомления
         const devNotification = document.getElementById('devNotification');
@@ -971,7 +915,6 @@
         const settingsPanel = document.getElementById('settingsPanel');
         const rgbToggle = document.getElementById('rgbToggle');
         const brightModeToggle = document.getElementById('brightModeToggle');
-        const weatherToggle = document.getElementById('weatherToggle');
         const animationsToggle = document.getElementById('animationsToggle');
         const rgbBg = document.getElementById('rgbBg');
         
@@ -997,179 +940,6 @@
             setTimeout(() => {
                 closeNotification('thanksNotification');
             }, 10000);
-        }
-        
-        // Получение реальной погоды с Яндекса через прокси
-        async function getYandexWeather() {
-            try {
-                // Пробуем несколько источников погоды
-                const sources = [
-                    // Open-Meteo API
-                    () => fetch('https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current_weather=true&timezone=Europe/Moscow'),
-                    
-                    // WeatherAPI (бесплатный)
-                    () => fetch('https://api.weatherapi.com/v1/current.json?key=YOUR_KEY&q=Moscow&lang=ru')
-                ];
-                
-                let weatherData = null;
-                
-                // Пробуем получить данные из первого источника
-                for (const source of sources) {
-                    try {
-                        const response = await source();
-                        if (response.ok) {
-                            const data = await response.json();
-                            
-                            // Проверяем структуру данных Open-Meteo
-                            if (data.current_weather) {
-                                const temp = Math.round(data.current_weather.temperature);
-                                temperatureElement.textContent = `${temp}°C`;
-                                weatherDescription.textContent = getWeatherCondition(data.current_weather.weathercode);
-                                weatherLocation.textContent = 'Москва';
-                                setWeatherIconByCode(data.current_weather.weathercode);
-                                weatherData = data;
-                                break;
-                            }
-                        }
-                    } catch (error) {
-                        console.log('Weather source failed:', error);
-                        continue;
-                    }
-                }
-                
-                // Если не удалось получить данные, используем fallback
-                if (!weatherData) {
-                    throw new Error('All weather sources failed');
-                }
-                
-            } catch (error) {
-                console.log('Weather error:', error);
-                // Fallback на статические данные
-                showFallbackWeather();
-            }
-        }
-        
-        function showFallbackWeather() {
-            const now = new Date();
-            const hour = now.getHours();
-            const month = now.getMonth();
-            
-            // Сезонные температуры для Москвы
-            let baseTemp = 5;
-            if (month >= 3 && month <= 5) baseTemp = 15; // весна
-            else if (month >= 6 && month <= 8) baseTemp = 25; // лето
-            else if (month >= 9 && month <= 10) baseTemp = 10; // осень
-            else baseTemp = -5; // зима
-            
-            // Добавляем суточные колебания
-            const temp = baseTemp + Math.sin(hour / 24 * Math.PI) * 10;
-            temperatureElement.textContent = `${Math.round(temp)}°C`;
-            
-            // Определяем погодные условия
-            let description = 'Ясно';
-            let icon = '☀️';
-            
-            if (hour >= 6 && hour < 18) {
-                // День
-                if (temp > 25) {
-                    description = 'Жарко';
-                    icon = '🔥';
-                } else if (temp > 15) {
-                    description = 'Солнечно';
-                    icon = '☀️';
-                } else if (temp > 5) {
-                    description = 'Облачно';
-                    icon = '⛅';
-                } else {
-                    description = 'Холодно';
-                    icon = '❄️';
-                }
-            } else {
-                // Ночь
-                description = 'Ясно';
-                icon = '🌙';
-                if (temp < 0) {
-                    description = 'Морозно';
-                    icon = '🥶';
-                }
-            }
-            
-            // Случайные осадки
-            const random = Math.random();
-            if (random < 0.1) {
-                description = 'Дождь';
-                icon = '🌧️';
-            } else if (random < 0.15) {
-                description = 'Снег';
-                icon = '❄️';
-            }
-            
-            weatherDescription.textContent = description;
-            weatherIcon.textContent = icon;
-            weatherLocation.textContent = 'Москва';
-        }
-        
-        function getWeatherCondition(code) {
-            const conditions = {
-                0: 'Ясно',
-                1: 'Преимущественно ясно',
-                2: 'Переменная облачность',
-                3: 'Пасмурно',
-                45: 'Туман',
-                48: 'Изморозь',
-                51: 'Легкая морось',
-                53: 'Умеренная морось',
-                55: 'Сильная морось',
-                56: 'Ледяная морось',
-                57: 'Сильная ледяная морось',
-                61: 'Небольшой дождь',
-                63: 'Умеренный дождь',
-                65: 'Сильный дождь',
-                66: 'Ледяной дождь',
-                67: 'Сильный ледяной дождь',
-                71: 'Небольшой снег',
-                73: 'Умеренный снег',
-                75: 'Сильный снег',
-                77: 'Снежные зерна',
-                80: 'Небольшой ливень',
-                81: 'Умеренный ливень',
-                82: 'Сильный ливень',
-                85: 'Небольшой снегопад',
-                86: 'Сильный снегопад',
-                95: 'Гроза',
-                96: 'Гроза с градом',
-                99: 'Сильная гроза с градом'
-            };
-            return conditions[code] || 'Ясно';
-        }
-        
-        function setWeatherIconByCode(code) {
-            const icons = {
-                0: '☀️',  // ясно
-                1: '🌤️', // преимущественно ясно
-                2: '⛅', // переменная облачность
-                3: '☁️', // пасмурно
-                45: '🌫️', // туман
-                48: '🌫️', // изморозь
-                51: '🌧️', // легкая морось
-                53: '🌧️', // умеренная морось
-                55: '🌧️', // сильная морось
-                61: '🌦️', // небольшой дождь
-                63: '🌧️', // умеренный дождь
-                65: '⛈️', // сильный дождь
-                71: '🌨️', // небольшой снег
-                73: '❄️', // умеренный снег
-                75: '❄️', // сильный снег
-                80: '🌧️', // небольшой ливень
-                81: '⛈️', // умеренный ливень
-                82: '⛈️', // сильный ливень
-                85: '🌨️', // небольшой снегопад
-                86: '❄️', // сильный снегопад
-                95: '⛈️', // гроза
-                96: '⛈️', // гроза с градом
-                99: '⛈️'  // сильная гроза с градом
-            };
-            weatherIcon.textContent = icons[code] || '☀️';
         }
         
         // Время и дата
@@ -1202,11 +972,6 @@
                 toggleBrightMode(settings.brightMode);
             }
             
-            if (settings.weather !== undefined) {
-                weatherToggle.checked = settings.weather;
-                toggleWeather(settings.weather);
-            }
-            
             if (settings.animations !== undefined) {
                 animationsToggle.checked = settings.animations;
                 toggleAnimations(settings.animations);
@@ -1218,7 +983,6 @@
             settings = {
                 rgb: rgbToggle.checked,
                 brightMode: brightModeToggle.checked,
-                weather: weatherToggle.checked,
                 animations: animationsToggle.checked
             };
             
@@ -1228,7 +992,6 @@
             // Применяем настройки
             toggleRGB(settings.rgb);
             toggleBrightMode(settings.brightMode);
-            toggleWeather(settings.weather);
             toggleAnimations(settings.animations);
         }
         
@@ -1258,17 +1021,8 @@
             }
         }
         
-        function toggleWeather(enabled) {
-            if (enabled) {
-                weatherWidget.style.display = 'block';
-                getYandexWeather();
-            } else {
-                weatherWidget.style.display = 'none';
-            }
-        }
-        
         function toggleAnimations(enabled) {
-            const animatedElements = document.querySelectorAll('.social-icon, .info-item, .activity-card, .settings-btn, .weather-widget-link');
+            const animatedElements = document.querySelectorAll('.social-icon, .info-item, .activity-card, .settings-btn, .website-widget-link');
             animatedElements.forEach(el => {
                 if (enabled) {
                     el.style.transition = 'all 0.3s ease';
@@ -1336,13 +1090,6 @@
             // Обновляем время
             updateDateTime();
             setInterval(updateDateTime, 1000);
-            
-            // Получаем погоду
-            if (weatherToggle.checked) {
-                getYandexWeather();
-                // Обновляем погоду каждые 5 минут
-                setInterval(getYandexWeather, 5 * 60 * 1000);
-            }
             
             // Открытие/закрытие настроек
             settingsBtn.addEventListener('click', function(e) {
