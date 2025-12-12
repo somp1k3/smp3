@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор посетителей</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+        
+        .info-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        
+        .data-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .data-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .data-label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .data-value {
+            color: #2c3e50;
+            word-break: break-all;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .consent-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+        
+        .consent-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .consent-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .export-section {
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+        
+        .export-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1rem;
+        }
+        
+        .export-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Анализатор посетителей</h1>
+            <p class="subtitle">Этот сайт собирает основные технические данные о вашем устройстве и местоположении для аналитических целей</p>
+        </header>
+        
+        <div class="consent-box" id="consentBox">
+            <h3>Согласие на обработку данных</h3>
+            <p>Этот сайт собирает анонимные технические данные о вашем устройстве для аналитических целей. Данные сохраняются локально в вашем браузере и могут быть экспортированы.</p>
+            <button class="consent-btn" id="consentBtn">Я согласен на сбор данных</button>
+        </div>
+        
+        <div class="content" id="mainContent" style="display: none;">
+            <div class="info-section">
+                <div class="data-section">
+                    <h2>Информация об устройстве</h2>
+                    <div id="deviceData" class="loading">
+                        Загрузка данных...
+                    </div>
+                </div>
+                
+                <div class="data-section">
+                    <h2>Сеть и местоположение</h2>
+                    <div id="locationData" class="loading">
+                        Загрузка данных...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <div class="data-section">
+                    <h2>Браузер и ОС</h2>
+                    <div id="browserData" class="loading">
+                        Загрузка данных...
+                    </div>
+                </div>
+                
+                <div class="data-section">
+                    <h2>Дополнительная информация</h2>
+                    <div id="additionalData" class="loading">
+                        Загрузка данных...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="export-section">
+                <h3>Экспорт данных</h3>
+                <p>Вы можете скачать собранные данные о себе в формате JSON</p>
+                <button class="export-btn" id="exportBtn">Скачать мои данные (JSON)</button>
+                <button class="export-btn" id="exportAllBtn">Скачать все данные</button>
+                <button class="export-btn" id="clearBtn" style="background: #dc3545;">Очистить данные</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Данные собираются анонимно и используются только в статистических целях</p>
+            <p>© 2024 Анализатор посетителей. Все права защищены.</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">
+        Данные успешно сохранены!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const consentBtn = document.getElementById('consentBtn');
+            const consentBox = document.getElementById('consentBox');
+            const mainContent = document.getElementById('mainContent');
+            const notification = document.getElementById('notification');
+            const exportBtn = document.getElementById('exportBtn');
+            const exportAllBtn = document.getElementById('exportAllBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            // Инициализация хранилища
+            initializeStorage();
+            
+            // Проверяем, давал ли пользователь согласие ранее
+            if (localStorage.getItem('dataConsent') === 'given') {
+                consentBox.style.display = 'none';
+                mainContent.style.display = 'flex';
+                collectAndSaveData();
+            }
+            
+            // Обработка кнопки согласия
+            consentBtn.addEventListener('click', function() {
+                localStorage.setItem('dataConsent', 'given');
+                consentBox.style.display = 'none';
+                mainContent.style.display = 'flex';
+                collectAndSaveData();
+            });
+            
+            // Кнопка экспорта текущих данных
+            exportBtn.addEventListener('click', function() {
+                const currentData = JSON.parse(localStorage.getItem('currentVisitorData') || '{}');
+                if (Object.keys(currentData).length === 0) {
+                    alert('Нет данных для экспорта');
+                    return;
+                }
+                
+                const dataStr = JSON.stringify(currentData, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                const exportFileDefaultName = 'мои_данные_' + new Date().toISOString().slice(0,10) + '.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // Кнопка экспорта всех данных
+            exportAllBtn.addEventListener('click', function() {
+                const allData = {
+                    timestamp: new Date().toISOString(),
+                    current: JSON.parse(localStorage.getItem('currentVisitorData') || '{}'),
+                    history: JSON.parse(localStorage.getItem('visitorsHistory') || '[]')
+                };
+                
+                const dataStr = JSON.stringify(allData, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                const exportFileDefaultName = 'все_данные_' + new Date().toISOString().slice(0,10) + '.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // Кнопка очистки данных
+            clearBtn.addEventListener('click', function() {
+                if (confirm('Вы уверены, что хотите удалить все сохраненные данные?')) {
+                    localStorage.removeItem('currentVisitorData');
+                    localStorage.removeItem('visitorsHistory');
+                    localStorage.removeItem('dataConsent');
+                    alert('Все данные удалены!');
+                    location.reload();
+                }
+            });
+            
+            // Функция сбора и сохранения данных
+            async function collectAndSaveData() {
+                // Сбор данных об устройстве и браузере
+                const deviceData = collectDeviceData();
+                const browserData = collectBrowserData();
+                
+                // Показываем данные на странице
+                displayData(deviceData, browserData);
+                
+                // Получаем данные о местоположении через IP
+                let locationData = {};
+                try {
+                    locationData = await fetchLocationData();
+                    displayLocationData(locationData);
+                } catch (error) {
+                    console.error('Ошибка получения данных о местоположении:', error);
+                    document.getElementById('locationData').innerHTML = `
+                        <div class="data-item">
+                            <span class="data-label">Ошибка:</span>
+                            <span class="data-value">Не удалось получить данные о местоположении</span>
+                        </div>
+                    `;
+                }
+                
+                // Объединяем все данные
+                const allData = {
+                    timestamp: new Date().toISOString(),
+                    date: new Date().toLocaleString('ru-RU'),
+                    ...deviceData,
+                    ...browserData,
+                    location: locationData,
+                    pageUrl: window.location.href,
+                    referrer: document.referrer || 'Прямой заход',
+                    visitorId: generateVisitorId()
+                };
+                
+                // Сохраняем данные в localStorage
+                saveDataToStorage(allData);
+                
+                // Показываем уведомление
+                showNotification();
+            }
+            
+            // Инициализация хранилища
+            function initializeStorage() {
+                if (!localStorage.getItem('visitorsHistory')) {
+                    localStorage.setItem('visitorsHistory', JSON.stringify([]));
+                }
+            }
+            
+            // Сбор данных об устройстве
+            function collectDeviceData() {
+                return {
+                    screenWidth: screen.width,
+                    screenHeight: screen.height,
+                    colorDepth: screen.colorDepth,
+                    pixelRatio: window.devicePixelRatio,
+                    platform: navigator.platform,
+                    deviceMemory: navigator.deviceMemory || 'Не доступно',
+                    hardwareConcurrency: navigator.hardwareConcurrency || 'Не доступно',
+                    maxTouchPoints: navigator.maxTouchPoints || 0
+                };
+            }
+            
+            // Сбор данных о браузере
+            function collectBrowserData() {
+                const userAgent = navigator.userAgent;
+                let browserName = 'Неизвестно';
+                let os = 'Неизвестно';
+                
+                // Определение браузера
+                if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) browserName = "Chrome";
+                else if (userAgent.includes("Firefox")) browserName = "Firefox";
+                else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) browserName = "Safari";
+                else if (userAgent.includes("Edg")) browserName = "Edge";
+                else if (userAgent.includes("Opera") || userAgent.includes("OPR")) browserName = "Opera";
+                
+                // Определение ОС
+                if (userAgent.includes("Windows")) os = "Windows";
+                else if (userAgent.includes("Mac")) os = "macOS";
+                else if (userAgent.includes("Linux")) os = "Linux";
+                else if (userAgent.includes("Android")) os = "Android";
+                else if (userAgent.includes("iOS") || userAgent.includes("iPhone")) os = "iOS";
+                
+                return {
+                    browser: browserName,
+                    browserVersion: navigator.appVersion,
+                    language: navigator.language,
+                    cookiesEnabled: navigator.cookieEnabled,
+                    online: navigator.onLine,
+                    os: os,
+                    userAgent: userAgent,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    languages: navigator.languages || [navigator.language],
+                    doNotTrack: navigator.doNotTrack || 'Не указано'
+                };
+            }
+            
+            // Получение данных о местоположении через IP
+            async function fetchLocationData() {
+                try {
+                    const response = await fetch('https://ipapi.co/json/');
+                    if (!response.ok) throw new Error('Ошибка сети');
+                    const data = await response.json();
+                    
+                    return {
+                        ip: data.ip,
+                        city: data.city,
+                        region: data.region,
+                        country: data.country_name,
+                        countryCode: data.country_code,
+                        latitude: data.latitude,
+                        longitude: data.longitude,
+                        timezone: data.timezone,
+                        currency: data.currency,
+                        isp: data.org,
+                        asn: data.asn
+                    };
+                } catch (error) {
+                    // Альтернативный сервис, если первый не работает
+                    try {
+                        const altResponse = await fetch('https://ipwhois.app/json/');
+                        const altData = await altResponse.json();
+                        
+                        return {
+                            ip: altData.ip,
+                            city: altData.city,
+                            region: altData.region,
+                            country: altData.country,
+                            countryCode: altData.country_code,
+                            latitude: altData.latitude,
+                            longitude: altData.longitude,
+                            timezone: altData.timezone,
+                            isp: altData.isp,
+                            success: altData.success
+                        };
+                    } catch (altError) {
+                        return {
+                            error: "Не удалось определить местоположение",
+                            message: altError.message
+                        };
+                    }
+                }
+            }
+            
+            // Генерация ID посетителя
+            function generateVisitorId() {
+                const storedId = localStorage.getItem('visitorId');
+                if (storedId) return storedId;
+                
+                const newId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('visitorId', newId);
+                return newId;
+            }
+            
+            // Отображение данных на странице
+            function displayData(deviceData, browserData) {
+                // Отображаем данные устройства
+                let deviceHTML = `
+                    <div class="data-item">
+                        <span class="data-label">Разрешение экрана:</span>
+                        <span class="data-value">${deviceData.screenWidth} × ${deviceData.screenHeight}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Плотность пикселей:</span>
+                        <span class="data-value">${deviceData.pixelRatio}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Платформа:</span>
+                        <span class="data-value">${deviceData.platform}</span>
+                    </div>
+                `;
+                
+                if (deviceData.deviceMemory !== 'Не доступно') {
+                    deviceHTML += `
+                        <div class="data-item">
+                            <span class="data-label">Оперативная память:</span>
+                            <span class="data-value">${deviceData.deviceMemory} GB</span>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('deviceData').innerHTML = deviceHTML;
+                
+                // Отображаем данные браузера
+                let browserHTML = `
+                    <div class="data-item">
+                        <span class="data-label">Браузер:</span>
+                        <span class="data-value">${browserData.browser}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Операционная система:</span>
+                        <span class="data-value">${browserData.os}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Язык:</span>
+                        <span class="data-value">${browserData.language}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Часовой пояс:</span>
+                        <span class="data-value">${browserData.timezone}</span>
+                    </div>
+                `;
+                
+                document.getElementById('browserData').innerHTML = browserHTML;
+                
+                // Дополнительная информация
+                let additionalHTML = `
+                    <div class="data-item">
+                        <span class="data-label">Cookies включены:</span>
+                        <span class="data-value">${browserData.cookiesEnabled ? 'Да' : 'Нет'}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Подключение к интернету:</span>
+                        <span class="data-value">${browserData.online ? 'Онлайн' : 'Оффлайн'}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Do Not Track:</span>
+                        <span class="data-value">${browserData.doNotTrack}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Языки браузера:</span>
+                        <span class="data-value">${browserData.languages.join(', ')}</span>
+                    </div>
+                `;
+                
+                document.getElementById('additionalData').innerHTML = additionalHTML;
+            }
+            
+            // Отображение данных о местоположении
+            function displayLocationData(locationData) {
+                let locationHTML = '';
+                
+                if (locationData.ip) {
+                    locationHTML += `
+                        <div class="data-item">
+                            <span class="data-label">IP адрес:</span>
+                            <span class="data-value">${locationData.ip}</span>
+                        </div>
+                    `;
+                }
+                
+                if (locationData.city) {
+                    locationHTML += `
+                        <div class="data-item">
+                            <span class="data-label">Местоположение:</span>
+                            <span class="data-value">${locationData.city}, ${locationData.region}, ${locationData.country}</span>
+                        </div>
+                    `;
+                }
+                
+                if (locationData.latitude && locationData.longitude) {
+                    locationHTML += `
+                        <div class="data-item">
+                            <span class="data-label">Координаты:</span>
+                            <span class="data-value">${locationData.latitude}, ${locationData.longitude}</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Карта:</span>
+                            <span class="data-value">
+                                <a href="https://www.google.com/maps?q=${locationData.latitude},${locationData.longitude}" target="_blank">
+                                    Посмотреть на Google Maps
+                                </a>
+                            </span>
+                        </div>
+                    `;
+                }
+                
+                if (locationData.isp) {
+                    locationHTML += `
+                        <div class="data-item">
+                            <span class="data-label">Провайдер:</span>
+                            <span class="data-value">${locationData.isp}</span>
+                        </div>
+                    `;
+                }
+                
+                if (locationData.timezone) {
+                    locationHTML += `
+                        <div class="data-item">
+                            <span class="data-label">Часовой пояс:</span>
+                            <span class="data-value">${locationData.timezone}</span>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('locationData').innerHTML = locationHTML || 
+                    '<div class="data-item"><span class="data-value">Данные о местоположении не доступны</span></div>';
+            }
+            
+            // Сохранение данных в localStorage
+            function saveDataToStorage(data) {
+                // Сохраняем текущие данные
+                localStorage.setItem('currentVisitorData', JSON.stringify(data, null, 2));
+                
+                // Добавляем в историю
+                const history = JSON.parse(localStorage.getItem('visitorsHistory') || '[]');
+                
+                // Добавляем только основные данные в историю
+                const historyEntry = {
+                    timestamp: data.timestamp,
+                    date: data.date,
+                    browser: data.browser,
+                    os: data.os,
+                    ip: data.location?.ip || 'unknown',
+                    country: data.location?.country || 'unknown',
+                    city: data.location?.city || 'unknown'
+                };
+                
+                history.push(historyEntry);
+                localStorage.setItem('visitorsHistory', JSON.stringify(history));
+                
+                // Показываем статистику в консоли
+                console.log('Текущие данные:', data);
+                console.log('Всего посещений в истории:', history.length);
+            }
+            
+            // Показать уведомление
+            function showNotification() {
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Показываем статистику при загрузке
+            if (localStorage.getItem('dataConsent') === 'given') {
+                const history = JSON.parse(localStorage.getItem('visitorsHistory') || '[]');
+                console.log('Статистика: всего посещений -', history.length);
+            }
+        });
+    </script>
+</body>
+</html>
