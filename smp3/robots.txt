@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /private/
-Disallow: /admin/
-
-Sitemap: https://somp1k3.github.io/sitemap.xml
