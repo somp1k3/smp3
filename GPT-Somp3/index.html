@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT|SOMP3 - Умный поиск с ИИ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-text">GPT|SOMP3</span>
+                <span class="logo-beta">BETA</span>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> Главная</a>
+                <a href="topics.html"><i class="fas fa-bookmark"></i> Темы</a>
+                <a href="about.html"><i class="fas fa-info-circle"></i> О проекте</a>
+                <a href="#" id="theme-toggle"><i class="fas fa-moon"></i></a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <span class="typing-text">Задайте любой вопрос</span>
+                <div class="ai-badge"><i class="fas fa-brain"></i> AI-Powered</div>
+            </h1>
+            <p class="hero-subtitle">
+                <i class="fas fa-bolt"></i> Интеллектуальный поиск с реальными источниками
+            </p>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="text" 
+                           id="search-input" 
+                           placeholder="Что вы хотите узнать? (Например: 'Что такое квантовые вычисления?' или 'Новости AI 2024')" 
+                           autofocus>
+                    <button id="search-btn" class="search-button">
+                        <i class="fas fa-rocket"></i> Найти ответ
+                    </button>
+                </div>
+                
+                <div class="advanced-options">
+                    <div class="search-type-selector">
+                        <label class="option-btn active" data-type="ai">
+                            <i class="fas fa-robot"></i> Умный AI
+                        </label>
+                        <label class="option-btn" data-type="web">
+                            <i class="fas fa-globe"></i> Веб-поиск
+                        </label>
+                        <label class="option-btn" data-type="academic">
+                            <i class="fas fa-graduation-cap"></i> Научный
+                        </label>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <label><input type="checkbox" id="filter-recent" checked> Актуальные</label>
+                        <label><input type="checkbox" id="filter-verified"> Проверенные</label>
+                        <label><input type="checkbox" id="filter-detailed"> Подробные</label>
+                    </div>
+                </div>
+                
+                <p class="search-hint">
+                    <i class="fas fa-lightbulb"></i> Попробуйте: "Объясни квантовую запутанность", "Что нового в React 19?", "Планеты с жизнью"
+                </p>
+            </div>
+
+            <div class="quick-topics">
+                <h3><i class="fas fa-fire"></i> Популярные запросы:</h3>
+                <div class="topic-tags">
+                    <a href="#" class="tag" data-topic="ai">
+                        <i class="fas fa-robot"></i> Искусственный интеллект 2024
+                    </a>
+                    <a href="#" class="tag" data-topic="space">
+                        <i class="fas fa-satellite"></i> Космические миссии
+                    </a>
+                    <a href="#" class="tag" data-topic="programming">
+                        <i class="fas fa-code"></i> Веб-разработка 2024
+                    </a>
+                    <a href="#" class="tag" data-topic="science">
+                        <i class="fas fa-flask"></i> Научные открытия
+                    </a>
+                    <a href="#" class="tag" data-topic="crypto">
+                        <i class="fas fa-coins"></i> Криптовалюты
+                    </a>
+                    <a href="#" class="tag" data-topic="health">
+                        <i class="fas fa-heartbeat"></i> Здоровье и AI
+                    </a>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Мгновенные ответы</h4>
+                    <p>AI анализирует сотни источников за секунды</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Проверенные источники</h4>
+                    <p>Все ответы с ссылками на реальные исследования</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-sync-alt"></i>
+                    <h4>Актуальные данные</h4>
+                    <p>Постоянное обновление информации</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="results-section container" id="results-section" style="display: none;">
+        <div class="results-header">
+            <h2><i class="fas fa-comment-dots"></i> Ответ AI</h2>
+            <div class="result-meta">
+                <span class="time-badge"><i class="far fa-clock"></i> Только что</span>
+                <span class="source-count"><i class="fas fa-link"></i> <span id="sources-count">0</span> источников</span>
+                <span class="confidence"><i class="fas fa-chart-line"></i> Высокая точность</span>
+            </div>
+        </div>
+        
+        <div class="answer-card">
+            <div class="answer-header">
+                <div class="ai-avatar">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="answer-meta">
+                    <h4>GPT|SOMP3 AI Assistant</h4>
+                    <p>На основе анализа вашего запроса</p>
+                </div>
+                <button class="copy-btn" id="copy-answer">
+                    <i class="far fa-copy"></i> Копировать
+                </button>
+            </div>
+            
+            <div class="answer-content" id="answer-text">
+                <!-- Ответ будет здесь -->
+            </div>
+            
+            <div class="answer-actions">
+                <button class="action-btn" id="expand-answer">
+                    <i class="fas fa-expand-alt"></i> Подробнее
+                </button>
+                <button class="action-btn" id="save-answer">
+                    <i class="far fa-bookmark"></i> Сохранить
+                </button>
+                <button class="action-btn" id="share-answer">
+                    <i class="fas fa-share"></i> Поделиться
+                </button>
+            </div>
+            
+            <div class="sources-section">
+                <h4><i class="fas fa-link"></i> Источники и ссылки:</h4>
+                <div class="sources-grid" id="sources-list">
+                    <!-- Источники будут здесь -->
+                </div>
+                <div class="sources-note">
+                    <i class="fas fa-info-circle"></i> Все источники проверены и актуальны
+                </div>
+            </div>
+            
+            <div class="related-questions">
+                <h5><i class="fas fa-question-circle"></i> Связанные вопросы:</h5>
+                <div class="related-list" id="related-questions">
+                    <!-- Связанные вопросы -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="next-actions">
+            <button id="new-search-btn" class="secondary-button">
+                <i class="fas fa-redo"></i> Новый поиск
+            </button>
+            <button id="refine-search" class="secondary-button">
+                <i class="fas fa-edit"></i> Уточнить вопрос
+            </button>
+            <button id="export-btn" class="secondary-button">
+                <i class="fas fa-download"></i> Экспорт ответа
+            </button>
+        </div>
+        
+        <div class="feedback-section">
+            <p>Полезен ли был ответ?</p>
+            <div class="feedback-buttons">
+                <button class="feedback-btn good"><i class="fas fa-thumbs-up"></i> Да</button>
+                <button class="feedback-btn bad"><i class="fas fa-thumbs-down"></i> Нет</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>GPT|SOMP3</h4>
+                    <p>Интеллектуальный поиск нового поколения</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Технологии</h4>
+                    <ul>
+                        <li><a href="#">AI Models</a></li>
+                        <li><a href="#">Web Search</a></li>
+                        <li><a href="#">Real-time Data</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Поддержка</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">API Документация</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Проект GPT|SOMP3. Вдохновлено <a href="https://perplexity.ai" target="_blank">Perplexity.ai</a>.</p>
+                <p>© 2024. Учебный проект с реальной функциональностью.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для уточнения вопроса -->
+    <div class="modal" id="refine-modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-edit"></i> Уточните ваш вопрос</h3>
+            <textarea id="refine-text" placeholder="Переформулируйте или добавьте детали..."></textarea>
+            <div class="modal-actions">
+                <button id="refine-submit" class="search-button">Обновить поиск</button>
+                <button id="refine-cancel" class="secondary-button">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="ai-engine.js"></script>
+</body>
+</html>
