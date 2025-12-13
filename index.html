@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOMP3 - Разработчик, Геймер, Создатель проектов</title>
+    <meta name="description" content="Персональный сайт SOMP3 - разработчика, геймера и создателя проектов. Веб-разработка, Python, игровые проекты, UI/UX дизайн.">
+    <meta name="keywords" content="SOMP3, разработчик, веб-разработка, Python, геймер, UI/UX дизайн, программирование">
+    <meta name="author" content="SOMP3">
+    <meta property="og:title" content="SOMP3 - Разработчик, Геймер, Создатель проектов">
+    <meta property="og:description" content="Персональный сайт разработчика SOMP3 с портфолио и проектами">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://somp1k3.github.io">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SOMP3 - Разработчик, Геймер, Создатель проектов">
+    <meta name="twitter:description" content="Персональный сайт разработчика SOMP3 с портфолио и проектами">
+    
+    <!-- PWA метатеги -->
+    <meta name="theme-color" content="#ff0080">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOMP3">
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAY0lEQVQ4je3RMQqDQBRA0d8WFjZJ6RUsl8lNPICVsBKPYJMg8zJ3GLBynfk9mKpfaGJhJwJw0fBEDyN3zEAa9fXAwcQH4QSkOAMpO55wAtKcgY1T55zABaTw/21mBA7gCzwAB26iHZ2I6rHpAAAAAElFTkSuQmCC">
+</head>
+<body>
+    <!-- RGB градиентный фон -->
+    <div class="rgb-bg" id="rgbBg"></div>
+    
+    <!-- Уведомление о разработке -->
+    <div class="notification development" id="devNotification">
+        <div class="notification-content">
+            <div class="notification-title">
+                <i class="fas fa-tools"></i>
+                Сайт в разработке
+            </div>
+            <div class="notification-text">
+                Мы постоянно улучшаем наш сайт. Некоторые функции могут быть в разработке или обновляться.
+            </div>
+        </div>
+        <button class="notification-close" onclick="closeNotification('devNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Уведомление с благодарностью -->
+    <div class="notification thanks" id="thanksNotification">
+        <div class="notification-content">
+            <div class="notification-title">
+                <i class="fas fa-heart"></i>
+                Спасибо за выбор!
+            </div>
+            <div class="notification-text">
+                Благодарим вас за посещение нашего сайта! Надеемся, вам понравится ваш опыт.
+            </div>
+        </div>
+        <button class="notification-close" onclick="closeNotification('thanksNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Модальное окно для "Что я делаю" -->
+    <div class="modal-overlay" id="activityModalOverlay">
+        <div class="modal" id="activityModal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalActivityTitle">Заголовок</h2>
+                <button class="modal-close" id="modalCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="modalActivityContent">
+                <!-- Контент будет подгружаться динамически -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action-btn" id="modalVisitSiteBtn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Посетить сайт проекта
+                </button>
+                <button class="modal-action-btn secondary" id="modalCloseActionBtn">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Верхняя панель -->
+        <div class="top-panel">
+            <!-- Социальные иконки -->
+            <div class="social-icons">
+                <a href="https://t.me/testuhipis" target="_blank" class="social-icon tg" title="Telegram" aria-label="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://github.com/somp1k3" target="_blank" class="social-icon gh" title="GitHub" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/pr/" target="_blank" class="social-icon website" title="Мой сайт" aria-label="Мой сайт">
+                    <i class="fas fa-globe"></i>
+                </a>
+                <a href="https://steamcommunity.com/id/somp1k3/" target="_blank" class="social-icon steam" title="Steam" aria-label="Steam">
+                    <i class="fab fa-steam"></i>
+                </a>
+                <a href="https://www.donationalerts.com/r/uwu11" target="_blank" class="social-icon donate" title="Донаты" aria-label="Донаты">
+                    <i class="fas fa-donate"></i>
+                </a>
+                <a href="https://somp1k3.github.io/smp3/portfolio/" target="_blank" class="social-icon portfolio" title="Портфолио" aria-label="Портфолио">
+                    <i class="fas fa-briefcase"></i>
+                </a>
+            </div>
+            
+            <!-- Время и кнопка PWA -->
+            <div class="info-widgets">
+                <div class="info-item">
+                    <div class="info-time" id="currentTime">00:00:00</div>
+                    <div class="info-date" id="currentDate">1 янв 2023</div>
+                </div>
+                
+                <!-- Кнопка установки PWA -->
+                <div class="info-item pwa-install-btn" id="pwaInstallBtn" style="cursor: pointer;">
+                    <div class="pwa-install-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="pwa-install-text">
+                        Установить приложение
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <main class="main-content">
+            <!-- Заголовок -->
+            <div class="title-section">
+                <h1 class="main-title">SOMP3</h1>
+                <p class="subtitle">Разработчик • Геймер • Создатель проектов</p>
+                
+                <!-- Кнопка настроек -->
+                <div class="settings-btn-container" id="settingsContainer">
+                    <button class="settings-btn" id="settingsBtn" aria-label="Настройки сайта">
+                        <i class="fas fa-cog"></i>
+                        Настройки
+                    </button>
+                    <div class="settings-panel" id="settingsPanel">
+                        <div class="settings-title">
+                            <i class="fas fa-sliders-h"></i>
+                            Настройки сайта
+                        </div>
+                        
+                        <div class="setting-item">
+                            <span>RGB фон</span>
+                            <label class="switch">
+                                <input type="checkbox" id="rgbToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <span>Яркий режим</span>
+                            <label class="switch">
+                                <input type="checkbox" id="brightModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <span>Анимации</span>
+                            <label class="switch">
+                                <input type="checkbox" id="animationsToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Что я делаю -->
+            <section class="activities-section" aria-labelledby="activitiesTitle">
+                <h2 class="section-title" id="activitiesTitle">Что я делаю</h2>
+                <div class="activities-grid">
+                    <div class="activity-card" data-activity="webdev">
+                        <div class="activity-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="activity-title">Веб-разработка</h3>
+                        <p class="activity-desc">
+                            Создание современных веб-приложений с использованием React, Vue.js, HTML5, CSS3 и JavaScript.
+                        </p>
+                        <div class="activity-hint">
+                            Нажмите для подробностей
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" data-activity="python">
+                        <div class="activity-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h3 class="activity-title">Python разработка</h3>
+                        <p class="activity-desc">
+                            Разработка серверных приложений, ботов, скриптов автоматизации и аналитических систем.
+                        </p>
+                        <div class="activity-hint">
+                            Нажмите для подробностей
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" data-activity="gamedev">
+                        <div class="activity-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="activity-title">Игровые проекты</h3>
+                        <p class="activity-desc">
+                            Разработка игр, создание модификаций, работа с игровыми движками и дизайн игровых механик.
+                        </p>
+                        <div class="activity-hint">
+                            Нажмите для подробностей
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" data-activity="design">
+                        <div class="activity-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="activity-title">UI/UX дизайн</h3>
+                        <p class="activity-desc">
+                            Проектирование пользовательских интерфейсов, создание прототипов и разработка дизайн-систем.
+                        </p>
+                        <div class="activity-hint">
+                            Нажмите для подробностей
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Обо мне -->
+            <section class="about-section" aria-labelledby="aboutTitle">
+                <h2 class="section-title" id="aboutTitle">Обо мне</h2>
+                <div class="about-text">
+                    <p>Привет! Я <span class="highlight">SOMP3</span> - разработчик с многолетним опытом в создании цифровых проектов. Специализируюсь на веб-технологиях, Python и игровой разработке.</p>
+                    
+                    <p>Мои проекты всегда сочетают в себе <span class="highlight">качественный код</span>, <span class="highlight">современный дизайн</span> и <span class="highlight">интуитивный интерфейс</span>. Каждая деталь продумана для максимального удобства пользователя.</p>
+                    
+                    <p>Как геймер, я уделяю особое внимание плавности анимаций, отзывчивости интерфейсов и общему пользовательскому опыту.</p>
+                    
+                    <p>Посетите мой <a href="https://somp1k3.github.io/smp3/pr/" target="_blank" class="about-link" aria-label="Мой сайт">сайт</a> для просмотра последних проектов и информации.</p>
+                </div>
+                <div class="about-text">
+                    <p><strong>Все права защищены © SOMP3 2011-2023</strong></p>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Футер -->
+        <footer>
+            <div class="footer-text">Создано с <i class="fas fa-heart heart-icon" aria-hidden="true"></i> SOMP3</div>
+            <div class="copyright">Код защищен авторским правом. Любое копирование запрещено.</div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
